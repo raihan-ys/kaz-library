@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
-	// Display books list.
+	// Display books.
 	public function index()
 	{
 		$data['books'] = Book::with('category', 'publisher')->get();
@@ -40,9 +40,10 @@ class BookController extends Controller
 		$request->validate([
 			'title' => 'required|max:100',
 			'author' => 'required|max:100',
-			'published_year' => 'required|integer',
+			'published_year' => 'required|integer|min:4|max:4',
 			'category_id' => 'required|integer',
 			'publisher_id' => 'required|integer',
+			'isbn' => 'required|min:13|max:13',
 			'cover_image' => 'nullable|string',
 			'stock' => 'required|integer',
 			'rental_price' => 'required|integer',

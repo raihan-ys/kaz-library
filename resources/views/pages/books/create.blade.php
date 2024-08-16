@@ -45,24 +45,30 @@
 					@endforeach
 				</select>
 			</div>
+			{{-- isbn --}}
+			<div class="form-group col-md-6">
+				<label for="isbn">ISBN</label>
+				<input type="text" class="form-control" id="isbn" name="isbn" required>
+			</div>
+		</div>
+
+		<div class="form-row">
 			{{-- gambar sampul --}}
 			<div class="form-group col-md-6">
 				<label for="cover_image">Gambar Sampul</label>
 				<input type="text" class="form-control" id="cover_image" name="cover_image">
 			</div>
-		</div>
-
-		<div class="form-row">
 			{{-- stock --}}
 			<div class="form-group col-md-6">
 				<label for="stock">Stok</label>
 				<input type="number" class="form-control" id="stock" name="stock" required>
 			</div>
-			{{-- rental price --}}
-			<div class="form-group col-md-6">
-				<label for="rental_price">Biaya Peminjaman</label>
-				<input type="number" class="form-control" id="rental_price" name="rental_price" required>
-			</div>
+		</div>
+
+		{{-- rental price --}}
+		<div class="form-group">
+			<label for="rental_price">Biaya Peminjaman</label>
+			<input type="number" class="form-control" id="rental_price" name="rental_price" required>
 		</div>
 
 		{{-- submit --}}

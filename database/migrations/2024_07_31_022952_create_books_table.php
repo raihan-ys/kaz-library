@@ -12,12 +12,11 @@ class CreateBooksTable extends Migration
     public function up(): void
     {
         Schema::create('books', function (Blueprint $table) {
-            // PK.
             $table->id();
             $table->string('title');
             $table->string('author');
             $table->integer('published_year');
-             // FK to category.
+            // FK to category.
             $table->unsignedBigInteger('category_id');
             // FK to publisher.
             $table->unsignedBigInteger('publisher_id');
