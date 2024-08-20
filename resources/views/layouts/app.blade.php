@@ -2,31 +2,58 @@
 <html lang="en">
 
 <head>
-	<!-- meta -->
+	{{-- meta --}}
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="E-Library Institut Az Zuhra">
+	<meta name="description" content="E-Library Kazee Digital">
 
-	<title>@yield('title', $title) - Institut Az Zuhra</title>
+	<title>@yield('title', $title) - Kaz-Library</title>
 
 	{{-- Favicon --}}
-	<link type="image/png" href="{{ asset('images/iaz-logo.png') }}" rel="icon">
-	{{-- Bootstrap CSS --}}
-	<link type="text/css" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+	<link rel="shortcut icon" href="{{ asset('images/stormtrooper.jfif') }}">
+	{{-- AdminLTE CSS --}}
+	<link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
 	{{-- Font Awesome CSS --}}
-	<link type="text/css" href="{{ asset('vendor/fontawesome6/css/all.css') }}" rel="stylesheet">
+	<link rel="stylesheet" href="{{ asset('adminlte/plugins/fontawesome-free/css/all.min.css') }}">
+	{{-- Overlay Scrollbars CSS --}}
+	<link rel="stylesheet" href="{{ asset('adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
+	@yield('css')
+	
 	{{-- jQuery JS --}}
-	<script type="text/javascript" src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-	{{-- Bootstrap JS --}}
-	<script type="text/javascript" src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('adminlte/plugins/jquery/jquery.min.js') }}"></script>
 </head>
 
-<body class="d-flex flex-column min-vh-100">
-	@include('partials.navbar')
-	@include('partials.header')
-	<div class="container mt-4 flex-grow-1">
-		@yield('content')
+<body class="hold-transition sidebar-mini layout-fixed">
+	<div class="wrapper">
+
+		{{-- navbar --}}
+		@include('partials.navbar')
+		{{-- sidebar --}}
+		@include('partials.sidebar')
+
+		{{-- content --}}
+		<div class="content-wrapper">
+			{{-- content header --}}
+			@yield('page-header')
+			{{-- main content --}}
+			<section class="content">
+				@yield('content')
+			</section>
+		</div>
+		{{-- footer --}}
+		@include('partials.footer')
+
+		{{-- sidebar control --}}
+		<aside class="control-sidebar control-sidebar-dark"></aside>
 	</div>
-	@include('partials.footer')
+	{{-- /.wrapper --}}
+
+	{{-- Bootstrap 4 JS --}}
+	<script type="text/javascript" src="{{ asset('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+	{{-- overlayScrollbars JS --}}
+	<script type="text/javascript" src="{{ asset('adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"><script>
+	{{-- AdminLTE JS --}}
+	<script type="text/javascript" src="{{ asset('adminlte/dist/js/adminlte.js') }}"></script>
+	@yield('js')
 </body>
 </html>

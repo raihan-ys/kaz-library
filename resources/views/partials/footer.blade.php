@@ -1,5 +1,6 @@
-<footer class="footer p-3 mt-4" style="background-color: #181C32;">
- <div class="container">
- 	<p class="text-white text-center">&copy; {{ date('Y') }} Institut Az Zuhra. All rights reserved.</p>
- </div>
+<footer class="main-footer font-weight-bold text-white" style="background-color: #181C32">
+ 	&copy; {{ date('Y') }} <a href="#" class="text-danger">Kaz-Library</a>.	All rights reserved.
+	<div class="float-right d-none d-sm-inline-block">
+		<b>Version</b> 1.0.0 (Beta)
+	</div>
 </footer>

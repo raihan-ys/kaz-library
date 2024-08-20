@@ -15,6 +15,7 @@ class BooksTableSeeder extends Seeder
         Book::create([
             'title' => 'Example Book 1',
             'author' => 'Author name 1',
+            'isbn' => 1234567891111,
             'published_year' => 2021,
             'category_id' => 1,
             'publisher_id' => 1,
@@ -25,6 +26,7 @@ class BooksTableSeeder extends Seeder
         Book::create([
             'title' => 'Example Book 2',
             'author' => 'Author name 2',
+            'isbn' => 1234567891111,
             'published_year' => 2022,
             'category_id' => 2,
             'publisher_id' => 2,
@@ -35,6 +37,7 @@ class BooksTableSeeder extends Seeder
         Book::create([
             'title' => 'Example Book 3',
             'author' => 'Author name 3',
+            'isbn' => 1234567891111,
             'published_year' => 2023,
             'category_id' => 3,
             'publisher_id' => 3,

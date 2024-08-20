@@ -14,8 +14,10 @@ class BookController extends Controller
 	public function index()
 	{
 		$data['books'] = Book::with('category', 'publisher')->get();
+		$data['categories'] = Category::all();
+		$data['publishers'] = Publisher::all();
 		$data['title'] = 'Daftar Buku';
-		return view('pages.books/index', $data);
+		return view('pages.books.index', $data);
 	}
 
 	// Show the specified book.
@@ -25,25 +27,16 @@ class BookController extends Controller
 		return view('pages.books.show', $data);
 	}
 
-	// Show the form for inserting new book.
-	public function create()
-	{
-		$data['categories'] = Category::all();
-		$data['publishers'] = Publisher::all();
-		$data['title'] = 'Tambah Buku';
-		return view('pages.books.create', $data);
-	}
-
 	// Store a newly created book in the database.
 	public function store(Request $request)
 	{
 		$request->validate([
-			'title' => 'required|max:100',
-			'author' => 'required|max:100',
-			'published_year' => 'required|integer|min:4|max:4',
+			'title' => 'required',
+			'author' => 'required',
+			'isbn' => 'required',
+			'published_year' => 'required|integer',
 			'category_id' => 'required|integer',
 			'publisher_id' => 'required|integer',
-			'isbn' => 'required|min:13|max:13',
 			'cover_image' => 'nullable|string',
 			'stock' => 'required|integer',
 			'rental_price' => 'required|integer',

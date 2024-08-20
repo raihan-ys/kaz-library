@@ -15,7 +15,7 @@ class CreatePublishersTable extends Migration
             $table->id();
             $table->string('name');
             $table->timestamps();
-           
+            // Ensure InnoDB engine.
             $table->engine = 'InnoDB';
         });
     }

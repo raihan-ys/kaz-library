@@ -15,12 +15,12 @@ class CreateBooksTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('author');
+            $table->bigInteger('isbn');
             $table->integer('published_year');
             // FK to category.
             $table->unsignedBigInteger('category_id');
             // FK to publisher.
             $table->unsignedBigInteger('publisher_id');
-            $table->string('isbn');
             $table->string('cover_image')->nullable();
             $table->integer('stock');
             $table->integer('rental_price');
