@@ -20,20 +20,20 @@ class BookController extends Controller
 		return view('pages.books.index', $data);
 	}
 
-	// Show the specified book.
+	// Show book detail.
 	public function show($id) {
 		$data['book'] = Book::find($id);
 		$data['title'] = 'Detail Buku: '.$data['book']->title;
 		return view('pages.books.show', $data);
 	}
 
-	// Store a newly created book in the database.
+	// Insert book.
 	public function store(Request $request)
 	{
 		$request->validate([
-			'title' => 'required',
-			'author' => 'required',
-			'isbn' => 'required',
+			'title' => 'required|max:100',
+			'author' => 'required|max:100',
+			'isbn' => 'required|max:13',
 			'published_year' => 'required|integer',
 			'category_id' => 'required|integer',
 			'publisher_id' => 'required|integer',
@@ -42,7 +42,7 @@ class BookController extends Controller
 			'rental_price' => 'required|integer',
 		]);
 		Book::create($request->all());
-		return redirect()->route('buku.index')->with('success', 'Buku berhasil disimpan!');
+		return redirect()->route('buku')->with('success', 'Buku berhasil disimpan!');
 	}
 
 	// Show the form for editing the specified book.
@@ -55,14 +55,15 @@ class BookController extends Controller
 		return view('pages.books.edit', $data);
 	}
 
-	// Update the specified book in the database.
+	// Update specified book.
 	public function update(Request $request, $id)
 	{
 		$book = Book::find($id);
 		$request->validate([
 			'title' => 'required|max:100',
 			'author' => 'required|max:100',
-			'published_year' => 'required|integer|',
+			'isbn' => 'required|max:13',
+			'published_year' => 'required|integer',
 			'category_id' => 'required|integer',
 			'publisher_id' => 'required|integer',
 			'cover_image' => 'nullable|string',
@@ -70,14 +71,14 @@ class BookController extends Controller
 			'rental_price' => 'required|integer',
 		]);
 		$book->update($request->all());
-		return redirect()->route('buku.index')->with('success', 'Buku berhasil diupdate!');
+		return redirect()->route('buku')->with('success', 'Buku berhasil diupdate!');
 	}
 
-	// Remove the specified book from the database.
+	// Remove the specified book.
 	public function destroy($id)
 	{
 		$book = Book::find($id);
 		$book->delete();
-		return redirect()->route('buku.index')->with('success', 'Buku berhasil dihapus!');
+		return redirect()->route('buku')->with('success', 'Buku berhasil dihapus!');
 	}
 }

@@ -14,7 +14,7 @@
 					<div class="col-sm-6">
 						<ol class="breadcrumb float-sm-right">
 							<li class="breadcrumb-item">
-								<a href="{{ route('buku.index') }}">
+								<a href="{{ route('buku') }}">
 									<i class="fas fa-book"></i>
 									Buku
 								</a>
@@ -36,7 +36,7 @@
 <div class="container-fluid">
 	<div class="card">
 		{{-- header --}}
-		<div class="card-header">
+		<div class="card-header" style="border-top: #181C32 solid 5px">
 			<h5>Form Edit Buku</h5>
 		</div>
 		<form action="{{ route('buku.update', $book->id) }}" method="post">
@@ -112,7 +112,7 @@
 			{{-- footer --}}
 			<div class="card-footer">
 				<button type="submit" class="btn btn-primary">Simpan</button>
-				<a href="{{ route('buku.index') }}" class="btn btn-secondary">
+				<a href="{{ route('buku') }}" class="btn btn-secondary">
 					<i class="fas fa-arrow-left"></i>
 					Kembali
 				</a>

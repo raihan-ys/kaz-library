@@ -26,7 +26,7 @@
 	<div class="row">
 		<div class="col-12">
 
-			<div class="card">
+			<div class="card" style="border-top: #181C32 solid 5px">
 				{{-- header --}}
 				<div class="card-header">
 					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createBookModal">
@@ -35,7 +35,7 @@
 				</div>
 				{{-- body --}}
 				<div class="card-body table-responsive">
-					<table class="table table-bordered table-striped table-hover">
+					<table class="table table-bordered table-hover">
 						<thead class="text-white" style="background-color: #181C32">
 							<tr>
 								<th scope="col">#</th>
@@ -55,7 +55,7 @@
 							@foreach ($books as $book)
 							<tr>
 								<td>{{ $i++ }}</td>
-								<td>{{ $book->title }}</td>
+								<td class="font-weight-bold">{{ $book->title }}</td>
 								<td>{{ $book->isbn }}</td>
 								<td>{{ $book->author }}</td>
 								<td>{{ $book->published_year }}</td>
@@ -73,10 +73,10 @@
 										<i class="fas fa-edit"></i>
 									</a>
 									{{-- delete --}}
-									<form action="{{ route('buku.destroy', $book->id) }}" method="post" style="display:inline">
+									<form id="deleteForm" action="{{ route('buku.destroy', $book->id) }}" method="post" style="display:inline">
 										@csrf
 										@method('DELETE')
-										<button type="submit" class="btn btn-danger" title="Hapus">
+										<button type="submit" id="deleteSubmit" class="btn btn-danger" title="Hapus">
 											<i class="fas fa-trash"></i>
 										</button>
 									</form>
@@ -157,8 +157,6 @@
 							</select>
 						</div>
 					</div>
-					{{-- cover image --}}
-					<input type="hidden" name="cover_image" id="cover_image" value="image.png">
 					<div class="form-row">
 						{{-- stock --}}
 						<div class="col-md-6 mb-3">
@@ -171,11 +169,16 @@
 							<input type="number" name="rental_price" id="rental_price" class="form-control" placeholder="Masukkan Harga Sewa Buku" min="0" max="99999">
 						</div>
 					</div>
+					{{-- cover image --}}
+					<div class="form-group">
+						<label for="cover_image">Gambar Sampul</label>
+						<input type="text" class="form-control" name="cover_image" id="cover_image">
+					</div>
 				</div>
 				{{-- /.body --}}
 
 				{{-- footer --}}
-				<div class="modal-footer justify-content-between">
+				<div class="modal-footer justify-content-between btn-group">
 					<button type="button" class="btn btn-outline-secondary" id="closeModal" data-dismiss="modal">Batal</button>
 					<button type="reset" class="btn btn-outline-info">Reset</button>
 					<button type="submit" class="btn btn-outline-primary" id="createBook">Simpan</button>
@@ -196,16 +199,24 @@
 		const createBookForm = $("#createBookForm");
 		const closeModal = $("#closeModal");
 		const createBook = $("#createBook");
+		const deleteForm = $("#deleteForm");
+		const deleteSubmit = $("#deleteSubmit");
 
 		// Close modal.
 		closeModal.click(function() {
 			createBookModal.modal('hide');
 		});
 		// Form submit confirmation.
-		createBook.click(function() {
-			if(confirm("Anda yakin ingin menyimpan data buku ini?")) {
-				createBookForm.submit();
-			} else {}
+		createBook.click(function(event) {
+			if(!confirm("Anda yakin ingin menyimpan data buku ini?")) {
+				event.preventDefault();
+			}
+		});
+		// Delete confirmation.
+		deleteSubmit.click(function(event) {
+			if(!confirm("Anda yakin ingin menghapus data ini?")) {
+				event.preventDefault();
+			}
 		});
 	});
 </script>
