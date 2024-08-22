@@ -58,6 +58,26 @@
 	<script type="text/javascript" src="{{ asset('adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"><script>
 	{{-- AdminLTE JS --}}
 	<script type="text/javascript" src="{{ asset('adminlte/dist/js/adminlte.js') }}"></script>
+	{{-- Custom JS --}}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			// Get elements.
+			const deleteForm = $(".delete_form");
+			const deleteSubmit = $(".delete_submit");
+			const closeAlert = $("#closeAlert");
+			
+			// Delete confirmation.
+			deleteSubmit.click(function(event) {
+				if(!confirm("Anda yakin ingin menghapus data ini?")) {
+					event.preventDefault();
+				}
+			});
+			// Close alerts.
+			closeAlert.click(function() {
+				closeAlert.parent().hide();
+			});
+		});
+	</script>
 	@yield('js')
 </body>
 </html>

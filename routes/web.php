@@ -15,7 +15,7 @@ Route::get('/buku', [BookController::class, 'index'])->name('buku');
 Route::get('/buku/{id}/show', [BookController::class, 'show'])->name('buku.show');
 Route::post('/buku/store', [BookController::class, 'store'])->name('buku.store');
 Route::get('buku/{id}/edit', [BookController::class, 'edit'])->name('buku.edit');
-Route::put('buku/{id}/update', [BookController::class, 'edit'])->name('buku.update');
+Route::put('buku/{id}/update', [BookController::class, 'update'])->name('buku.update');
 Route::delete('buku/{id}/destroy', [BookController::class, 'destroy'])->name('buku.destroy');
 
 // Categories.

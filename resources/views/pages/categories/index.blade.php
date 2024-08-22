@@ -45,10 +45,10 @@
 								<td class="font-weight-bold">{{ $ctg->name }}</td>
 								<td>
 									{{-- delete --}}
-									<form id="deleteForm" action="{{ route('kategori.destroy', $ctg->id) }}" method="post" style="display:inline">
+									<form class="delete_form" action="{{ route('kategori.destroy', $ctg->id) }}" method="post" style="display:inline">
 										@csrf
 										@method('DELETE')
-										<button type="submit" id="deleteSubmit" class="btn btn-danger" title="Hapus">
+										<button type="submit" class="delete_submit btn btn-danger" title="Hapus">
 											<i class="fas fa-trash"></i>
 										</button>
 									</form>
@@ -66,19 +66,4 @@
 	</div>
 	{{-- /.row --}}
 </div>
-{{-- Form confirmation JS --}}
-<script type="text/javascript">
-	$(document).ready(function() {
-		// Get elements.
-		const deleteForm = $("#deleteForm");
-		const deleteSubmit = $("#deleteSubmit");
-		
-		// Delete confirmation.
-		deleteSubmit.click(function(event) {
-			if(!confirm("Anda yakin ingin menghapus data ini?")) {
-				event.preventDefault();
-			}
-		});
-	});
-</script>
 @endsection
