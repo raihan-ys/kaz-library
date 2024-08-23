@@ -35,9 +35,12 @@ class StoreBookRequest extends FormRequest
         return [
             'title.required' => 'Judul wajib diisi!',
             'title.max' => 'Panjang judul maksimal 100 karakter!',
+            'title.string' => 'Judul harus berupa string',
             'author.required' => 'Penulis wajib diisi!',
-            'author.max' => 'Panjang penulis maksimal 100 karakter',
+            'author.string' => 'Penulis harus berupa string!',
+            'author.max' => 'Panjang penulis maksimal 100 karakter!',
             'isbn.required' => 'ISBN wajib diisi!',
+            'isbn.string' => 'ISBN harus berupa string!',
             'isbn.max' => 'panjang ISBN maksimal 20 karakter!',
             'isbn.unique' => 'ISBN sudah terdaftar!',
             'published_year.required' => 'Tahun terbit wajib diisi!',

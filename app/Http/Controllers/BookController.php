@@ -58,9 +58,10 @@ class BookController extends Controller
 		$book = Book::findOrFail($id);
 
 		// Merge validated data with custom ISBN validation.
-		$validated = array_merge($request->validated(), [
-			'isbn' => $request->isbn
-    ]);
+		$validated = array_merge(
+			$request->validated(),
+			['isbn' => $request->isbn],
+		);
 
     // Custom validation for ISBN.
     $request->validate(
@@ -73,9 +74,10 @@ class BookController extends Controller
 			]
     ], 
 		[
-			'isbn.required' => 'ISBN wajib diisi',
-			'isbn.max' => '',
-			'isbn.unique' => 'This ISBN is already in use by another book.',
+			'isbn.required' => 'ISBN wajib diisi!',
+			'isbn.string' => 'ISBN harus berupa string!',
+			'isbn.max' => 'panjang ISBN maksimal 20 karakter!',
+			'isbn.unique' => 'ISBN ini sudah digunakan oleh buku lain!',
     ]);
 
 		// Update book with all validated data.

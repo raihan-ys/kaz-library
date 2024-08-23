@@ -22,6 +22,7 @@ class BooksTableSeeder extends Seeder
             'cover_image' => 'path/to/cover/image1.jpg',
             'stock' => 10,
             'rental_price' => 5000,
+            'created_at' => now(),
         ]);
         Book::create([
             'title' => 'Example Book 2',
@@ -33,6 +34,7 @@ class BooksTableSeeder extends Seeder
             'cover_image' => 'path/to/cover/image2.jpg',
             'stock' => 20,
             'rental_price' => 6000,
+            'created_at' => now(),
         ]);
         Book::create([
             'title' => 'Example Book 3',
