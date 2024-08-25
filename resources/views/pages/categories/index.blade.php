@@ -38,20 +38,19 @@
 							</tr>
 						</thead>
 						<tbody>
-							@php($i = 1)
 							@foreach ($categories as $ctg)
 							<tr>
-								<td>{{ $i++ }}</td>
+								<td>{{ $loop->iteration }}</td>
 								<td class="font-weight-bold">{{ $ctg->name }}</td>
 								<td>
 									{{-- delete --}}
-									<form class="delete_form" action="{{ route('kategori.destroy', $ctg->id) }}" method="post" style="display:inline">
+									<form id="deleteForm" action="{{ route('kategori.destroy', $ctg->id) }}" method="post" style="display:inline">
 										@csrf
 										@method('DELETE')
-										<button type="submit" class="delete_submit btn btn-danger" title="Hapus">
-											<i class="fas fa-trash"></i>
-										</button>
 									</form>
+									<button id="deleteButton" type="submit" class="btn btn-danger" title="Hapus">
+										<i class="fas fa-trash"></i>
+									</button>
 								</td>
 							</tr>
 							@endforeach

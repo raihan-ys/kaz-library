@@ -46,7 +46,7 @@
 
 								<form id="createBookForm" action="{{ route('buku.store') }}" method="post">
 									{{-- body --}}
-									<div class="modal-body" action="{{ route('buku.create') }}" method="post">
+									<div class="modal-body">
 										@csrf
 						
 										{{-- title --}}
@@ -192,7 +192,7 @@
 						<span class="float-right text-white" id="closeAlert" style="cursor: pointer">&times;</span>
 						<strong class="text-white">
 							<i class="fas fa-exclamation-triangle"></i> 
-							Terjadi Kesalahan
+							Terjadi Kesalahan!
 						</strong><hr>
 						<ul>
 							@foreach($errors->all() as $error)
@@ -212,46 +212,37 @@
 							<tr>
 								<th scope="col">#</th>
 								<th scope="col">Judul</th>
-								<th scope="col">ISBN</th>
 								<th scope="col">Penulis</th>
-								<th scope="col">Tahun Terbit</th>
-								<th scope="col">Kategori</th>
-								<th scope="col">Penerbit</th>
-								<th scope="col">Stok</th>
-								<th scope="col">Harga Sewa</th>
+								<th scope="col">ISBN</th>
 								<th scope="col">Aksi</th>
 							</tr>
 						</thead>
 						<tbody>
-							@php($i = 1)
 							@foreach ($books as $book)
 							<tr>
-								<td>{{ $i++ }}</td>
+								<td>{{ $loop->iteration }}</td>
 								<td class="font-weight-bold">{{ $book->title }}</td>
-								<td>{{ $book->isbn }}</td>
 								<td>{{ $book->author }}</td>
-								<td>{{ $book->published_year }}</td>
-								<td>{{ $book->category->name }}</td>
-								<td>{{ $book->publisher->name }}</td>
-								<td>{{ $book->stock }}</td>
-								<td>{{ $book->rental_price }}</td>
+								<td>{{ $book->isbn }}</td>
 								<td>
-									{{-- show --}}
-									<a href="{{ route('buku.show', $book->id) }}" class="btn btn-info" title="Detail Buku">
-										<i class="fas fa-eye"></i>
-									</a>
-									{{-- update --}}
-									<a href="{{ route('buku.edit', $book->id) }}" class="btn btn-warning" title="Edit">
-										<i class="fas fa-edit"></i>
-									</a>
-									{{-- delete --}}
-									<form class="delete_form" action="{{ route('buku.destroy', $book->id) }}" method="post" style="display:inline">
-										@csrf
-										@method('DELETE')
-										<button type="submit" class="delete_submit btn btn-danger" title="Hapus">
+									<div class="btn-group">
+										{{-- show --}}
+										<a href="{{ route('buku.show', $book->id) }}" class="btn btn-info" title="Detail Buku">
+											<i class="fas fa-eye"></i>
+										</a>
+										{{-- update --}}
+										<a href="{{ route('buku.edit', $book->id) }}" class="btn btn-warning" title="Edit">
+											<i class="fas fa-edit"></i>
+										</a>
+										{{-- delete --}}
+										<form id="deleteForm" action="{{ route('buku.destroy', $book->id) }}" method="post" style="display:inline">
+											@csrf
+											@method('DELETE')
+										</form>
+										<button type="submit" id="deleteButton" class="btn btn-danger" title="Hapus">
 											<i class="fas fa-trash"></i>
 										</button>
-									</form>
+									</div>
 								</td>
 							</tr>
 							@endforeach

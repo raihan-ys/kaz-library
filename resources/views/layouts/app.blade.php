@@ -62,16 +62,16 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			// Get elements.
-			const deleteForm = $(".delete_form");
-			const deleteSubmit = $(".delete_submit");
+			const deleteButton = $("#deleteButton");
 			const closeAlert = $("#closeAlert");
 			
 			// Delete confirmation.
-			deleteSubmit.click(function(event) {
+			deleteButton.click(function(event) {
 				if(!confirm("Anda yakin ingin menghapus data ini?")) {
 					event.preventDefault();
 				}
 			});
+
 			// Close alerts.
 			closeAlert.click(function() {
 				closeAlert.parent().hide();

@@ -42,7 +42,7 @@
 				</li>
 				{{-- members --}}
 				<li class="nav-item">
-					<a href="#" class="nav-link">
+					<a href="{{ route('anggota') }}" class="nav-link {{ request()->routeIs('anggota') || request()->routeIs('anggota.*') ? 'active' : '' }}">
 						<i class="nav-icon fas fa-users"></i>
 						<p>Anggota</p>
 					</a>
@@ -53,28 +53,28 @@
 				<li class="nav-header font-weight-bold">Manajemen</li>
 				{{-- books --}}
 				<li class="nav-item">
-					<a href="{{ route('buku') }}" class="nav-link">
+					<a href="{{ route('buku') }}" class="nav-link {{ request()->routeIs('buku') || request()->routeIs('buku.*') ? 'active' : '' }}">
 						<i class="nav-icon fas fa-book"></i>
 						<p>Buku</p>
 					</a>
 				</li>
 				{{-- category --}}
 				<li class="nav-item">
-					<a href="{{ route('kategori') }}" class="nav-link">
+					<a href="{{ route('kategori') }}" class="nav-link {{ request()->routeIs('kategori') || request()->routeIs('kategori.*') ? 'active' : '' }}">
 						<i class="nav-icon fas fa-list"></i>
 						<p>Kategori</p>
 					</a>
 				</li>
 				{{-- publisher --}}
 				<li class="nav-item">
-					<a href="{{ route('penerbit') }}" class="nav-link">
+					<a href="{{ route('penerbit') }}" class="nav-link {{ request()->routeIs('penerbit') || request()->routeIs('penerbit.*') ? 'active' : '' }}">
 						<i class="nav-icon fas fa-print"></i>
 						<p>Penerbit</p>
 					</a>
 				</li>
 				{{-- rental --}}
 				<li class="nav-item">
-					<a href="#" class="nav-link">
+					<a href="{{ route('penyewaan') }}" class="nav-link {{ request()->routeIs('penyewaan') || request()->routeIs('penyewaan.*') ? 'active' : '' }}">
 						<i class="nav-icon fas fa-file"></i>
 						<p>Penyewaan</p>
 					</a>

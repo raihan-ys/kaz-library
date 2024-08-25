@@ -12,7 +12,7 @@ use Illuminate\Validation\Rule;
 
 class BookController extends Controller
 {
-	// Display books.
+	// Display all books.
 	public function index()
 	{
 		$data['books'] = Book::with('category', 'publisher')->get();
@@ -22,7 +22,7 @@ class BookController extends Controller
 		return view('pages.books.index', $data);
 	}
 
-	// Show book detail.
+	// Show a specified book detail.
 	public function show($id) {
 		$data['book'] = Book::find($id);
 		$data['title'] = 'Detail Buku: '.$data['book']->title;
@@ -44,7 +44,7 @@ class BookController extends Controller
 	// Show the form for editing the specified book.
 	public function edit($id)
 	{
-		$data['book'] = Book::find($id);
+		$data['book'] = Book::findOrFail($id);
 		$data['categories'] = Category::all();
 		$data['publishers'] = Publisher::all();
 		$data['title'] = 'Edit Buku';

@@ -52,7 +52,7 @@
 					<span class="float-right text-white" id="closeAlert" style="cursor: pointer">&times;</span>
 					<strong class="text-white">
 						<i class="fas fa-exclamation-triangle"></i> 
-						Terjadi Kesalahan
+						Terjadi Kesalahan!
 					</strong><hr>
 					<ul>
 						@foreach($errors->all() as $error)

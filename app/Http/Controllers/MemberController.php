@@ -3,16 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Member;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreMemberRequest;
+use App\Http\Requests\UpdateMemberRequest;
 use Illuminate\Routing\Controller;
+use Illuminate\Validation\Rule;
 
 class MemberController extends Controller
 {
-    /**
-     * Display a listing of the members.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // Display all members.
     public function index()
     {
         $data['members'] = Member::all();
@@ -20,74 +18,82 @@ class MemberController extends Controller
         return view('pages.members.index', $data);
     }
     
-    /**
-     * Store a newly created member in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
- public function store(Request $request)
- {
-    $request->validate([
-    'full_name' => 'required|string|max:255',
-    'address' => 'required|string|max:255',
-    'phone' => 'required|string|max:15|unique:members,phone',
-    'email' => 'required|string|email|max:255',
-    ]);
-    Member::create($request->all());
-    return redirect()->route('members.index')->with('success', 'Member
-   created successfully.');
-    }
-    /**
-    * Display the specified member.
-    *
-    * @param \App\Models\Member $member
-    * @return \Illuminate\Http\Response
-    */
-    public function show(Member $member)
+    // Store a newly created member in storage.
+    public function store(StoreMemberRequest $request)
     {
-    return view('pages.members.show', compact('member'));
+        // Input validation.
+		$validated = $request->validated();
+
+		// Create new member with validated data.
+		Member::create($validated);
+
+		return redirect()->route('anggota')->with('success', 'Anggota berhasil ditambahkan!');
     }
-    /**
-    * Show the form for editing the specified member.
-    *
-    * @param \App\Models\Member $member
-    * @return \Illuminate\Http\Response
-    */
-    public function edit(Member $member)
+
+    // Display the specified member.
+    public function show($id)
     {
-    return view('pages.members.edit', compact('member'));
+        $data['member'] = Member::find($id);
+        $data['title'] = 'Detail Anggota: '.$data['member']->full_name;
+        return view('pages.members.show', $data);
     }
-    /**
-    * Update the specified member in storage.
-    *
-    * @param \Illuminate\Http\Request $request
-    * @param \App\Models\Member $member
-    * @return \Illuminate\Http\Response
-    */
-    public function update(Request $request, Member $member)
+
+    // Show the form for editing the specified member.
+    public function edit($id)
     {
-    $request->validate([
-    'full_name' => 'required|string|max:255',
-    'address' => 'required|string|max:255',
-    'phone' => 'required|string|max:15|unique:members,phone,' .
-    $member->id,
-     'email' => 'required|string|email|max:255',
-     ]);
-     $member->update($request->all());
-     return redirect()->route('members.index')->with('success', 'Member
-    updated successfully.');
-     }
+        $data['member'] = Member::find($id);
+		$data['title'] = 'Edit Anggota';
+		return view('pages.members.edit', $data);
+    }
+
+    // Update the specified membere.
+    public function update(UpdateMemberRequest $request, $id)
+    {
+        // Find specified member.
+		$member = Member::findOrFail($id);
+
+        // Merge validated data with custom phone number validation.
+        $validated = array_merge(
+			$request->validated(),
+			['phone' => $request->phone],
+		);
+
+        // Custom validation for phone number.
+        $request->validate([
+            'phone' => [
+                'required',
+                'string',
+                'max:15',
+                Rule::unique('members')->ignore($member->id),
+            ]
+        ], 
+		[
+			'phone.required' => 'Nomor telepon wajib diisi!',
+			'phone.string' => 'Nomor telepon harus berupa string!',
+			'phone.max' => 'panjang nomor telepon maksimal 15 karakter!',
+			'phone.unique' => 'Nomor telepon ini sudah digunakan oleh anggota lain!',
+        ]);
+
+		// Update member with all validated data.
+		$member->update($validated);
+		
+		return redirect()->route('anggota')->with('success', 'Data anggota berhasil diupdate!');
+    }
+
      /**
      * Remove the specified member from storage.
      *
      * @param \App\Models\Member $member
      * @return \Illuminate\Http\Response
      */
-     public function destroy(Member $member)
-     {
-     $member->delete();
-     return redirect()->route('members.index')->with('success', 'Member
-    deleted successfully.');
-     }
+    public function destroy($id)
+    {
+        // Find specified member.
+        $member = Member::findOrFail($id);
+
+        // Remove specified member.
+        $member->delete();
+
+        return redirect()->route('anggota')->with('success', 'Anggota berhasil dihapus!');
     }
+}

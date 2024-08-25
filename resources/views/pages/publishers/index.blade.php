@@ -37,20 +37,19 @@
 							</tr>
 						</thead>
 						<tbody>
-							@php($i = 1)
 							@foreach ($publishers as $pbs)
 							<tr>
-								<td>{{ $i++ }}</td>
+								<td>{{ $loop->iteration }}</td>
 								<td class="font-weight-bold">{{ $pbs->name }}</td>
 								<td>
 									{{-- delete --}}
-									<form class="delete_form" action="{{ route('penerbit.destroy', $pbs->id) }}" method="post" style="display:inline">
+									<form id="deleteForm" action="{{ route('penerbit.destroy', $pbs->id) }}" method="post" style="display:inline">
 										@csrf
 										@method('DELETE')
-										<button type="submit" class="delete_submit btn btn-danger" title="Hapus">
-											<i class="fas fa-trash"></i>
-										</button>
 									</form>
+									<button type="submit" id="deleteButton" class="btn btn-danger" title="Hapus">
+										<i class="fas fa-trash"></i>
+									</button>
 								</td>
 							</tr>
 							@endforeach

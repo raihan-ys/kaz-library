@@ -25,6 +25,7 @@ class StoreBookRequest extends FormRequest
             'rental_price' => 'required|integer|min:0|max:99999',
         ];
     }
+    
     /**
      * Get the validation messages for the defined validation rules.
      *
@@ -46,10 +47,10 @@ class StoreBookRequest extends FormRequest
             'published_year.required' => 'Tahun terbit wajib diisi!',
             'published_year.integer' => 'Tahun terbit harus berupa angka!',
             'category_id.required' => 'Kategori wajib diisi!',
-            'category_id.integer' => 'Kategori harus berupa angka yang valid!',
+            'category_id.integer' => 'Kategori yang dipilih tidak valid!',
             'category_id.exists' => 'Kategori yang dipilih tidak valid!',
             'publisher_id.required' => 'Penerbit wajib diisi!',
-            'publisher_id.integer' => 'Penerbit harus berupa angka yang valid!',
+            'publisher_id.integer' => 'Penerbit yang dipilih tidak valid!',
             'publisher_id.exists' => 'Penerbit yang dipilih tidak valid!',
             'cover_image.string' => 'Gambar sampul harus berupa string!',
             'stock.required' => 'Stok wajib diisi!',
