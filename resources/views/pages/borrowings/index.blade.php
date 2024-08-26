@@ -208,9 +208,10 @@
 
 @section('js')
 <script type="text/javascript">
-	const bookSelect = document.getElementById('book_id');
-	const rentalPriceInput = document.getElementById('rental_price');
+	const bookId = document.getElementById('book_id');
+	const rentalPrice = document.getElementById('rental_price');
 	const selectedOption = bookSelect.options[bookSelect.selectedIndex];
 	const rentalPrice = selectedOption.getAttribute('data-rental-price');
-	rentalPriceInput.value = rentalPrice;
+	rentalPrice.value = rentalPrice;
 </script>
+@endsection
