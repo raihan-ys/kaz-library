@@ -84,7 +84,7 @@
 				{{-- author --}}
 				<div class="form-group">
 					<label for="author">Penulis</label>
-					<input type="text" class="form-control {{ $errors->has('author') ? 'bg-danger text-white' : '' }}" id="author" name="author" value="{{ null !== old('author') ? old('author') : $book->author }}" placeholder="Masukkan Nama Penulis" maxlength="100" required>
+					<input type="text" class="form-control {{ $errors->has('author') ? 'bg-danger text-white' : '' }}" id="author" name="author" value="{{ old('author', $book->author) }}" placeholder="Masukkan Nama Penulis" maxlength="100" required>
 					@if($errors->has('author'))
 					{{-- error message --}}
 					<span class="text-danger">
@@ -97,7 +97,7 @@
 					{{-- isbn --}}
 					<div class="form-group col-md-6">
 						<label for="isbn">ISBN</label>
-						<input type="number" class="form-control {{ $errors->has('isbn') ? 'bg-danger text-white' : '' }}" id="isbn" name="isbn" value="{{ null !== old('isbn') ? old('isbn') : $book->isbn }}" placeholder="Masukkan ISBN Buku" required>
+						<input type="number" class="form-control {{ $errors->has('isbn') ? 'bg-danger text-white' : '' }}" id="isbn" name="isbn" value="{{ old('isbn', $book->isbn) }}" placeholder="Masukkan ISBN Buku" required>
 						@if($errors->has('isbn'))
 						{{-- error message --}}
 						<span class="text-danger">

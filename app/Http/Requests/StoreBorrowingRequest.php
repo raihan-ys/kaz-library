@@ -18,6 +18,7 @@ class StoreBorrowingRequest extends FormRequest
 			'book_id' => 'required|integer|exists:books,id',
 			'borrow_date' => 'required|date',
 			'rental_price' => 'required|integer|min:0|max:99999',
+			'librarian_id' => 'required|exists:users,id',
 		];
 	}
 
@@ -41,6 +42,8 @@ class StoreBorrowingRequest extends FormRequest
 			'rental_price.integer' => 'Biaya sewa harus berupa angka!',
 			'rental_price.min' => 'Harga sewa minimal 0!',
 			'rental_price.max' => 'Harga sewa maksimal 99999!',
+			'librarian_id.required' => 'Pustakawan wajib dipilih!',
+			'librarian_id.exists' => 'Pustakawan tidak valid!',
 		];
 	}
 }

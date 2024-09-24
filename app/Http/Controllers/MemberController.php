@@ -46,32 +46,51 @@ class MemberController extends Controller
 		return view('pages.members.edit', $data);
     }
 
-    // Update the specified membere.
+    // Update the specified member.
     public function update(UpdateMemberRequest $request, $id)
     {
-        // Find specified member.
+        // Find the specified member.
 		$member = Member::findOrFail($id);
 
-        // Merge validated data with custom phone number validation.
+        // Merge validated data with custom phone number and email validation.
         $validated = array_merge(
 			$request->validated(),
 			['phone' => $request->phone],
+            ['email' => $request->email],
 		);
 
         // Custom validation for phone number.
-        $request->validate([
+        $request->validate(
+        [
             'phone' => [
-                'required',
-                'string',
-                'max:15',
-                Rule::unique('members')->ignore($member->id),
+            'required',
+            'string',
+            'max:15',
+            Rule::unique('members')->ignore($member->id),
             ]
         ], 
 		[
 			'phone.required' => 'Nomor telepon wajib diisi!',
 			'phone.string' => 'Nomor telepon harus berupa string!',
 			'phone.max' => 'panjang nomor telepon maksimal 15 karakter!',
-			'phone.unique' => 'Nomor telepon ini sudah digunakan oleh anggota lain!',
+			'phone.unique' => 'Nomor telepon ini sudah terdaftar!',
+        ]);
+
+        // Custom validation for email.
+        $request->validate(
+        [
+            'email' => [
+            'required',
+            'string',
+            'max:15',
+            Rule::unique('members')->ignore($member->id),
+            ]
+        ],
+		[
+			'email.required' => 'Email wajib diisi!',
+			'email.string' => 'Email harus berupa string!',
+			'email.max' => 'panjang email maksimal 255 karakter!',
+			'email.unique' => 'Email ini sudah terdaftar!',
         ]);
 
 		// Update member with all validated data.
@@ -80,18 +99,13 @@ class MemberController extends Controller
 		return redirect()->route('anggota')->with('success', 'Data anggota berhasil diupdate!');
     }
 
-     /**
-     * Remove the specified member from storage.
-     *
-     * @param \App\Models\Member $member
-     * @return \Illuminate\Http\Response
-     */
+    // Remove the specified member.
     public function destroy($id)
     {
-        // Find specified member.
+        // Find the specified member.
         $member = Member::findOrFail($id);
 
-        // Remove specified member.
+        // Remove the specified member.
         $member->delete();
 
         return redirect()->route('anggota')->with('success', 'Anggota berhasil dihapus!');

@@ -17,7 +17,7 @@ class StoreMemberRequest extends FormRequest
 			'full_name' => 'required|string|max:100',
 			'address' => 'required|string|max:255',
 			'phone' => 'required|string|max:15|unique:members,phone',
-			'email' => 'required|string|email|max:255',
+			'email' => 'required|string|email|max:255|unique:members,email',
 		];
 	}
 
@@ -38,11 +38,12 @@ class StoreMemberRequest extends FormRequest
 			'phone.required' => 'Nomor telepon wajib diisi!',
 			'phone.string' => 'Nomor telepon harus berupa string!',
 			'phone.max' => 'panjang nomor telepon maksimal 15 karakter!',
-			'phone.unique' => 'nomor telepon ini sudah terdaftar!',
+			'phone.unique' => 'Nomor telepon ini sudah terdaftar!',
 			'email.required' => 'Email wajib diisi!',
 			'email.string' => 'Email harus berupa string!',
 			'email.email' => 'Mohon masukkan email yang valid!',
 			'email.max' => 'Panjang email maksimal 255 karakter!',
+			'email.unique' => 'Email ini sudah terdaftar!',
 		];
 	}
 }

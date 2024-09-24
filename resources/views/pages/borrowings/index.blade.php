@@ -72,10 +72,10 @@
 										{{-- book id --}}
 										<div class="form-group">
 											<label for="book_id">Buku</label>
-											<select name="book_id" id="book_id" class="form-control {{ $errors->has('book_id') ? 'bg-danger text-white' : '' }}">
+											<select name="book_id" id="book_id" class="form-control {{ $errors->has('book_id') ? 'bg-danger text-white' : '' }}" required>
 												<option selected disabled hidden>- Pilih Buku -</option>
 												@foreach($books as $book)
-												<option value="{{ $book->id }}" {{ $book->id === old('book_id') ? 'selected' : '' }}>{{ $book->title }}</option>
+												<option value="{{ $book->id }}" {{ $book->id === old('book_id') ? 'selected' : '' }} data-rental-price="{{ $book->rental_price }}">{{ $book->title }}</option>
 												@endforeach
 											</select>
 											@if($errors->has('book_id'))
@@ -101,7 +101,7 @@
 											{{-- rental_price--}}
 											<div class="col-md-6 mb-3">
 												<label for="rental_price">Biaya Sewa</label>
-												<input type="number" name="rental_price" id="rental_price" class="form-control {{ $errors->has('rental_price') ? 'bg-danger text-white' : '' }}" placeholder="Masukkan Biaya Sewa" min="0" max="99999" value="{{ old('rental_price') }}" required>
+												<input type="number" name="rental_price" id="rental_price" class="bg-white form-control {{ $errors->has('rental_price') ? 'bg-danger text-white' : '' }}" value="{{ old('rental_price') }}" required readonly>
 												@if($errors->has('rental_price'))
 												{{-- error message --}}
 												<span class="text-danger">
@@ -162,7 +162,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							@foreach ($borrowings as $brw)
+							@forelse ($borrowings as $brw)
 							<tr>
 								<td>{{ $loop->iteration }}</td>
 								<td class="font-weight-bold">{{ $brw->member->full_name }}</td>
@@ -192,7 +192,11 @@
 									</div>
 								</td>
 							</tr>
-							@endforeach
+							@empty
+							<tr>
+								<td colspan="8" class="text-center font-weight-bold text-danger py-5">Tidak ada penyewaan buku!</td>
+							</tr>
+							@endforelse
 						</tbody>
 					</table>
 				</div>
@@ -208,10 +212,16 @@
 
 @section('js')
 <script type="text/javascript">
-	const bookId = document.getElementById('book_id');
-	const rentalPrice = document.getElementById('rental_price');
-	const selectedOption = bookSelect.options[bookSelect.selectedIndex];
-	const rentalPrice = selectedOption.getAttribute('data-rental-price');
-	rentalPrice.value = rentalPrice;
+	$(document).ready( function() {
+		const $bookId = $('#book_id');
+
+		// Update rental price.
+		function updateRentalPrice() {
+			const $rentalPrice = $('#rental_price');
+			const selectedOption = $bookId.find('option:selected');
+			$rentalPrice.val(selectedOption.data('rental-price'));
+		}
+		$bookId.on('change', updateRentalPrice);
+	});
 </script>
 @endsection

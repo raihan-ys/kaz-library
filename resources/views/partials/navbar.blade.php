@@ -2,7 +2,7 @@
 	{{-- Right navbar links --}}
 	<ul class="navbar-nav ml-auto">
 		<li class="nav-item">
-			<a class="nav-link text-danger" data-widget="fullscreen" href="#" role="button">
+			<a class="nav-link" style="color: orangered" data-bs-widget="fullscreen" href="#" role="button">
 				<i class="fas fa-expand-arrows-alt"></i>
 			</a>
 		</li>

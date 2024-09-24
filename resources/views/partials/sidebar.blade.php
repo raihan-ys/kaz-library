@@ -2,8 +2,8 @@
 
 	<!-- Brand Logo -->
 	<a href="/" class="brand-link" style="background-color: #181C32;">
-		<img src="{{ asset('images/stormtrooper.jfif') }}" alt="Kaz-Library Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-		<span class="brand-text font-weight-bold text-danger">Kaz-Library</span>
+		<img src="{{ asset('images/logo.webp') }}" alt="Kaz-Library Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+		<span class="brand-text font-weight-bold">Kaz-Library</span>
 	</a>
 
 	<div class="sidebar">

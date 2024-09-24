@@ -54,7 +54,7 @@
 					<strong class="text-white">
 						<i class="fas fa-exclamation-triangle"></i> 
 						Terjadi Kesalahan!
-					</strong><hr>
+					</strong><hr class="bg-white">
 					<ul>
 						@foreach($errors->all() as $error)
 						<li class="text-white">{{ $error }}</li>

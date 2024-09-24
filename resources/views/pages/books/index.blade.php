@@ -218,7 +218,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							@foreach ($books as $book)
+							@forelse ($books as $book)
 							<tr>
 								<td>{{ $loop->iteration }}</td>
 								<td class="font-weight-bold">{{ $book->title }}</td>
@@ -239,13 +239,17 @@
 											@csrf
 											@method('DELETE')
 										</form>
-										<button type="submit" id="deleteButton" class="btn btn-danger" title="Hapus">
+										<button type="submit" class="btn btn-danger" title="Hapus" id="deleteButton">
 											<i class="fas fa-trash"></i>
 										</button>
 									</div>
 								</td>
 							</tr>
-							@endforeach
+							@empty
+							<tr>
+								<td colspan="5" class="text-center font-weight-bold text-danger py-5">Tidak ada data buku!</td>
+							</tr>
+							@endforelse
 						</tbody>
 					</table>
 				</div>

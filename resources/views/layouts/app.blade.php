@@ -10,11 +10,7 @@
 	<title>@yield('title', $title) - Kaz-Library</title>
 
 	{{-- Favicon --}}
-	<link rel="shortcut icon" href="{{ asset('images/stormtrooper.jfif') }}">
-	{{-- Google Font
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+	<link rel="shortcut icon" href="{{ asset('images/logo.webp') }}">
 	{{-- AdminLTE CSS --}}
 	<link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
 	{{-- Font Awesome CSS --}}
@@ -22,6 +18,46 @@
 	{{-- Overlay Scrollbars CSS --}}
 	<link rel="stylesheet" href="{{ asset('adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
 	@yield('css')
+	{{-- Custom CSS --}}
+	<style>
+		/* fonts */
+		@font-face {
+			font-family: "Poppins";
+			src: url("{{ asset('fonts/poppins/poppins.woff2') }}") format("truetype");
+			font-weight: normal;
+			font-style: normal;
+		}
+		@font-face {
+			font-family: "Press Start 2 P";
+			src: url("{{ asset('fonts/pressStart2P/pressStart2P.woff2') }}") format("truetype");
+			font-weight: normal;
+			font-style: normal;
+		}
+		/* /.fonts */
+
+		/* body */
+		body {
+			font-family: "Poppins", sans-serif;
+			display: block;
+		}
+		body::-webkit-scrollbar {
+			width: 5px;
+		}
+		body::-webkit-scrollbar-track {
+			background-color: rgb(60, 60, 60);
+		}
+		body::-webkit-scrollbar-thumb {
+			background-color: orangered;
+			border-radius: 5px;
+		}
+		/* /.body */
+
+		.main-sidebar .brand-text {
+			font-family: "Press Start 2 P", sans-serif;
+			font-size: 1rem;
+			color: orangered;
+		}
+	</style>
 	
 	{{-- jQuery JS --}}
 	<script type="text/javascript" src="{{ asset('adminlte/plugins/jquery/jquery.min.js') }}"></script>
@@ -62,15 +98,7 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			// Get elements.
-			const deleteButton = $("#deleteButton");
 			const closeAlert = $("#closeAlert");
-			
-			// Delete confirmation.
-			deleteButton.click(function(event) {
-				if(!confirm("Anda yakin ingin menghapus data ini?")) {
-					event.preventDefault();
-				}
-			});
 
 			// Close alerts.
 			closeAlert.click(function() {

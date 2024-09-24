@@ -120,7 +120,7 @@
 						<strong class="text-white">
 							<i class="fas fa-exclamation-triangle"></i> 
 							Terjadi Kesalahan!
-						</strong><hr>
+						</strong><hr class="bg-white">
 						<ul>
 							@foreach($errors->all() as $error)
 							<li class="text-white">{{ $error }}</li>
@@ -146,7 +146,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							@foreach ($members as $member)
+							@forelse ($members as $member)
 							<tr>
 								<td>{{ $loop->iteration }}</td>
 								<td class="font-weight-bold">{{ $member->full_name }}</td>
@@ -164,17 +164,21 @@
 											<i class="fas fa-edit"></i>
 										</a>
 										{{-- delete --}}
-										<form id="deleteForm" action="{{ route('anggota.destroy', $member->id) }}" method="post" style="display:inline">
+										<button type="button" class="delete-btn btn btn-danger" data-member-id="{{ $member->id }}" title="Hapus">
+											<i class="fas fa-trash"></i>
+										</button>
+										<form id="delete-form-{{ $member->id }}" action="{{ route('anggota.destroy', $member->id) }}" method="post" style="display:none">
 											@csrf
 											@method('DELETE')
 										</form>
-										<button type="submit" id="deleteButton" class="btn btn-danger" title="Hapus">
-											<i class="fas fa-trash"></i>
-										</button>
 									</div>
 								</td>
 							</tr>
-							@endforeach
+							@empty
+							<tr>
+								<td colspan="6" class="text-center font-weight-bold text-danger py-5">Tidak ada anggota yang terdaftar!</td>
+							</tr>
+							@endforelse
 						</tbody>
 					</table>
 				</div>
@@ -186,4 +190,17 @@
 	</div>
 	{{-- /.row --}}
 </div>
+@endsection
+
+@section('js')
+<script>
+	$(document).ready(function(){
+		$('.delete-btn').on('click', function() {
+			var memberId = $(this).data('member-id');
+			if (confirm('Apakah Anda yakin ingin menghapus anggota ini?')) {
+				$('#delete-form-' + memberId).submit();
+			}
+		});
+	});
+</script>
 @endsection
