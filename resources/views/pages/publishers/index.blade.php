@@ -43,13 +43,13 @@
 								<td class="font-weight-bold">{{ $pbs->name }}</td>
 								<td>
 									{{-- delete --}}
-									<form id="deleteForm" action="{{ route('penerbit.destroy', $pbs->id) }}" method="post" style="display:inline">
+									<button type="submit" class="delete-btn btn btn-danger" data-pbs-id="{{ $pbs->id }}" title="Hapus" id="deleteButton">
+										<i class="fas fa-trash"></i>
+									</button>
+									<form id="delete-form-{{ $pbs->id }}" action="{{ route('penerbit.destroy', $pbs->id) }}" method="post" style="display:inline">
 										@csrf
 										@method('DELETE')
 									</form>
-									<button type="submit" id="deleteButton" class="btn btn-danger" title="Hapus">
-										<i class="fas fa-trash"></i>
-									</button>
 								</td>
 							</tr>
 							@endforeach
@@ -64,4 +64,16 @@
 	</div>
 	{{-- /.row --}}
 </div>
+@endsection
+@section('js')
+<script>
+	$(document).ready(function(){
+		$('.delete-btn').on('click', function() {
+			var pbsId = $(this).data('pbs-id');
+			if (confirm('Apakah Anda yakin ingin menghapus penerbit ini?')) {
+				$('#delete-form-' + pbsId).submit();
+			}
+		});
+	});
+</script>
 @endsection

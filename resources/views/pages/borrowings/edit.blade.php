@@ -135,7 +135,7 @@
 					{{-- return date --}}
 					<div class="col-md-6 mb-3">
 						<label for="return_date">Tanggal Pengembalian</label>
-						<input type="date" name="return_date" id="return_date" class="form-control {{ $errors->has('return_date') ? 'bg-danger text-white' : '' }}" maxlength="20" value="{{ old('return_date', $borrowing->status === 'dikembalikan' ?	\Carbon\Carbon::parse($borrowing->return_date)->format('Y-m-d') : '') }}" required>
+						<input type="date" name="return_date" id="return_date" class="form-control {{ $errors->has('return_date') ? 'bg-danger text-white' : '' }}" maxlength="20" value="{{ old('return_date', $borrowing->status === 'dikembalikan' ?	\Carbon\Carbon::parse($borrowing->return_date)->format('Y-m-d') : null) }}" required>
 						{{-- error message --}}
 						@if($errors->has('return_date'))
 						<span class="text-danger">

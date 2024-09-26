@@ -19,6 +19,7 @@ class UpdateBorrowingRequest extends FormRequest
 			'borrow_date' => 'required|date',
 			'rental_price' => 'required|integer|min:0|max:99999',
 			'librarian_id' => 'required|exists:users,id',
+			'status' => 'required|string|in:dipinjam,dikembalikan',
 		];
 	}
 
@@ -43,7 +44,10 @@ class UpdateBorrowingRequest extends FormRequest
 			'rental_price.min' => 'Harga sewa minimal 0!',
 			'rental_price.max' => 'Harga sewa maksimal 99999!',
 			'librarian_id.required' => 'Pustakawan wajib dipilih!',
-			'librarian_id.exists' => 'Pustakawan tidak valid!',
+			'librarian_id.exists' => 'Pus6takawan tidak valid!',
+			'status.required' => 'Status wajib dipilih!',
+			'status.string' => 'Status harus berupa string!',
+			'status.in' => 'Status tidak valid!',
 		];
 	}
 }

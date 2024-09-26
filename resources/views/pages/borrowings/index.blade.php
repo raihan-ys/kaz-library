@@ -167,8 +167,8 @@
 								<td>{{ $loop->iteration }}</td>
 								<td class="font-weight-bold">{{ $brw->member->full_name }}</td>
 								<td class="font-weight-bold">{{ $brw->book->title }}</td>
-								<td>{{ $brw->borrow_date }}</td>
-								<td>{{ $brw->return_date ?? '-' }}</td>
+								<td>{{ \Carbon\Carbon::parse($brw->borrow_date)->format('d/m/Y') }}</td>
+								<td>{{ \Carbon\Carbon::parse($brw->return_date)->format('d/m/Y') }}</td>
 								<td>{{ $brw->rental_price }}</td>
 								<td>{{ $brw->status }}</td>
 								<td>

@@ -44,13 +44,13 @@
 								<td class="font-weight-bold">{{ $ctg->name }}</td>
 								<td>
 									{{-- delete --}}
-									<form id="deleteForm" action="{{ route('kategori.destroy', $ctg->id) }}" method="post" style="display:inline">
+									<button type="submit" class="delete-btn btn btn-danger" data-ctg-id="{{ $ctg->id }}" title="Hapus" id="deleteButton">
+										<i class="fas fa-trash"></i>
+									</button>
+									<form id="delete-form-{{ $ctg->id }}" action="{{ route('kategori.destroy', $ctg->id) }}" method="post" style="display:inline">
 										@csrf
 										@method('DELETE')
 									</form>
-									<button id="deleteButton" type="submit" class="btn btn-danger" title="Hapus">
-										<i class="fas fa-trash"></i>
-									</button>
 								</td>
 							</tr>
 							@endforeach
@@ -65,4 +65,16 @@
 	</div>
 	{{-- /.row --}}
 </div>
+@endsection
+@section('js')
+<script>
+	$(document).ready(function(){
+		$('.delete-btn').on('click', function() {
+			var ctgId = $(this).data('ctg-id');
+			if (confirm('Apakah Anda yakin ingin menghapus kategori ini?')) {
+				$('#delete-form-' + ctgId).submit();
+			}
+		});
+	});
+</script>
 @endsection

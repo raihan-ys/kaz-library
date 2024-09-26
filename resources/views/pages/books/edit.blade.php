@@ -22,7 +22,7 @@
 								</a>
 							</li>
 							<li class="breadcrumb-item active">
-								Edit Buku: {{ $book->title }}
+								Edit Buku
 							</li>
 						</ol>
 					</div>

@@ -235,13 +235,13 @@
 											<i class="fas fa-edit"></i>
 										</a>
 										{{-- delete --}}
-										<form id="deleteForm" action="{{ route('buku.destroy', $book->id) }}" method="post" style="display:inline">
+										<button type="submit" class="delete-btn btn btn-danger" data-book-id="{{ $book->id }}" title="Hapus" id="deleteButton">
+											<i class="fas fa-trash"></i>
+										</button>
+										<form id="delete-form-{{ $book->id }}" action="{{ route('buku.destroy', $book->id) }}" method="post" style="display:inline">
 											@csrf
 											@method('DELETE')
 										</form>
-										<button type="submit" class="btn btn-danger" title="Hapus" id="deleteButton">
-											<i class="fas fa-trash"></i>
-										</button>
 									</div>
 								</td>
 							</tr>
@@ -261,4 +261,16 @@
 	</div>
 	{{-- /.row --}}
 </div>
+@endsection
+@section('js')
+<script>
+	$(document).ready(function(){
+		$('.delete-btn').on('click', function() {
+			var bookId = $(this).data('book-id');
+			if (confirm('Apakah Anda yakin ingin menghapus buku ini?')) {
+				$('#delete-form-' + bookId).submit();
+			}
+		});
+	});
+</script>
 @endsection

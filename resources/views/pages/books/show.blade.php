@@ -61,12 +61,12 @@
 				{{-- category id --}}
 				<tr>
 					<th scope="row">Kategori</th>
-					<td>{{ $book->category_id }}</td>
+					<td>{{ $book->category->name }}</td>
 				</tr>
 				{{-- publisher --}}
 				<tr>
 					<th scope="row">Penerbit</th>
-					<td>{{ $book->publisher_id }}</td>
+					<td>{{ $book->publisher->name }}</td>
 				</tr>
 				{{-- stock --}}
 				<tr>
