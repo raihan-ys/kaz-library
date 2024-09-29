@@ -7,7 +7,7 @@ use App\Models\Member;
 use App\Models\Book;
 use App\Http\Requests\StoreBorrowingRequest;
 use App\Http\Requests\UpdateBorrowingRequest;
-USE Carbon\Carbon;
+use Carbon\Carbon;
 use Illuminate\Routing\Controller;
 
 class BorrowingController extends Controller
@@ -28,17 +28,15 @@ class BorrowingController extends Controller
         // Input validation.
 		$validated = $request->validated();
 
-        $book = Book::find($request->book_id);
-
         // Check the book's stock.
+        $book = Book::find($request->book_id);
         if($book->stock > 0) {
             // The book's stock decreased.
-            $book->stock -= 1;
+            $book->stock--;
             $book->save();
             
-            // Create new book with validated data.
+            // Create new borrowing with validated data.
             Borrowing::create($validated);
-
             return redirect()->route('penyewaan')->with('success', 'Peminjaman berhasil disimpan!');
         } else {
             // If there's no stock.
@@ -50,45 +48,38 @@ class BorrowingController extends Controller
     public function show($id)
     {   
         // Check if the specified book exist.
-        $data['borrowing'] = Borrowing::findOrFail($id);
+        $borrowing = Borrowing::findOrFail($id);
 
-        // Get return date.
-        $borrowDate = Carbon::parse($data['borrowing']->borrow_date);
-
-        // Copy the borrowDate to avoid modifying the original.
+        // Check if return date is later than due date.
+        $borrowDate = Carbon::parse($borrowing->borrow_date);
         $dueDate = $borrowDate->copy()->addDays(7);
-
-        $returnDate = $data['borrowing']->return_date ? Carbon::parse($data['borrowing']->return_date) : Carbon::now();
+        $returnDate = $borrowing->return_date ? Carbon::parse($borrowing->return_date) : Carbon::now();
         
         $lateDays = 0;
         $isLate = false;
 
-        // Calculate late days if the current date is past the due date or if the return date is past the due date.
+        // Calculate late days.
         if ($returnDate->gt($dueDate)) {
-            $lateDays = $returnDate->diffInDays($dueDate, false);
+            $lateDays = (int) abs($returnDate->diffInDays($dueDate));
             $isLate = true;
         }
-
-        // Ensure lateDays is not negative.
-        $lateDays = abs($lateDays);
-
-        // Calculate late fee.
         $lateFee = $lateDays * 1000;
    
-        $data['title'] = 'Detail Penyewaan';
-        return view('borrowings', $data);
+        $title = 'Detail Penyewaan';
+        return view('pages.borrowings.show', compact('title', 'borrowing', 'lateDays', 'isLate', 'lateFee'));
     }
 
     // Show the form for editing the specified borrowing.
     public function edit($id)
     {
         // Check if the specified book exist.
-        $data['borrowing'] = Borrowing::findOrFail($id);
+        $borrowing = Borrowing::findOrFail($id);
         
-        $data['members'] = Member::all();
-        $data['books'] = Book::all();
-        $data['title'] = 'Edit Penyewaan';
-        return view('pages.borrowings.edit', $data);
+        $members = Member::all();
+        $books = Book::all();
+
+        $title = 'Edit Penyewaan';
+        return view('pages.borrowings.edit', compact('borrowing', 'members', 'books', 'title'));
     }
 
     // Update the specified borrowing.
@@ -98,48 +89,38 @@ class BorrowingController extends Controller
         $borrowing = Borrowing::findOrFail($id);
 
         // Validate the form.
-        $request->validated();
+        $validated = $request->validated();
         if($request->status === 'dikembalikan') {
             $request->validate(
-            [
-                'return_date' => 'required|date', 
-            ], 
-            [
-                'return_date.required' => 'Tanggal pengembalian wajib diisi!',
-                'return_date.date' => 'Tanggal pengembalian tidak valid!',
-            ]);
-            // Restoring book stock.
-            $book = Book::find($borrowing->book_id);
-            $book->stock += 1;
-            $book->save();
-
-            // Calculate late fee.
-            $borrowDate = Carbon::parse($borrowing->borrow_date);
-            $dueDate = $borrowDate->addDays(7); // Day limit (seven days)).
-            $returnDate = Carbon::parse($request->return_date); // Return date.
-            $lateDays = $returnDate->diffInDays($dueDate, false); // Check if the return date is later than due date.
-
-            // Count the Late fee.
-            if ($lateDays > 0) {
-                $lateFee = $lateDays * 1000;
-            }
-
-            $borrowing->update(
                 [
-                    'return_date' => $returnDate,
-                ],
+                    'return_date' => 'required|date', 
+                ], 
                 [
-                    'late_fee' => $lateFee
+                    'return_date.required' => 'Tanggal pengembalian wajib diisi!',
+                    'return_date.date' => 'Tanggal pengembalian tidak valid!',
                 ]
             );
+            // Restoring book stock.
+            $book = Book::find($borrowing->book_id);
+            $book->stock++;
+            $book->save();
+
+            // Check if return date is later than due date.
+            $borrowDate = Carbon::parse($borrowing->borrow_date);
+            $dueDate = $borrowDate->copy()->addDays(7); // Day limit (seven days).
+            $returnDate = Carbon::parse($request->return_date); // Return date.
+            $lateDays = max(0, $returnDate->diffInDays($dueDate)); // Ensure lateDays is no negative.
+
+            // Calculate late fee.
+            $lateFee = $returnDate->gt($dueDate) ? $lateDays * 1000 : 0;
+
+            $validated['return_date'] = $returnDate;
+            $validated['late_fee'] = $lateFee;
         } else {
-            $borrowing->update(
-                [
-                    'return_date' => null,
-                ],
-            );
+            $validated['return_date'] = null;
+            $validated['late_fee'] = null;
         }
-        $borrowing->update($request->all());
+        $borrowing->update($validated);
         return redirect()->route('penyewaan')->with('success', 'Peminjaman berhasil diperbarui!');
     }
 
@@ -148,6 +129,7 @@ class BorrowingController extends Controller
     {
         // Check if the specified book exist.
         $borrowing = Borrowing::findOrFail($id);
+        
         $borrowing->delete();
         return redirect()->route('penyewaan')->with('success', 'Peminjaman berhasil dihapus!');
     }

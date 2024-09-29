@@ -168,7 +168,7 @@
 								<td class="font-weight-bold">{{ $brw->member->full_name }}</td>
 								<td class="font-weight-bold">{{ $brw->book->title }}</td>
 								<td>{{ \Carbon\Carbon::parse($brw->borrow_date)->format('d/m/Y') }}</td>
-								<td>{{ \Carbon\Carbon::parse($brw->return_date)->format('d/m/Y') }}</td>
+								<td>{{ $brw->return_date ? \Carbon\Carbon::parse($brw->return_date)->format('d/m/Y') : '-' }}</td>
 								<td>{{ $brw->rental_price }}</td>
 								<td>{{ $brw->status }}</td>
 								<td>
@@ -182,13 +182,13 @@
 											<i class="fas fa-edit"></i>
 										</a>
 										{{-- delete --}}
-										<form id="deleteForm" action="{{ route('penyewaan.destroy', $brw->id) }}" method="post" style="display:none">
+										<button type="submit" class="delete-btn btn btn-danger" data-brw-id="{{ $brw->id }}" title="Hapus" id="deleteButton">
+											<i class="fas fa-trash"></i>
+										</button>
+										<form id="delete-form-{{ $brw->id }}" action="{{ route('penyewaan.destroy', $brw->id) }}" method="post" style="display:none">
 											@csrf
 											@method('DELETE')
 										</form>
-										<button type="submit" class="btn btn-danger" title="Hapus" id="deleteButton">
-											<i class="fas fa-trash"></i>
-										</button>
 									</div>
 								</td>
 							</tr>
@@ -211,17 +211,22 @@
 @endsection
 
 @section('js')
-<script type="text/javascript">
+<script>
 	$(document).ready( function() {
-		const $bookId = $('#book_id');
+		// Update rental price on book id change.
+		$('#book_id').on('change', function() {
+			const rentalPrice = $('#rental_price');
+			const selectedOption = $(this).find('option:selected');
+			rentalPrice.val(selectedOption.data('rental-price'));
+		});
 
-		// Update rental price.
-		function updateRentalPrice() {
-			const $rentalPrice = $('#rental_price');
-			const selectedOption = $bookId.find('option:selected');
-			$rentalPrice.val(selectedOption.data('rental-price'));
-		}
-		$bookId.on('change', updateRentalPrice);
+		// Submit the delete form on button click.	
+		$('.delete-btn').on('click', function() {
+			var brwId = $(this).data('brw-id');
+			if (confirm('Apakah Anda yakin ingin menghapus buku ini?')) {
+				$('#delete-form-' +  $(this).data('brw-id')).submit();
+			}
+		});
 	});
 </script>
 @endsection

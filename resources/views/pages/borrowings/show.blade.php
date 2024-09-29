@@ -35,22 +35,25 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-12 col-lg-8 offset-lg-2">
-			<div class="card">
+			<div class="card" style="border-top: #181C32 solid 5px">
 				{{-- header --}}
 				<div class="card-header">
-					<h5 class="card-title">Detail Penyewaan Buku</h5>
+					<h5 class="card-title font-weight-bold">Detail Penyewaan Buku</h5>
 				</div>
 				{{-- body --}}
 				<div class="card-body">
 
 					{{-- late return alert --}}
 					@if($isLate)
-					<div class="alert alert-danger">
-						<h5><i class="icon fas fa-exclamationtriangle"></i> Keterlambatan!</h5>
+					<div class="alert text-white" style="background-color: red">
+						<h5 class="font-weight-bold">
+							<i class="icon fas fa-exclamation-triangle"></i>
+							Keterlambatan!
+						</h5><hr class="bg-white">
 						@if($borrowing->return_date)
-						Buku ini terlambat dikembalikan selama {{ $lateDays }} hari. Denda yang dikenakan: Rp. {{ $lateFee }}
+						Buku ini terlambat dikembalikan selama {{ $lateDays }} hari. Denda yang dikenakan: Rp. {{ number_format($lateFee, 0, ',', '.') }}.
 						@else
-						Buku ini sudah terlambat selama {{ $lateDays }} hari. Denda yang dikenakan saat ini: Rp. {{ $lateFee }}
+						Buku ini sudah terlambat selama {{ $lateDays }} hari. Denda yang dikenakan saat ini: Rp. {{ number_format($lateFee, 0, ',', '.') }}.
 						@endif
 					</div>
 					@endif
@@ -87,7 +90,7 @@
 				</div>
 				{{-- footer --}}
 				<div class="card-footer">
-					<a href="{{ route('borrowings.index') }}" class="btn btn-secondary"><i class="fas fa-arrow-left mr-1"></i>Kembali</a>
+					<a href="{{ route('penyewaan') }}" class="btn btn-secondary"><i class="fas fa-arrow-left mr-1"></i>Kembali</a>
 				</div>
 			</div>
 		</div>
