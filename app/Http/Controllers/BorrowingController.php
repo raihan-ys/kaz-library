@@ -7,7 +7,9 @@ use App\Models\Member;
 use App\Models\Book;
 use App\Http\Requests\StoreBorrowingRequest;
 use App\Http\Requests\UpdateBorrowingRequest;
+
 use Carbon\Carbon;
+
 use Illuminate\Routing\Controller;
 
 class BorrowingController extends Controller
@@ -15,10 +17,9 @@ class BorrowingController extends Controller
     // Display all borrowings.
     public function index()
     {
-        $data['borrowings'] = Borrowing::with('member', 'book')->get();
+        $data['borrowings'] = Borrowing::with('member', 'book')->orderBy('borrow_date', 'DESC')->get();
         $data['members'] = Member::all();
         $data['books'] = Book::all();
-        $data['title'] = 'Daftar Penyewaan Buku';
         return view('pages.borrowings.index', $data);
     }
 
@@ -32,7 +33,7 @@ class BorrowingController extends Controller
         $book = Book::find($request->book_id);
         if($book->stock > 0) {
             // The book's stock decreased.
-            $book->stock--;
+            $book->stock-= 1;
             $book->save();
             
             // Create new borrowing with validated data.
@@ -65,8 +66,7 @@ class BorrowingController extends Controller
         }
         $lateFee = $lateDays * 1000;
    
-        $title = 'Detail Penyewaan';
-        return view('pages.borrowings.show', compact('title', 'borrowing', 'lateDays', 'isLate', 'lateFee'));
+        return view('pages.borrowings.show', compact('borrowing', 'lateDays', 'isLate', 'lateFee'));
     }
 
     // Show the form for editing the specified borrowing.
@@ -78,8 +78,7 @@ class BorrowingController extends Controller
         $members = Member::all();
         $books = Book::all();
 
-        $title = 'Edit Penyewaan';
-        return view('pages.borrowings.edit', compact('borrowing', 'members', 'books', 'title'));
+        return view('pages.borrowings.edit', compact('borrowing', 'members', 'books'));
     }
 
     // Update the specified borrowing.
@@ -102,7 +101,7 @@ class BorrowingController extends Controller
             );
             // Restoring book stock.
             $book = Book::find($borrowing->book_id);
-            $book->stock++;
+            $book->stock+= 1;
             $book->save();
 
             // Check if return date is later than due date.
@@ -129,6 +128,13 @@ class BorrowingController extends Controller
     {
         // Check if the specified book exist.
         $borrowing = Borrowing::findOrFail($id);
+
+        // Restore book stock if the book hasn't returned.
+        if($borrowing->status === 'dipinjam') {
+            $book = Book::find($borrowing->book_id);
+            $book->stock+= 1;
+            $book->save();
+        }
         
         $borrowing->delete();
         return redirect()->route('penyewaan')->with('success', 'Peminjaman berhasil dihapus!');

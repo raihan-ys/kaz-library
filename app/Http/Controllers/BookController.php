@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Publisher;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
+
 use Illuminate\Routing\Controller;
 use Illuminate\Validation\Rule;
 
@@ -18,14 +19,12 @@ class BookController extends Controller
 		$data['books'] = Book::with('category', 'publisher')->get();
 		$data['categories'] = Category::all();
 		$data['publishers'] = Publisher::all();
-		$data['title'] = 'Daftar Buku';
 		return view('pages.books.index', $data);
 	}
 
 	// Show a specified book detail.
 	public function show($id) {
 		$data['book'] = Book::find($id);
-		$data['title'] = 'Detail Buku: '.$data['book']->title;
 		return view('pages.books.show', $data);
 	}
 
@@ -47,7 +46,6 @@ class BookController extends Controller
 		$data['book'] = Book::findOrFail($id);
 		$data['categories'] = Category::all();
 		$data['publishers'] = Publisher::all();
-		$data['title'] = 'Edit Buku';
 		return view('pages.books.edit', $data);
 	}
 

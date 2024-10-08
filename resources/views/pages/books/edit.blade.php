@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Edit Buku - Kaz-Library')
 @section('page-header')
 <div class="row">
 	<div class="col-12">
@@ -22,7 +22,7 @@
 								</a>
 							</li>
 							<li class="breadcrumb-item active">
-								Edit Buku
+								Edit
 							</li>
 						</ol>
 					</div>

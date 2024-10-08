@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Daftar Buku - Kaz-Library')
 @section('page-header')
 <div class="row">
 	<div class="col-12">
@@ -174,8 +174,7 @@
 
 									{{-- footer --}}
 									<div class="modal-footer justify-content-between btn-group">
-										<button type="button" class="btn btn-outline-secondary" id="closeModal" data-dismiss="modal">Batal</button>
-										<button type="reset" class="btn btn-outline-info">Reset</button>
+										<button type="reset" class="btn btn-outline-danger">Reset</button>
 										<button type="submit" class="btn btn-outline-primary" id="createBook">Simpan</button>
 									</div>
 								</form>

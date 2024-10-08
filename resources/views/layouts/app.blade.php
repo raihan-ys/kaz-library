@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="E-Library Kazee Digital">
 
-	<title>@yield('title', $title) - Kaz-Library</title>
+	<title>@yield('title', 'Kaz-Library')</title>
 
 	{{-- Favicon --}}
 	<link rel="shortcut icon" href="{{ asset('images/logo.webp') }}">
@@ -28,7 +28,7 @@
 			font-style: normal;
 		}
 		@font-face {
-			font-family: "Press Start 2 P";
+			font-family: "Press Start 2P";
 			src: url("{{ asset('fonts/pressStart2P/pressStart2P.woff2') }}") format("truetype");
 			font-weight: normal;
 			font-style: normal;
@@ -53,7 +53,7 @@
 		/* /.body */
 
 		.main-sidebar .brand-text {
-			font-family: "Press Start 2 P", sans-serif;
+			font-family: "Press Start 2P", sans-serif;
 			font-size: 1rem;
 			color: orangered;
 		}

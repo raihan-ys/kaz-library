@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+
 use Illuminate\Routing\Controller;
 
 class CategoryController extends Controller
@@ -11,7 +12,6 @@ class CategoryController extends Controller
 	public function index()
 	{
 		$data['categories'] = Category::all();
-		$data['title'] = 'Daftar Kategori Buku';
 		return view('pages.categories.index', $data);
 	}
 

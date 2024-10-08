@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Daftar Penerbit - Kaz-Library')
 @section('page-header')
 <div class="row">
 	<div class="col-12">

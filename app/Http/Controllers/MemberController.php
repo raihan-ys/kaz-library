@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Member;
 use App\Http\Requests\StoreMemberRequest;
 use App\Http\Requests\UpdateMemberRequest;
+
 use Illuminate\Routing\Controller;
 use Illuminate\Validation\Rule;
 
@@ -14,7 +15,6 @@ class MemberController extends Controller
     public function index()
     {
         $data['members'] = Member::all();
-        $data['title'] = 'Daftar Anggota';
         return view('pages.members.index', $data);
     }
     
@@ -34,7 +34,6 @@ class MemberController extends Controller
     public function show($id)
     {
         $data['member'] = Member::find($id);
-        $data['title'] = 'Detail Anggota: '.$data['member']->full_name;
         return view('pages.members.show', $data);
     }
 
@@ -42,7 +41,6 @@ class MemberController extends Controller
     public function edit($id)
     {
         $data['member'] = Member::find($id);
-		$data['title'] = 'Edit Anggota';
 		return view('pages.members.edit', $data);
     }
 
@@ -82,7 +80,7 @@ class MemberController extends Controller
             'email' => [
             'required',
             'string',
-            'max:15',
+            'max:255',
             Rule::unique('members')->ignore($member->id),
             ]
         ],

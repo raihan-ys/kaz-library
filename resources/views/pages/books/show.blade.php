@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Detail Buku - Kaz-Library')
 @section('page-header')
 <div class="row">
 	<div class="col-12 col-lg-8 offset-lg-2">
@@ -21,7 +22,7 @@
 								</a>
 							</li>
 							<li class="breadcrumb-item active">
-								Detail Buku
+								Detail
 							</li>
 						</ol>
 					</div>

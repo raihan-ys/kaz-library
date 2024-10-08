@@ -10,12 +10,15 @@
 		<!-- Sidebar user panel -->
 		<div class="user-panel mt-3 pb-3 mb-3 d-flex">
 			{{-- user's avatar --}}
-			<div class="image">
+			<div class="image my-auto">
 				<img src="{{ asset('images/user-logo.jpeg') }}" class="img-circle elevation-2" alt="User Image">
 			</div>
 			{{-- user's name --}}
 			<div class="info">
-				<a href="#" class="d-block">Kazuya Mishima</a>
+				<a href="#" class="d-block">
+					{{ Auth::user()->name }} <br>
+					<small>{{ Auth::user()->email }}</small>
+				</a>
 			</div>
 		</div>
 
@@ -25,7 +28,7 @@
 
 				{{-- dashboard --}}
 				<li class="nav-item">
-					<a href="/" class="nav-link">
+					<a href="{{ route('dashboard') }}" class="nav-link">
 						<i class="nav-icon fas fa-tachometer-alt"></i>
 						<p>Dashboard</p>
 					</a>
@@ -34,12 +37,14 @@
 				{{-- roles --}}
 				<li class="nav-header font-weight-bold">Peran</li>
 				{{-- users --}}
+				@if(Auth::user()->role === 'admin')
 				<li class="nav-item">
-					<a href="#" class="nav-link">
+					<a href="{{ route('user') }}" class="nav-link {{ request()->routeIs('user') || request()->routeIs('user.*') ? 'active' : '' }}">
 						<i class="nav-icon fas fa-user-friends"></i>
 						<p>Pengguna</p>
 					</a>
 				</li>
+				@endif
 				{{-- members --}}
 				<li class="nav-item">
 					<a href="{{ route('anggota') }}" class="nav-link {{ request()->routeIs('anggota') || request()->routeIs('anggota.*') ? 'active' : '' }}">
@@ -85,18 +90,20 @@
 				<li class="nav-header font-weight-bold">Pengaturan</li>
 				{{-- user account --}}
 				<li class="nav-item">
-					<a href="#" class="nav-link">
+					<a href="{{ route('akun') }}" class="nav-link">
 						<i class="nav-icon fas fa-users-cog"></i>
 						<p>Akun</p>
 					</a>
 				</li>
 				{{-- app setting --}}
+				@if(Auth::user()->role === 'admin')
 				<li class="nav-item">
-					<a href="#" class="nav-link">
+					<a href="{{ route('aplikasi') }}" class="nav-link">
 						<i class="nav-icon fas fa-cog"></i>
 						<p>Aplikasi</p>
 					</a>
 				</li>
+				@endif
 				{{-- /.settings --}}
 			</ul>
 		</nav>

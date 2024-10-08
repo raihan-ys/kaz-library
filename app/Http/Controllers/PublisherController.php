@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Publisher;
+	
 use Illuminate\Routing\Controller;
 
 class PublisherController extends Controller
@@ -11,7 +12,6 @@ class PublisherController extends Controller
 	public function index()
 	{
 		$data['publishers'] = Publisher::all();
-		$data['title'] = 'Daftar Penerbit Buku';
 		return view('pages.publishers.index', $data);
 	}
 

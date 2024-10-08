@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Daftar Anggota - Kaz-Library')
 @section('page-header')
 <div class="row">
 	<div class="col-12">
@@ -101,8 +101,7 @@
 
 									{{-- footer --}}
 									<div class="modal-footer justify-content-between btn-group">
-										<button type="button" class="btn btn-outline-secondary" id="closeModal" data-dismiss="modal">Batal</button>
-										<button type="reset" class="btn btn-outline-info">Reset</button>
+										<button type="reset" class="btn btn-outline-danger">Reset</button>
 										<button type="submit" class="btn btn-outline-primary" id="createBook">Simpan</button>
 									</div>
 								</form>
@@ -150,13 +149,13 @@
 							<tr>
 								<td>{{ $loop->iteration }}</td>
 								<td class="font-weight-bold">{{ $member->full_name }}</td>
-								<td>{{ $member->phone }}</td>
 								<td>{{ $member->address }}</td>
+								<td>{{ $member->phone }}</td>
 								<td>{{ $member->email }}</td>
 								<td>
 									<div class="btn-group">
 										{{-- show --}}
-										<a href="{{ route('anggota.show', $member->id) }}" class="btn btn-info" title="Detail Anggota">
+										<a href="{{ route('anggota.show', $member->id) }}" class="btn btn-info" title="Detail">
 											<i class="fas fa-eye"></i>
 										</a>
 										{{-- update --}}

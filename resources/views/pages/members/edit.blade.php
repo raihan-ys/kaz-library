@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Edit Anggota - Kaz-Library')
 @section('page-header')
 <div class="row">
 	<div class="col-12">
@@ -22,7 +22,7 @@
 								</a>
 							</li>
 							<li class="breadcrumb-item active">
-								Edit Anggota: {{ $member->full_name }}
+								Edit
 							</li>
 						</ol>
 					</div>

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Daftar Penyewaan - Kaz-Library')
 @section('page-header')
 <div class="row">
 	<div class="col-12">
@@ -50,7 +50,7 @@
 										@csrf
 						
 										{{-- librarian id --}}
-										<input type="hidden" name="librarian_id" value="2">
+										<input type="hidden" name="librarian_id" value="{{ Auth::user()->id }}">
 
 										{{-- member id --}}
 										<div class="form-group">
@@ -115,8 +115,7 @@
 
 									{{-- footer --}}
 									<div class="modal-footer justify-content-between btn-group">
-										<button type="button" class="btn btn-outline-secondary" id="closeModal" data-dismiss="modal">Batal</button>
-										<button type="reset" class="btn btn-outline-info">Reset</button>
+										<button type="reset" class="btn btn-outline-danger">Reset</button>
 										<button type="submit" class="btn btn-outline-primary" id="createBook">Simpan</button>
 									</div>
 								</form>
@@ -156,8 +155,9 @@
 								<th scope="col">Buku</th>
 								<th scope="col">Tanggal Peminjaman</th>
 								<th scope="col">Tanggal Pengembalian</th>
-								<th scope="col">Biaya Sewa</th>
 								<th scope="col">Status</th>
+								<th scope="col">Keterlambatan</th>
+								<th scope="col">Denda Keterlambatan</th>
 								<th scope="col">Aksi</th>
 							</tr>
 						</thead>
@@ -169,8 +169,40 @@
 								<td class="font-weight-bold">{{ $brw->book->title }}</td>
 								<td>{{ \Carbon\Carbon::parse($brw->borrow_date)->format('d/m/Y') }}</td>
 								<td>{{ $brw->return_date ? \Carbon\Carbon::parse($brw->return_date)->format('d/m/Y') : '-' }}</td>
-								<td>{{ $brw->rental_price }}</td>
 								<td>{{ $brw->status }}</td>
+								<td>
+									<?php
+									// Check if return date or today is later than due date.
+									$borrowDate = \Carbon\Carbon::parse($brw->borrow_date);
+									$dueDate = $borrowDate->copy()->addDays(7);
+									$returnDate = $brw->return_date ? \Carbon\Carbon::parse($brw->return_date) : \Carbon\Carbon::now();
+
+									$lateFee = 0;
+									$isLate = false;
+
+									// Calculate late days.
+									if ($returnDate->gt($dueDate)) {
+										$lateDays = (int) abs($returnDate->diffInDays($dueDate));
+										$lateFee = $lateDays * 1000;
+										$isLate = true;
+
+										echo '<span class="badge badge-danger">';
+										echo "Terlambat {$lateDays} hari";
+										echo '</span>';
+									} else {
+										echo '<span class="badge badge-success">';
+										echo 'Tidak Terlambat';
+										echo '</span>';
+									}
+									?>
+								</td>
+								<td>
+									@if($isLate)
+									Rp. {{ number_format($lateFee, 0, ',', '.') }}
+									@else
+									-
+									@endif
+								</td>
 								<td>
 									<div class="btn-group">
 										{{-- show --}}
@@ -194,7 +226,7 @@
 							</tr>
 							@empty
 							<tr>
-								<td colspan="8" class="text-center font-weight-bold text-danger py-5">Tidak ada penyewaan buku!</td>
+								<td colspan="9" class="text-center font-weight-bold text-danger py-5">Tidak ada penyewaan buku!</td>
 							</tr>
 							@endforelse
 						</tbody>
@@ -223,7 +255,7 @@
 		// Submit the delete form on button click.	
 		$('.delete-btn').on('click', function() {
 			var brwId = $(this).data('brw-id');
-			if (confirm('Apakah Anda yakin ingin menghapus buku ini?')) {
+			if (confirm('Apakah Anda yakin ingin menghapus peminjaman ini?')) {
 				$('#delete-form-' +  $(this).data('brw-id')).submit();
 			}
 		});
