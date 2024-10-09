@@ -44,7 +44,7 @@
 									</button>
 								</div>
 
-								<form id="createBookForm" action="{{ route('buku.store') }}" method="post">
+								<form id="createBookForm" action="{{ route('buku.store') }}" method="post" enctype="multipart/fotm-data">
 									{{-- body --}}
 									<div class="modal-body">
 										@csrf
@@ -161,7 +161,7 @@
 										{{-- cover image --}}
 										<div class="form-group">
 											<label for="cover_image">Gambar Sampul</label>
-											<input type="text" class="form-control {{ $errors->has('cover_image') ? 'bg-danger text-white' : '' }}" name="cover_image" id="cover_image" value="{{ old('cover_image') }}">
+											<input type="file" accept="image/.jpeg" class="form-control {{ $errors->has('cover_image') ? 'bg-danger text-white' : '' }}" name="cover_image" id="coverImage" value="{{ old('cover_image') }}">
 											@if($errors->has('cover_image'))
 												{{-- error message --}}
 												<span class="text-danger">
@@ -264,6 +264,17 @@
 @section('js')
 <script>
 	$(document).ready(function(){
+		$('#coverImage').change(function(e) {
+			const file = e.target.files[0];
+			if(file) {
+				const maxSizeMB = 1; // Maximum file size in MB.
+				const maxSizeBytes = maxSizeMB 	* 1024 * 1024; // Convert to bytes.
+
+				const reader = new fileReader();
+			}
+		});
+
+		// Delete confirmation.
 		$('.delete-btn').on('click', function() {
 			var bookId = $(this).data('book-id');
 			if (confirm('Apakah Anda yakin ingin menghapus buku ini?')) {
