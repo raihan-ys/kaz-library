@@ -206,7 +206,7 @@
 								<td>
 									<div class="btn-group">
 										{{-- show --}}
-										<a href="{{ route('penyewaan.show', $brw->id) }}" class="btn btn-info" title="Detail Peminjaman">
+										<a href="{{ route('penyewaan.show', $brw->id) }}" class="btn btn-info" title="Detail">
 											<i class="fas fa-eye"></i>
 										</a>
 										{{-- update --}}

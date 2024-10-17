@@ -16,31 +16,31 @@
     <style>
         /* fonts */
         @font-face {
-        font-family: "Poppins";
-        src: url("{{ asset('fonts/poppins/poppins.woff2') }}") format("truetype");
-        font-weight: normal;
-        font-style: normal;
+            font-family: "Poppins";
+            src: url("{{ asset('fonts/poppins/poppins.woff2') }}") format("truetype");
+            font-weight: normal;
+            font-style: normal;
         }
         @font-face {
-        font-family: "Play";
-        src: url("{{ asset('fonts/play/play.woff2') }}") format("truetype");
-        font-weight: normal;
-        font-style: normal;
+            font-family: "Play";
+            src: url("{{ asset('fonts/play/play.woff2') }}") format("truetype");
+            font-weight: normal;
+            font-style: normal;
         }
         @font-face {
-        font-family: "Press Start 2P";
-        src: url("{{ asset('fonts/pressStart2P/pressStart2P.woff2') }}") format("truetype");
-        font-weight: normal;
-        font-style: normal;
+            font-family: "Press Start 2P";
+            src: url("{{ asset('fonts/pressStart2P/pressStart2P.woff2') }}") format("truetype");
+            font-weight: normal;
+            font-style: normal;
         }
         /* /.fonts */
 
         /* reset CSS */
         * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        transition: background-color 300ms ease, color 300ms ease;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 300ms ease, color 300ms ease;
         }
         /* /.reset CSS */
 
@@ -50,77 +50,74 @@
             font-family: "Poppins", sans-serif;
         }
         body::-webkit-scrollbar {
-        width: 5px;	 
+            width: 5px;	 
         }
         body::-webkit-scrollbar-track {
-        background-color: rgb(60, 60, 60);
+            background-color: rgb(60, 60, 60);
         }
         body::-webkit-scrollbar-thumb {
-        background-color: red;
-        border-radius: 5px;
+            background-color: red;
+            border-radius: 5px;
         }
         /* /.body */
 
         /* navbar */
         .navbar, .footer {
-        background-color: #181C32;
+            background-color: #181C32;
         }
-            .navbar span {
-        color: orangered;
-        font-family: "Press Start 2P", sans-serif;
-        font-weight: 100;
-        font-size: 20px;
+        .navbar span {
+            color: orangered;
+            font-family: "Press Start 2P", sans-serif;
+            font-weight: 100;
+            font-size: 20px;
         }
         .navbar .nav-item a {
-                    font-family: "Play", sans-serif;
-        border-radius: 5px;
-        color: white;
-        height: 38px;
-        padding: 10px;
-        text-decoration: none;
+            font-family: "Play", sans-serif;
+            border-radius: 5px;
+            color: white;
+            height: 38px;
+            padding: 10px;
+            text-decoration: none;
         }
         .navbar .nav-item a:hover,
         .navbar .nav-item a:focus {
-        background-color: #252941;
-        color: rgba(255, 255, 255, .8);
+            background-color: #252941;
+            color: rgba(255, 255, 255, .8);
         }
         /* /.navbar */
 
         /* footer */
         footer ul {
-        gap: 10px;
+            gap: 10px;
         }
         footer ul li img {
-        height: 30px;
+            height: 30px;
         }
         /* /.footer */
 
-        .jumbotron {
-        max-height: 400px;
-        }
-
         /* carousel */
         .carousel-item img {
-        left: 50%;
-        transform: translateX(-50%);
+            left: 50%;
+            transform: translateX(-50%);
         }
         /* /.carousel */
 
         @media (max-width: 767px) {
-        /* jumbotron */
-        .jumbotron {
-            height: auto !important;
-            max-height: max-content;
-        }
-        /* /.jumbotron */
+            /* jumbotron */
+            .jumbotron-fluid {
+                height: auto !important;
+                max-height: max-content;
+                margin: 0;
+            }
+            /* /.jumbotron */
 
-        /* carousel */
-        .carousel-item img {
-            position: static !important;
-            width: 100% !important;
-            transform: none !important;
-        }
-        /* /.carousel */
+            /* carousel */
+            .carousel-item img {
+                position: static !important;
+                width: 100% !important;
+                transform: none !important;
+            }
+            /* /.carousel */
         }
     </style>
 	{{-- jQuery JS --}}
@@ -197,65 +194,65 @@
         </div>
     </nav>
     
-	<div class="container p-3 flex-grow-1">
-		{{-- hero --}}
-        <div class="jumbotron row p-0" style="background-color: #181C32; height: 70vh">
-            {{-- carousel --}}
-            <div class="col-md-6 p-0 h-100 position-relative overflow-hidden"> 
-                <div class="carousel slide h-100 w-100" id="heroCarousel" data-ride="carousel">
-                    {{-- indicator --}}
-                    <ol class="carousel-indicators">
-                        <li data-target="#heroCarousel" data-slide-to="0" class="active"></li>
-                        <li data-target="#heroCarousel" data-slide-to="1"></li>
-                    </ol>
-                    <div class="carousel-inner h-100">
-                        {{-- slide 1 --}}
-                        <div class="carousel-item active h-100">
-                            <img src="{{ asset('images/slide1.jpg') }}" alt="Mahasiswa Manajemen Informatika" class="position-absolute w-auto h-100 object-fit-cover">
-                        </div>
-                        {{-- slide 2 --}}
-                        <div class="carousel-item h-100">
-                            <img src="{{ asset('images/slide2.jpg') }}" alt="Mahasiswa Teknik Komputer" class="position-absolute w-auto h-100 object-fit-cover">
-                        </div>
+    {{-- hero --}}
+    <div class="jumbotron-fluid row p-0" style="background-color: #181C32; height: 70vh">
+        {{-- carousel --}}
+        <div class="col-md-6 p-0 h-100 position-relative overflow-hidden"> 
+            <div class="carousel slide h-100 w-100" id="heroCarousel" data-ride="carousel">
+                {{-- indicator --}}
+                <ol class="carousel-indicators">
+                    <li data-target="#heroCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#heroCarousel" data-slide-to="1"></li>
+                </ol>
+                <div class="carousel-inner h-100">
+                    {{-- slide 1 --}}
+                    <div class="carousel-item active h-100">
+                        <img src="{{ asset('images/slide1.jpg') }}" alt="Mahasiswa Manajemen Informatika" class="position-absolute w-auto h-100 object-fit-cover">
                     </div>
-                    {{-- controls --}}
-                    <button class="carousel-control-prev" type="button" data-target="#heroCarousel" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-target="#heroCarousel" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </button>
+                    {{-- slide 2 --}}
+                    <div class="carousel-item h-100">
+                        <img src="{{ asset('images/slide2.jpg') }}" alt="Mahasiswa Teknik Komputer" class="position-absolute w-auto h-100 object-fit-cover">
+                    </div>
                 </div>
+                {{-- controls --}}
+                <button class="carousel-control-prev" type="button" data-target="#heroCarousel" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-target="#heroCarousel" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </button>
             </div>
-            {{-- /.carousel --}}
-            {{-- text --}}
-            <div class="col-md-6 p-3 text-white d-flex flex-column justify-content-center">
-                <h3 class="font-weight-bold">
-                    Selamat Datang di
-                    <span class="font-weight-bolder h3" style="color: orangered">Kaz-Library</span>
-                    !
-                </h3>
-                <p style="text-align: justify;">
-                    Selamat datang di e-Library Kazee, pusat sumber informasi digital yang dirancang untuk mendukung kebutuhan akademik dan penelitian Anda. Kami bangga menyediakan koleksi buku, jurnal ilmiah, makalah penelitian, dan berbagai sumber daya lainnya yang dapat diakses dengan mudah dan cepat.
-                </p>
-                @guest
-                <a class="btn btn-outline-light" href="{{ route('login') }}">
-                    <i class="fas fa-key"></i>
-                    Login
-                </a>
-                @else
-                <a class="btn btn-outline-light" href="{{ route('dashboard') }}">
-                    <i class="fas fa-tachometer-alt"></i>
-                    Masuk ke Dashboard
-                </a>
-                @endguest
-            </div>
-            {{-- /.text --}}
         </div>
-        {{-- /.hero --}}
+        {{-- /.carousel --}}
+        {{-- text --}}
+        <div class="col-md-6 p-3 text-white d-flex flex-column justify-content-center">
+            <h3 class="font-weight-bold">
+                Selamat Datang di
+                <span class="font-weight-bolder h3" style="color: orangered">Kaz-Library</span>
+                !
+            </h3>
+            <p style="text-align: justify;">
+                Selamat datang di e-Library Kazee, pusat sumber informasi digital yang dirancang untuk mendukung kebutuhan akademik dan penelitian Anda. Kami bangga menyediakan koleksi buku, jurnal ilmiah, makalah penelitian, dan berbagai sumber daya lainnya yang dapat diakses dengan mudah dan cepat.
+            </p>
+            @guest
+            <a class="btn btn-outline-light" href="{{ route('login') }}">
+                <i class="fas fa-key"></i>
+                Login
+            </a>
+            @else
+            <a class="btn btn-outline-light" href="{{ route('dashboard') }}">
+                <i class="fas fa-tachometer-alt"></i>
+                Masuk ke Dashboard
+            </a>
+            @endguest
+        </div>
+        {{-- /.text --}}
+    </div>
+    {{-- /.hero --}}
 
+	<div class="container p-3 flex-grow-1">
         {{-- visi misi --}}
         <div class="mt-5 p-3 card bg-light" id="visiMisi" style="border-top: 10px solid #181C32;">
             <div class="row">

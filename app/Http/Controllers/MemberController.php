@@ -17,7 +17,7 @@ class MemberController extends Controller
         $data['members'] = Member::all();
         return view('pages.members.index', $data);
     }
-    
+
     // Store a newly created member in storage.
     public function store(StoreMemberRequest $request)
     {
