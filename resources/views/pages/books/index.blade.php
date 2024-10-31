@@ -44,7 +44,7 @@
 									</button>
 								</div>
 
-								<form id="createBookForm" action="{{ route('buku.store') }}" method="post" enctype="multipart/fotm-data">
+								<form id="createBookForm" action="{{ route('buku.store') }}" method="post" enctype="multipart/form-data">
 									{{-- body --}}
 									<div class="modal-body">
 										@csrf
@@ -158,23 +158,77 @@
 											</div>
 										</div>
 										
-										{{-- cover image --}}
-										<div class="form-group">
-											<label for="cover_image">Gambar Sampul</label>
-											<input type="file" accept="image/.jpeg" class="form-control {{ $errors->has('cover_image') ? 'bg-danger text-white' : '' }}" name="cover_image" id="coverImage" value="{{ old('cover_image') }}">
-											@if($errors->has('cover_image'))
+										<!-- cover image -->
+										<div class="col-12">
+											
+											{{-- file input --}}
+											<div class="form-group">
+												<label for="cover_image">Gambar Sampul</label>
+												<div class="input-group">
+													<div class="custom-file">
+														<input type="file" class="custom-file-input" id="cover_image" name="cover_image" accept=".png">
+														<label class="custom-file-label {{ $errors->has('cover_image') ? 'bg-danger text-white' : '' }}" for="cover_image">Pilih gambar PNG</label>
+													</div>
+													<div class="input-group-append">
+														<span class="input-group-text" id="uploadButton">Unggah</span>
+													</div>
+												</div>
+												{{-- cancel upload --}}
+												<button type="button" class="btn btn-danger d-none mt-2" id="cancelUpload">
+													<i class="fas fa-trash"></i>
+													Batalkan Pilihan
+												</button>
 												{{-- error message --}}
-												<span class="text-danger">
+												@if ($errors->has('cover_image'))
+												<div class="text-danger">
 													{{ $errors->first('cover_image') }}
-												</span>
+												</div>
 												@endif
+											</div>
+											{{-- /.file input --}}
+
+											{{-- image preview --}}
+											<div class="row d-none" id="previewContainer">
+												<div class="col-3" id="imageContainer">
+													<label for="coverPreview">Pratinjau Sampul</label>
+													<img id="coverPreview" src="#" alt="Image Preview" class="img-fluid"/>
+												</div>
+
+												{{-- Metadata from previous file --}}
+												@if(session('file_metadata'))
+												<div class="alert alert-danger">
+													<strong>File Metadata:</strong>
+													<ul>
+														<li>Nama File: {{ session('file_metadata.name') }}</li>
+														<li>Ukuran File: {{ session('file_metadata.size') }} bytes</li>
+														<li>Jenis File: {{ session('file_metadata.type') }}</li>
+													</ul>
+												</div>
+												@endif
+
+												{{-- Current file metadata --}}
+												<div class="col-9">
+													<ul id="coverMetadata" class="list-unstyled mt-4">
+														<li><span id="fileName"></span></li>
+														<li><span id="fileSize"></span></li>
+														<li><span id="fileType"></span></li>
+													</ul>
+												</div>
+												<div class="text-danger d-none" id="fileError">
+													File terlalu besar, maksimal ukuran 1 MB.
+												</div>
+												<div class="text-danger d-none" id="fileError2">
+													File melebihi ukuran 2 MB, tidak dapat diunggah.
+												</div>
+											</div>
+											{{-- /.image preview --}}
 										</div>
 									</div>
 									{{-- /.body --}}
 
 									{{-- footer --}}
 									<div class="modal-footer justify-content-between btn-group">
-										<button type="reset" class="btn btn-outline-danger">Reset</button>
+										<button type="reset" id="resetButton" class="btn btn-outline-danger">Reset</button>
 										<button type="submit" class="btn btn-outline-primary" id="createBook">Simpan</button>
 									</div>
 								</form>
@@ -261,26 +315,208 @@
 	{{-- /.row --}}
 </div>
 @endsection
+
 @section('js')
 <script>
 	$(document).ready(function(){
-		$('#coverImage').change(function(e) {
+		// Change title field colors.
+		$('#title').change(function(e) {
+			$("#title").removeClass('bg-danger text-white');
+			$(this).next('.text-danger').addClass('d-none');
+		});
+
+		// Change author field colors.
+		$('#author').change(function(e) {
+			$("#author").removeClass('bg-danger text-white');
+			$(this).next('.text-danger').addClass('d-none');
+		});
+
+		// Change isbn field colors.
+		$('#isbn').change(function(e) {
+			$("#isbn").removeClass('bg-danger text-white');
+			$(this).next('.text-danger').addClass('d-none');
+		});
+
+		// Change published year field colors.
+		$('#published_year').change(function(e) {
+			$("#published_year").removeClass('bg-danger text-white');
+			$(this).next('.text-danger').addClass('d-none');
+		});
+
+		// Change category id field colors.
+		$('#category_id').change(function(e) {
+			$("#category_id").removeClass('bg-danger text-white');
+			$(this).next('.text-danger').addClass('d-none');
+		});
+
+		// Change publisher id field colors.
+		$('#publisher_id').change(function(e) {
+			$("#publisher_id").removeClass('bg-danger text-white');
+			$(this).next('.text-danger').addClass('d-none');
+		});
+
+		// Change stock field colors.
+		$('#stock').change(function(e) {
+			$("#stock").removeClass('bg-danger text-white');
+			$(this).next('.text-danger').addClass('d-none');
+		});
+
+		// Change rental price colors.
+		$('#rental_price').change(function(e) {
+			$("#rental_price").removeClass('bg-danger text-white');
+			$(this).next('.text-danger').addClass('d-none');
+		});
+		
+		// File input change event.
+		let canSubmit = true;
+		$('#cover_image').change(function(e) {
+			// Get uploaded file.
 			const file = e.target.files[0];
 			if(file) {
-				const maxSizeMB = 1; // Maximum file size in MB.
-				const maxSizeBytes = maxSizeMB 	* 1024 * 1024; // Convert to bytes.
+				// Maximum file size in bytes (1 MB).
+				const maxSizeBytes = 1048576;
+	
+				// Read the file.
+				const reader = new FileReader();
+				reader.onload = function(e) {
+					// Set image preview.
+					$("#coverPreview").attr('src', e.target.result);
 
-				const reader = new fileReader();
+					// Show the preview container and cancel button.
+					$("#previewContainer").removeClass('d-none');
+					$("#cancelUpload").removeClass('d-none');
+				}
+
+				// Read the file as a data URL.
+				reader.readAsDataURL(file);
+	
+				// Update the label with the file name.
+				$(this).next('.custom-file-label').html(file.name);
+							
+				// Update metadata information.
+				$('#fileName').text(file.name);
+	
+				// Check if file size exceeds the limit.
+				if (file.size > maxSizeBytes) {
+					// Display size in MB if file is too large.
+					const fileSizeMB = (file.size / maxSizeBytes).toFixed(2); // Rounded.	
+					$('#fileSize').text(fileSizeMB + ' MB');
+
+					// Show error message.
+					$('#fileError').removeClass('d-none');
+
+					// If file is larger than 2 MB.
+					if (file.size > (2048576)) {
+						// Change the file input field color.
+						$('.custom-file-label').addClass('bg-danger text-white');
+
+						// Hide image preview.
+						$('#imageContainer').addClass('d-none');
+						$('#coverMetadata').removeClass('mt-4');
+
+						// Show error message.
+						$('#fileError').addClass('d-none');
+						$('#fileError2').removeClass('d-none');
+
+						canSubmit = false;
+					}
+				} else {
+					// Reset the file input field color.
+					$('.custom-file-label').removeClass('bg-danger text-white');
+
+					// Display size in KB if it's within the limit.
+					$('#fileSize').text((file.size / 1024).toFixed(2) + ' KB');
+
+					// Hide error message.
+					$('#fileError').addClass('d-none');
+					$('#fileError2').addClass('d-none');
+
+					// Display preview.
+					$('#imageContainer').removeClass('d-none');
+
+					$('#coverMetadata').addClass('mt-4');
+
+					canSubmit = true;
+				}
+				// Display file type.
+				$('#fileType').text(file.type);
+
+				// Prevent form submission based on the flag.
+				$('#createBookForm').submit(function(e) {
+					if (!canSubmit) {
+						e.preventDefault();
+						return alert('Gambar sampul belum diunggah dengan benar!');
+					}
+				});
+			} else {
+				// If no file is selected, hide preview and error message, reset label and metadata.
+				$('#previewContainer').addClass('d-none');
+				$('#fileError').addClass('d-none');
+							
+				// Reset file input label.
+				$(this).next('.custom-file-label').html('Pilih gambar');
+
+				// Clear metadata information.
+				$('#fileName, #fileSize, #fileType').text('');
 			}
 		});
 
+		// Reset file input.
+		$('#cancelUpload').click(function() {
+
+			$('#cover_image').val('');
+
+			// Reset file input label.
+			$('.custom-file-label').removeClass('bg-danger text-white');
+			$('.custom-file-label').html('Pilih gambar PNG');
+
+			// Reset preview image.
+			$('#previewContainer').addClass('d-none');
+
+			// Hide any error messages.
+			$('#fileError').addClass('d-none');
+			$('#fileError2').addClass('d-none');
+
+			// Clear metadata information
+			$('#fileName').text('');
+			$('#fileSize').text('');
+			$('#fileType').text('');
+
+			// Hide the cancel button.
+			$('#cancelUpload').addClass('d-none');
+		});
+
+		$('#resetButton').click(function() {
+			$('#cover_image').val('');
+
+			// Reset file input label.
+			$('.custom-file-label').removeClass('bg-danger text-white');
+			$('.custom-file-label').html('Pilih gambar PNG');
+
+			// Reset preview image.
+			$('#previewContainer').addClass('d-none');
+
+			// Hide any error messages.
+			$('#fileError').addClass('d-none');
+			$('#fileError2').addClass('d-none');
+
+			// Clear metadata information
+			$('#fileName').text('');
+			$('#fileSize').text('');
+			$('#fileType').text('');
+
+			// Hide the cancel button.
+			$('#cancelUpload').addClass('d-none');
+		});
+	
 		// Delete confirmation.
-		$('.delete-btn').on('click', function() {
+		$('.delete-btn').on('click', function(e) {
+			e.preventDefault();
 			var bookId = $(this).data('book-id');
 			if (confirm('Apakah Anda yakin ingin menghapus buku ini?')) {
 				$('#delete-form-' + bookId).submit();
 			}
 		});
 	});
-</script>
+	</script>
 @endsection

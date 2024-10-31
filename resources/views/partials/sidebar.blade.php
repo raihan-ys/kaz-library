@@ -11,7 +11,7 @@
 		<div class="user-panel mt-3 pb-3 mb-3 d-flex">
 			{{-- user's avatar --}}
 			<div class="image my-auto">
-				<img src="{{ asset('images/user-logo.jpeg') }}" class="img-circle elevation-2" alt="User Image">
+				<img src="{{ Auth::user()->profile_photo ? asset('storage/'.Auth::user()->profile_photo) : asset('images/sample-user-photo.jpeg') }}" class="img-circle elevation-2" alt="User Image" style="width: 40px; height: 40px">
 			</div>
 			{{-- user's name --}}
 			<div class="info">
@@ -90,7 +90,10 @@
 				<li class="nav-header font-weight-bold">Pengaturan</li>
 				{{-- user account --}}
 				<li class="nav-item">
-					<a href="{{ route('akun') }}" class="nav-link">
+					@php
+					$userId = Auth::user()->id;
+					@endphp
+					<a href="{{ route('akun', $userId) }}" class="nav-link">
 						<i class="nav-icon fas fa-users-cog"></i>
 						<p>Akun</p>
 					</a>

@@ -33,14 +33,18 @@ class MemberController extends Controller
     // Display the specified member.
     public function show($id)
     {
+        // Check if the specified member exist.
         $data['member'] = Member::find($id);
+
         return view('pages.members.show', $data);
     }
 
     // Show the form for editing the specified member.
     public function edit($id)
     {
+        // Check if the specified member exist.
         $data['member'] = Member::find($id);
+        
 		return view('pages.members.edit', $data);
     }
 

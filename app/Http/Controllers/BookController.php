@@ -9,6 +9,7 @@ use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class BookController extends Controller
@@ -19,12 +20,15 @@ class BookController extends Controller
 		$data['books'] = Book::with('category', 'publisher')->get();
 		$data['categories'] = Category::all();
 		$data['publishers'] = Publisher::all();
+
 		return view('pages.books.index', $data);
 	}
 
 	// Show a specified book detail.
 	public function show($id) {
-		$data['book'] = Book::find($id);
+		// Find the specified book.
+		$data['book'] = Book::findOrFail($id);
+
 		return view('pages.books.show', $data);
 	}
 
@@ -33,26 +37,50 @@ class BookController extends Controller
 	{
 		// Input validation.
 		$validated = $request->validated();
+		
+		// Handle file upload.
+		if($request->hasFile('cover_image')) {
+			$file = $request->file('cover_image');
+
+			// Store the file and get the path.
+			$path = $file->store('covers', 'public');
+			// Save the path to the validated data.
+			$validated['cover_image'] = $path;
+		}
 
 		// Create new book with validated data.
-		Book::create($validated);
+		try {
+			$book = Book::create($validated);
+			$id = $book->id;
+		} catch(\Illuminate\Validation\ValidationException $e) {
+			// Set file metadata in session to display to user.
+			session()->flash('file_metadata', [
+				'name' => $file->getClientOriginalName(),
+				'size' => $file->getSize(),
+				'type' => $file->getClientMimeType(),
+			]);
+			return redirect()->back()->withErrors($e->validator)->withInput();
+		}
 
-		return redirect()->route('buku')->with('success', 'Buku berhasil disimpan!');
+		return redirect()->route('buku.show', $id)->with('success', 'Buku berhasil disimpan!');
 	}
 
 	// Show the form for editing the specified book.
 	public function edit($id)
 	{
+		// Find the specified book.
 		$data['book'] = Book::findOrFail($id);
+
 		$data['categories'] = Category::all();
 		$data['publishers'] = Publisher::all();
+
 		return view('pages.books.edit', $data);
 	}
 
 	// Update specified book.
 	public function update(UpdateBookRequest $request, $id)
 	{
-		// Find specified book.
+		// Find the specified book.
 		$book = Book::findOrFail($id);
 
 		// Merge validated data with custom ISBN validation.
@@ -78,17 +106,39 @@ class BookController extends Controller
 			'isbn.unique' => 'ISBN ini sudah digunakan oleh buku lain!',
     ]);
 
+		// If a file is uploaded as cover image.
+		if($request->hasFile('cover_image')) {
+			// Delete original file to replace it.
+			$old_cover = $book->cover_image;
+			if($old_cover) {
+				Storage::disk('public')->delete($old_cover);
+			}
+
+			$file = $request->file('cover_image');
+
+			// Store the new file and get the path.
+			$path = $file->store('covers', 'public');
+
+			// Save the path to the validated data.
+			$validated['cover_image'] = $path;
+		}
+
 		// Update book with all validated data.
 		$book->update($validated);
-		
-		return redirect()->route('buku')->with('success', 'Buku berhasil diupdate!');
+
+		return redirect()->route('buku.show', $id)->with('success', 'Buku berhasil diupdate!');
 	}
 
 	// Remove the specified book.
 	public function destroy($id)
 	{
-		// Find specified book.
+		// Find the specified book.
 		$book = Book::findOrFail($id);
+
+		// Delete book's cover image.
+		if($book->cover_image) {
+			Storage::disk('public')->delete($book->cover_image);
+		}
 
 		// Delete specified book.
 		$book->delete();

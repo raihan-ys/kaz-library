@@ -18,8 +18,11 @@ class PublisherController extends Controller
 	// Remove the specified publisher.
 	public function destroy($id)
 	{
+		// Check if the specified publisher exist.
 		$pbs = Publisher::find($id);
+
 		$pbs->delete();
+		
 		return redirect()->route('penerbit')->with('success', 'Penerbit berhasil dihapus!');
 	}
 }

@@ -12,14 +12,18 @@ class CategoryController extends Controller
 	public function index()
 	{
 		$data['categories'] = Category::all();
+		
 		return view('pages.categories.index', $data);
 	}
 
 	// Remove the specified category.
 	public function destroy($id)
 	{
+		// Check if the specified category exist.
 		$ctg = Category::find($id);
+
 		$ctg->delete();
+
 		return redirect()->route('kategori')->with('success', 'Kategori berhasil dihapus!');
 	}
 }

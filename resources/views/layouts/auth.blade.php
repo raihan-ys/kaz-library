@@ -71,5 +71,18 @@
 	<script src="{{ asset('adminlte/plugins/jquery/jquery.min.js') }}"></script>
 	<script src="{{ asset('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 	<script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
+	{{-- Custom JS --}}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			// Get elements.
+			const closeAlert = $("#closeAlert");
+
+			// Close alerts.
+			closeAlert.click(function() {
+				closeAlert.parent().hide();
+			});
+		});
+	</script>
+	@yield('js')
 </body>
 </html>

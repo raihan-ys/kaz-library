@@ -1,17 +1,30 @@
 <?php
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\BookController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\PublisherController;
-use App\Http\Controllers\MemberController;
-use App\Http\Controllers\BorrowingController;
-use App\Http\Controllers\AccountController;
-use App\Http\Controllers\SettingController;
+use App\Http\Controllers\{
+	AccountController,
+	BorrowingController,
+	BookController,
+	CategoryController,
+	DashboardController,
+	HomeController,
+	MemberController,
+	PublisherController,
+	SettingController,
+	UserController
+};
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
 
 // Unused routes.
 Auth::routes(['register' => false, 'reset' => false]);
@@ -42,7 +55,11 @@ Route::resource('/anggota', MemberController::class)->name('index', 'anggota')->
 Route::resource('/penyewaan', BorrowingController::class)->name('index', 'penyewaan')->middleware('auth');
 
 // Account.
-Route::resource('/akun', AccountController::class)->name('index', 'akun')->middleware('auth');
+Route::get('/akun/{id}', [AccountController::class, 'index'])->name('akun')->middleware('auth');
+Route::get('/akun/{id}/edit', [AccountController::class, 'edit'])->name('akun.edit')->middleware('auth');
+Route::put('/akun/{id}/update', [AccountController::class, 'update'])->name('akun.update')->middleware('auth');
+Route::get('/akun/{id}/edit-password', [AccountController::class, 'editPassword'])->name('akun.edit-password')->middleware('auth');
+Route::put('/akun/{id}/update-password', [AccountController::class, 'updatePassword'])->name('akun.update-password')->middleware('auth');
 
 // Settings.
 Route::resource('/aplikasi', SettingController::class)->name('index', 'aplikasi')->middleware(['auth', 'role:admin']);

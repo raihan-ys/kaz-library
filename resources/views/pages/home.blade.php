@@ -134,7 +134,7 @@
 			{{-- brand logo --}}
 			<a class="navbar-brand" href="#">
 				<img class="rounded img-fluid" style="max-width: 100%; height: 100px;" src="{{ asset('images/logo.webp') }}" alt="Logo Kaz-library">
-			<a>
+            </a>
 
 			{{-- navbar toggler --}}
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle Navigation">

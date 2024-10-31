@@ -20,6 +20,7 @@ class BorrowingController extends Controller
         $data['borrowings'] = Borrowing::with('member', 'book')->orderBy('borrow_date', 'DESC')->get();
         $data['members'] = Member::all();
         $data['books'] = Book::all();
+        
         return view('pages.borrowings.index', $data);
     }
 
@@ -37,8 +38,10 @@ class BorrowingController extends Controller
             $book->save();
             
             // Create new borrowing with validated data.
-            Borrowing::create($validated);
-            return redirect()->route('penyewaan')->with('success', 'Peminjaman berhasil disimpan!');
+            $borrowing = Borrowing::create($validated);
+            $id = $borrowing->id;
+            
+            return redirect()->route('penyewaan.show', $id)->with('success', 'Peminjaman berhasil disimpan!');
         } else {
             // If there's no stock.
             return redirect()->route('penyewaan')->withErrors('Stok buku tidak mencukupi untuk peminjaman!');
@@ -48,8 +51,11 @@ class BorrowingController extends Controller
     // Display the specified borrowing.
     public function show($id)
     {   
-        // Check if the specified book exist.
+        // Check if the specified borrowing exist.
         $borrowing = Borrowing::findOrFail($id);
+        
+        // Get specified book.
+        $book = Book::findOrFail($borrowing->book_id);
 
         // Check if return date is later than due date.
         $borrowDate = Carbon::parse($borrowing->borrow_date);
@@ -66,13 +72,13 @@ class BorrowingController extends Controller
         }
         $lateFee = $lateDays * 1000;
    
-        return view('pages.borrowings.show', compact('borrowing', 'lateDays', 'isLate', 'lateFee'));
+        return view('pages.borrowings.show', compact('borrowing', 'book', 'lateDays', 'isLate', 'lateFee'));
     }
 
     // Show the form for editing the specified borrowing.
     public function edit($id)
     {
-        // Check if the specified book exist.
+        // Check if the specified borrowing exist.
         $borrowing = Borrowing::findOrFail($id);
         
         $members = Member::all();
@@ -84,7 +90,7 @@ class BorrowingController extends Controller
     // Update the specified borrowing.
     public function update(UpdateBorrowingRequest $request, $id)
     {
-        // Check if the specified book exist.
+        // Check if the specified borrowing exist.
         $borrowing = Borrowing::findOrFail($id);
 
         // Validate the form.
@@ -119,14 +125,16 @@ class BorrowingController extends Controller
             $validated['return_date'] = null;
             $validated['late_fee'] = null;
         }
+
         $borrowing->update($validated);
-        return redirect()->route('penyewaan')->with('success', 'Peminjaman berhasil diperbarui!');
+        
+        return redirect()->route('penyewaan.show', $id)->with('success', 'Peminjaman berhasil diperbarui!');
     }
 
     // Remove the specified borrowing.
     public function destroy($id)
     {
-        // Check if the specified book exist.
+        // Check if the specified borrowing exist.
         $borrowing = Borrowing::findOrFail($id);
 
         // Restore book stock if the book hasn't returned.

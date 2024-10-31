@@ -43,6 +43,15 @@
 				{{-- body --}}
 				<div class="card-body">
 
+					{{-- success message --}}
+					@if(session('success'))
+					<div class="alert alert-success">
+						<span class="font-weight-bold" style="float: right; cursor: pointer;" id="closeAlert">&times;</span>
+						<i class="fas fa-check"></i>
+						{{ session('success') }}
+					</div>
+					@endif
+
 					{{-- late return alert --}}
 					@if($isLate)
 					<div class="alert text-white" style="background-color: red">
@@ -58,34 +67,44 @@
 					</div>
 					@endif
 
-					{{-- member --}}
-					<div class="form-group">
-						<label for="member_id">Peminjam</label>
-						<p id="member_id">{{ $borrowing->member->full_name }}</p>
-					</div>
+					<div class="row">
 
-					{{-- book --}}
-					<div class="form-group">
-						<label for="book_id">Judul Buku</label>
-						<p>{{ $borrowing->book->title }}</p>
-					</div>
+						{{-- book cover image --}}
+						<div class="m-auto">
+							<img src="{{ $book->cover_image ? asset('storage/'.$book->cover_image) : asset('images/sample-book-cover.png') }}" alt="Book's Image Preview" class="img-fluid img-thumbnail" style="max-width: 300px">
+						</div>
 
-					{{-- borrow date --}}
-					<div class="form-group">
-						<label for="borrow_date">Tanggal Peminjaman</label>
-						<p>{{ \Carbon\Carbon::parse($borrowing->borrow_date)->format('d-m-Y') }}</p>
-					</div>
+						<div class="col-md-8">
+							{{-- member --}}
+							<div class="form-group">
+								<label for="member_id">Peminjam</label>
+								<p id="member_id">{{ $borrowing->member->full_name }}</p>
+							</div>
 
-					{{-- return date --}}
-					<div class="form-group">
-						<label for="return_date">Tanggal Pengembalian</label>
-						<p>{{ $borrowing->return_date ?\Carbon\Carbon::parse($borrowing->return_date)->format('d-m-Y') : '-' }}</p>
-					</div>
+							{{-- book --}}
+							<div class="form-group">
+								<label for="book_id">Judul Buku</label>
+								<p>{{ $borrowing->book->title }}</p>
+							</div>
 
-					{{-- status --}}
-					<div class="form-group">
-						<label for="status">Status</label>
-						<p>{{ $borrowing->status }}</p>
+							{{-- borrow date --}}
+							<div class="form-group">
+								<label for="borrow_date">Tanggal Peminjaman</label>
+								<p>{{ \Carbon\Carbon::parse($borrowing->borrow_date)->format('d-m-Y') }}</p>
+							</div>
+
+							{{-- return date --}}
+							<div class="form-group">
+								<label for="return_date">Tanggal Pengembalian</label>
+								<p>{{ $borrowing->return_date ?\Carbon\Carbon::parse($borrowing->return_date)->format('d-m-Y') : '-' }}</p>
+							</div>
+
+							{{-- status --}}
+							<div class="form-group">
+								<label for="status">Status</label>
+								<p>{{ $borrowing->status }}</p>
+							</div>
+						</div>
 					</div>
 				</div>
 				{{-- footer --}}

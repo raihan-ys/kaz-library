@@ -37,59 +37,83 @@
 @section('content')
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-12 col-lg-8 offset-2">
+		<div class="col-12 col-lg-8 offset-lg-2">
 			<div class="card" style="border-top: #181C32 solid 5px">
 				<div class="card-header">
 					<h5 class="font-weight-bold">{{ $book->title }}</h5>
 				</div>
 				
-				<div class="card-body row">
-					{{-- book cover --}}
-					<div class="m-auto">
-						<img src="{{ asset('images/logo.webp') }}" alt="Book's cover image" class="rounded img-fluid" style="width: 300px; height: 300px">
+				<div class="card-body">
+					{{-- success message --}}
+					@if(session('success'))
+					<div class="alert alert-success">
+						<span class="font-weight-bold" style="float: right; cursor: pointer;" id="closeAlert">&times;</span>
+						<i class="fas fa-check"></i>
+						{{ session('success') }}
 					</div>
-			
-					<div class="col-md-8 table-responsive">
-						<table class="table">
+					@endif
+
+					{{-- book data --}}
+					<div class="row">
+						{{-- book cover image --}}
+						<div class="m-auto">
+							<img src="{{ $book->cover_image ? asset('storage/'.$book->cover_image) : asset('images/sample-book-cover.png') }}" alt="Book's Image Preview" class="img-fluid img-thumbnail" style="max-width: 300px">
+						</div>
+				
+						<div class="col-md-8">
 							{{-- title --}}
-							<tr>
-								<th scope="row">Judul</th>
-								<td>{{ $book->title }}</td>
-							</tr>
+							<div class="form-group">
+								<label for="title">Judul</label>
+								<p id="title">{{ $book->title }}</p>
+							</div>
+
 							{{-- author --}}
-							<tr>
-								<th scope="row">Penulis</th>
-								<td>{{ $book->author }}</td>
-							</tr>
+							<div class="form-group">
+								<label for="author">Penulis</label>
+								<p id="author">{{ $book->author }}</p>
+							</div>
+
+							{{-- isbn --}}
+							<div class="form-group">
+								<label for="isbn">ISBN</label>
+								<p id="isbn">{{ $book->isbn }}</p>
+							</div>
+
 							{{-- published year --}}
-							<tr>
-								<th scope="row">Tahun Terbit</th>
-								<td>{{ $book->published_year }}</td>
-							</tr>
-							{{-- category id --}}
-							<tr>
-								<th scope="row">Kategori</th>
-								<td>{{ $book->category->name }}</td>
-							</tr>
+							<div class="form-group">
+								<label for="published_year">Tahun terbit</label>
+								<p id="published_year">{{ $book->published_year }}</p>
+							</div>
+
+							{{-- category --}}
+							<div class="form-group">
+								<label for="category_id">Kategori</label>
+								<p id="category_id">{{ $book->category->name }}</p>
+							</div>
+
 							{{-- publisher --}}
-							<tr>
-								<th scope="row">Penerbit</th>
-								<td>{{ $book->publisher->name }}</td>
-							</tr>
+							<div class="form-group">
+								<label for="publisher">Penerbit</label>
+								<p id="publisher">{{ $book->publisher->name }}</p>
+							</div>
+
 							{{-- stock --}}
-							<tr>
-								<th scope="row">Stok</th>
-								<td>{{ $book->stock }}</td>
-							</tr>
+							<div class="form-group">
+								<label for="status">Stok</label>
+								<p>{{ $book->stock }}</p>
+							</div>
+
 							{{-- rental price --}}
-							<tr>
-								<th scope="row">Biaya Peminjaman</th>
-								<td>{{ $book->rental_price }}</td>
-							</tr>
-						</table>
+							<div class="form-group">
+								<label for="status">Biaya Sewa</label>
+								<p> Rp.{{ number_format($book->rental_price, 0, ',', '.') }}</p>
+							</div>
+						</div>
 					</div>
+					{{-- /.book data --}}
 				</div>
 				{{-- /.body --}}
+
 				{{-- footer --}}
 				<div class="card-footer">
 					<a href="{{ route('buku') }}" class="btn btn-secondary"><i class="fas fa-arrow-left mr-1"></i>Kembali</a>
