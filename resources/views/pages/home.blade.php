@@ -50,14 +50,14 @@
             font-family: "Poppins", sans-serif;
         }
         body::-webkit-scrollbar {
-            width: 5px;	 
+            width: 10px;	 
         }
         body::-webkit-scrollbar-track {
             background-color: rgb(60, 60, 60);
         }
         body::-webkit-scrollbar-thumb {
             background-color: red;
-            border-radius: 5px;
+            border-radius: 10px;
         }
         /* /.body */
 
@@ -195,7 +195,7 @@
     </nav>
     
     {{-- hero --}}
-    <div class="jumbotron-fluid row p-0" style="background-color: #181C32; height: 70vh">
+    <div class="jumbotron-fluid row p-0 m-0" style="background-color: #181C32; height: 70vh">
         {{-- carousel --}}
         <div class="col-md-6 p-0 h-100 position-relative overflow-hidden"> 
             <div class="carousel slide h-100 w-100" id="heroCarousel" data-ride="carousel">
@@ -234,7 +234,7 @@
                 !
             </h3>
             <p style="text-align: justify;">
-                Selamat datang di e-Library Kazee, pusat sumber informasi digital yang dirancang untuk mendukung kebutuhan akademik dan penelitian Anda. Kami bangga menyediakan koleksi buku, jurnal ilmiah, makalah penelitian, dan berbagai sumber daya lainnya yang dapat diakses dengan mudah dan cepat.
+                Selamat datang di e-Library Kazee, pusat sumber informasi yang dirancang untuk mendukung kebutuhan akademik dan penelitian Anda. Kami bangga menyediakan koleksi buku, jurnal ilmiah, makalah penelitian, dan berbagai sumber daya lainnya yang dapat diakses dengan mudah dan cepat.
             </p>
             @guest
             <a class="btn btn-outline-light" href="{{ route('login') }}">

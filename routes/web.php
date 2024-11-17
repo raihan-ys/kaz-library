@@ -34,7 +34,11 @@ Route::resource('/', HomeController::class)->name('index', 'home');
 Route::resource('/home', HomeController::class)->name('index', 'home');
 
 // Dashboard.
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
+Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], 
+	function () {
+		Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+		Route::get('/data/books-by-month', [DashboardController::class, 'getBooksByMonthData'])->name('dashboard.data.books_by_month');
+});
 
 // Users.
 Route::resource('/user', UserController::class)->name('index', 'user')->middleware(['auth', 'role:admin']);

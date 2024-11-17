@@ -1,4 +1,13 @@
 <nav class="main-header navbar navbar-expand navbar-dark" style="background-color: #181C32">
+	{{-- Left navbar links --}}
+	<ul class="navbar-nav">
+		<!-- sidebar toffler -->
+    <li>
+      <a class="nav-link" title="show or hide the sidebar's content" data-bs-widget="pushmenu" href="#" role="button">
+        <i class="fas fa-bars"></i>
+      </a>
+    </li>
+	</ul>
 	{{-- Right navbar links --}}
 	<ul class="navbar-nav ml-auto">
 

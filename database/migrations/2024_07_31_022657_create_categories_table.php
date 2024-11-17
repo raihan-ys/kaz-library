@@ -15,8 +15,10 @@ class CreateCategoriesTable extends Migration
             // PK.
             $table->id();
             $table->string('name');
+
             // Created at and updated at timestamps.
             $table->timestamps();
+            
             // Ensure InnoDB engine.
             $table->engine = 'InnoDB';
         });

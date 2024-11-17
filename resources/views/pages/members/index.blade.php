@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Daftar Anggota - Kaz-Library')
 @section('page-header')
-<div class="row">
+<div class="row m-0">
 	<div class="col-12">
 		<section class="content-header">
 			<div class="container-fluid">
@@ -60,6 +60,17 @@
 											</span>
 											@endif
 										</div>
+
+										{{-- type id --}}
+										<div class="form-group">
+											<label for="type_id">Tipe</label>
+											<select name="type_id" id="type_id" class="form-control {{ $errors->has('type_id') ? 'bg-danger text-white' : '' }}" required>
+												<option selected disabled hidden>- Pilih Tipe Anggota -</option>
+												@foreach($member_types as $type)
+												<option value="{{ $type->id }}" {{ old('type_id') == $type->id ? 'selected' : '' }}>{{ $type->name }}</option>
+												@endforeach
+											</select>
+										</div>
 										
 										{{-- address --}}
 										<div class="form-group">
@@ -112,6 +123,15 @@
 					</div>
 					{{-- /.create book modal --}}
 
+					{{-- success message --}}
+					@if(session('success'))
+					<div class="alert alert-success mt-1">
+						<span class="font-weight-bold" style="float: right; cursor: pointer;" id="closeAlert">&times;</span>
+						<i class="fas fa-check"></i>
+						{{ session('success') }}
+					</div>
+					@endif
+
 					{{-- error messages --}}
 					@if($errors->any())
 					<div class="alert mt-1" style="background-color: red">
@@ -138,6 +158,7 @@
 							<tr>
 								<th scope="col">#</th>
 								<th scope="col">Nama</th>
+								<th scope="col">Tipe</th>
 								<th scope="col">Alamat</th>
 								<th scope="col">No. Telepon</th>
 								<th scope="col">Email</th>
@@ -149,15 +170,12 @@
 							<tr>
 								<td>{{ $loop->iteration }}</td>
 								<td class="font-weight-bold">{{ $member->full_name }}</td>
+								<td>{{ $member->name }}</td>
 								<td>{{ $member->address }}</td>
 								<td>{{ $member->phone }}</td>
 								<td>{{ $member->email }}</td>
 								<td>
 									<div class="btn-group">
-										{{-- show --}}
-										<a href="{{ route('anggota.show', $member->id) }}" class="btn btn-info" title="Detail">
-											<i class="fas fa-eye"></i>
-										</a>
 										{{-- update --}}
 										<a href="{{ route('anggota.edit', $member->id) }}" class="btn btn-warning" title="Edit">
 											<i class="fas fa-edit"></i>

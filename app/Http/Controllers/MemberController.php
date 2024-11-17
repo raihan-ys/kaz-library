@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Member;
+use App\Models\MemberType;
 use App\Http\Requests\StoreMemberRequest;
 use App\Http\Requests\UpdateMemberRequest;
 
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class MemberController extends Controller
@@ -14,8 +16,15 @@ class MemberController extends Controller
     // Display all members.
     public function index()
     {
-        $data['members'] = Member::all();
-        return view('pages.members.index', $data);
+        // Select all from members table join with member types table.
+        $members = DB::table('members')
+            ->join('member_types', 'members.type_id', '=', 'member_types.id')
+            ->select('members.*', 'member_types.name')
+            ->get();
+
+        $member_types = MemberType::all();
+
+        return view('pages.members.index', compact('members', 'member_types'));
     }
 
     // Store a newly created member in storage.
@@ -30,22 +39,22 @@ class MemberController extends Controller
 		return redirect()->route('anggota')->with('success', 'Anggota berhasil ditambahkan!');
     }
 
-    // Display the specified member.
-    public function show($id)
-    {
-        // Check if the specified member exist.
-        $data['member'] = Member::find($id);
-
-        return view('pages.members.show', $data);
-    }
-
     // Show the form for editing the specified member.
     public function edit($id)
     {
         // Check if the specified member exist.
-        $data['member'] = Member::find($id);
+        Member::findOrFail($id);
+
+        // Find the specified member.
+        $member = DB::table('members')
+            ->join('member_types', 'members.type_id', '=', 'member_types.id')
+            ->select('members.*', 'member_types.*')
+            ->where('members.id', $id)
+            ->first();
+
+        $member_types = MemberType::all();
         
-		return view('pages.members.edit', $data);
+		return view('pages.members.edit', compact('id', 'member', 'member_types'));
     }
 
     // Update the specified member.
@@ -98,7 +107,7 @@ class MemberController extends Controller
 		// Update member with all validated data.
 		$member->update($validated);
 		
-		return redirect()->route('anggota')->with('success', 'Data anggota berhasil diupdate!');
+		return redirect()->route('anggota')->with('success', 'Anggota berhasil diperbarui!');
     }
 
     // Remove the specified member.

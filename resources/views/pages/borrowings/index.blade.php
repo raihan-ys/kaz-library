@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Daftar Penyewaan - Kaz-Library')
 @section('page-header')
-<div class="row">
+<div class="row m-0">
 	<div class="col-12">
 		<section class="content-header">
 			<div class="container-fluid">
@@ -125,6 +125,15 @@
 						<!-- /.modal-dialog -->
 					</div>
 					{{-- /.create borrowing modal --}}
+
+					{{-- success message --}}
+					@if(session('success'))
+					<div class="alert alert-success mt-1">
+						<span class="font-weight-bold" style="float: right; cursor: pointer;" id="closeAlert">&times;</span>
+						<i class="fas fa-check"></i>
+						{{ session('success') }}
+					</div>
+					@endif
 
 					{{-- error messages --}}
 					@if($errors->any())

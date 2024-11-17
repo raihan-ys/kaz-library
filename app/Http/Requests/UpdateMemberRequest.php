@@ -15,6 +15,7 @@ class UpdateMemberRequest extends FormRequest
   {
     return [
       'full_name' => 'required|string|max:100',
+      'type_id' => 'required|integer|exists:member_types,id',
       'address' => 'required|string|max:255',
     ];
   }
@@ -30,6 +31,9 @@ class UpdateMemberRequest extends FormRequest
       'full_name.required' => 'Nama wajib diisi!',
       'full_name.max' => 'Panjang nama maksimal 100 karakter!',
       'full_name.string' => 'Nama harus berupa string',
+      'type_id.required' => 'Tipe anggota wajib diisi!',
+			'type_id.integer' => 'Tipe anggota harus berupa angka!',
+			'type_id.exists' => 'Tipe anggota yang dipilih tidak valid!',
       'address.required' => 'Alamat wajib diisi!',
       'address.string' => 'Alamat harus berupa string!',
       'address.max' => 'Panjang alamat maksimal 255 karakter!',

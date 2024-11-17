@@ -17,7 +17,12 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->enum('role', ['admin', 'librarian']);
+
+            // Created at and updated at timestamp,
             $table->timestamps();
+
+            // Ensure InnoDB engine.
+            $table->engine = 'InnoDB';
         });
     }
 

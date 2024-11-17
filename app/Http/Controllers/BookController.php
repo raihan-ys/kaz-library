@@ -126,7 +126,7 @@ class BookController extends Controller
 		// Update book with all validated data.
 		$book->update($validated);
 
-		return redirect()->route('buku.show', $id)->with('success', 'Buku berhasil diupdate!');
+		return redirect()->route('buku.show', $id)->with('success', 'Buku berhasil diperbarui!');
 	}
 
 	// Remove the specified book.

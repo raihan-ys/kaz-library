@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Publisher;
+
+use Illuminate\Database\Seeder;
 
 class PublishersTableSeeder extends Seeder
 {

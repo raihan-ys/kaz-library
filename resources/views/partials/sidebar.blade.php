@@ -28,7 +28,7 @@
 
 				{{-- dashboard --}}
 				<li class="nav-item">
-					<a href="{{ route('dashboard') }}" class="nav-link">
+					<a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
 						<i class="nav-icon fas fa-tachometer-alt"></i>
 						<p>Dashboard</p>
 					</a>
@@ -93,7 +93,7 @@
 					@php
 					$userId = Auth::user()->id;
 					@endphp
-					<a href="{{ route('akun', $userId) }}" class="nav-link">
+					<a href="{{ route('akun', $userId) }}" class="nav-link {{ request()->routeIs('akun') || request()->routeIs('akun.*') ? 'active' : '' }}">
 						<i class="nav-icon fas fa-users-cog"></i>
 						<p>Akun</p>
 					</a>

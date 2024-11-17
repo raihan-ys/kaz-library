@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Edit Anggota - Kaz-Library')
 @section('page-header')
-<div class="row">
+<div class="row m-0">
 	<div class="col-12">
 		<section class="content-header">
 			<div class="container-fluid">
@@ -42,7 +42,7 @@
 			<h5 class="font-weight-bold">Form Edit Anggota</h5>
 		</div>
 
-		<form action="{{ route('anggota.update', $member->id) }}" method="post">
+		<form action="{{ route('anggota.update', $id) }}" method="post">
 
 			{{-- body --}}
 			<div class="card-body">
@@ -68,7 +68,7 @@
 				@method('PUT')
 		
 				{{-- id --}}
-				<input type="hidden" name="id" value="{{ $member->id }}">
+				<input type="hidden" name="id" value="{{ $id }}">
 
 				{{-- full name --}}
 				<div class="form-group">
@@ -80,6 +80,16 @@
 						{{ $errors->first('full_name') }}
 					</span>
 					@endif
+				</div>
+
+				{{-- type id --}}
+				<div class="form-group">
+					<label for="type_id">Tipe</label>
+					<select name="type_id" id="type_id" class="form-control {{ $errors->has('type_id') ? 'bg-danger text-white' : '' }}" required>
+						@foreach($member_types as $type)
+						<option value="{{ $type->id }}" {{ $type->id === $member->type_id ? 'selected' : '' }}>{{ $type->name }}</option>
+						@endforeach
+					</select>
 				</div>
 
 				{{-- address --}}

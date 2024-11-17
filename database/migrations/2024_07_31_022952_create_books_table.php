@@ -24,6 +24,7 @@ class CreateBooksTable extends Migration
             $table->string('cover_image')->nullable();
             $table->integer('stock');
             $table->integer('rental_price');
+            
             // Created at and updated at timestamps.
             $table->timestamps();
 

@@ -19,7 +19,12 @@ class CreateMembersTable extends Migration
             $table->string('address');
             $table->string('phone')->unique();
             $table->string('email');
+
+            // Created at and updated at timestamps.
             $table->timestamps();
+
+            // Ensure InnoDB engine.
+            $table->engine = 'InnoDB';
         });
     }
 

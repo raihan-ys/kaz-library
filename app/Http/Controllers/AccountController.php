@@ -91,7 +91,7 @@ class AccountController extends Controller
 		// Update user with all validated data.
 		$user->update($validated);
 
-		return redirect()->route('akun', $id)->with('success', 'Profil berhasil diupdate!');
+		return redirect()->route('akun', $id)->with('success', 'Profil berhasil diperbarui!');
 	}
 
 	// Show the form to change the user's password.
