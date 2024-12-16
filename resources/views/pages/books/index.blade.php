@@ -103,7 +103,6 @@
 											<div class="col-md-6 mb-3">
 												<label for="category_id">Kategori</label>
 												<select name="category_id" id="category_id" class="form-control {{ $errors->has('category_id') ? 'bg-danger text-white' : '' }}" required>
-													<option selected disabled hidden>- Pilih Kategori -</option>
 													@foreach($categories as $category)
 													<option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
 													@endforeach
@@ -119,7 +118,6 @@
 											<div class="col-md-6 mb-3">
 												<label for="publisher_id">Penerbit</label>
 												<select name="publisher_id" id="publisher_id" class="form-control {{ $errors->has('publisher_id') ? 'bg-danger text-white' : '' }}" required>
-													<option selected disabled hidden>- Pilih Penerbit -</option>
 													@foreach($publishers as $publisher)
 													<option value="{{ $publisher->id }}" {{ old('publisher_id') == $publisher->id ? 'selected' : '' }}>{{ $publisher->name }}</option>
 													@endforeach
@@ -190,8 +188,8 @@
 											{{-- image preview --}}
 											<div class="row d-none" id="previewContainer">
 												<div class="col-3" id="imageContainer">
-													<label for="coverPreview">Pratinjau Sampul</label>
-													<img id="coverPreview" src="#" alt="Image Preview" class="img-fluid"/>
+													<label for="coverPreview">Pratinjau Sampul</label><br>
+													<img id="coverPreview" src="#" alt="Book's Cover Image Preview" class="img-fluid"/>
 												</div>
 
 												{{-- Metadata from previous file --}}
@@ -228,7 +226,7 @@
 
 									{{-- footer --}}
 									<div class="modal-footer justify-content-between btn-group">
-										<button type="reset" id="resetButton" class="btn btn-outline-danger">Reset</button>
+										<button type="button" id="resetButton" class="btn btn-outline-danger">Reset</button>
 										<button type="submit" class="btn btn-outline-primary" id="createBook">Simpan</button>
 									</div>
 								</form>
@@ -241,11 +239,26 @@
 
 					{{-- success message --}}
 					@if(session('success'))
-					<div class="alert alert-success mt-1">
-						<span class="font-weight-bold" style="float: right; cursor: pointer;" id="closeAlert">&times;</span>
-						<i class="fas fa-check"></i>
-						{{ session('success') }}
+					<div class="toast bg-success" role="alert" aria-live="assertive" aria-atomic="true" style="position: absolute; top: 20px; right: 20px;">
+						{{-- toast header --}}
+						<div class="toast-header" style="font-size: 20px;">
+							<i class="fas fa-check mr-1"></i>
+							<strong class="mr-auto">Sukses!</strong>
+							<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						{{-- toast body --}}
+						<div class="toast-body" style="font-size: 15px">
+							{{ session('success') }}
+						</div>
 					</div>
+					<script>
+						$(document).ready(function(){
+							$('.toast').toast({ delay: 5000 });
+							$('.toast').toast('show');
+						});
+					</script>
 					@endif
 
 					{{-- error messages --}}
@@ -269,13 +282,18 @@
 
 				{{-- body --}}
 				<div class="card-body table-responsive">
-					<table class="table table-bordered table-hover">
+					<table class="table table-bordered table-hover table-striped dataTable dtr-inline" id="booksTable">
 						<thead class="text-white" style="background-color: #181C32">
 							<tr>
 								<th scope="col">#</th>
 								<th scope="col">Judul</th>
 								<th scope="col">Penulis</th>
 								<th scope="col">ISBN</th>
+								<th scope="col">Tahun Terbit</th>
+								<th scope="col">Kategori</th>
+								<th scope="col">Penerbit</th>
+								<th scope="col">Stok</th>
+								<th scope="col">Biaya Sewa</th>
 								<th scope="col">Aksi</th>
 							</tr>
 						</thead>
@@ -286,6 +304,11 @@
 								<td class="font-weight-bold">{{ $book->title }}</td>
 								<td>{{ $book->author }}</td>
 								<td>{{ $book->isbn }}</td>
+								<td>{{ $book->published_year }}</td>
+								<td>{{ $book->category_name }}</td>
+								<td>{{ $book->publisher_name }}</td>
+								<td>{{ $book->stock }}</td>
+								<td>Rp.{{ number_format($book->rental_price, 0, ',', '.') }}</td>
 								<td>
 									<div class="btn-group">
 										{{-- show --}}
@@ -297,7 +320,7 @@
 											<i class="fas fa-edit"></i>
 										</a>
 										{{-- delete --}}
-										<button type="submit" class="delete-btn btn btn-danger" data-book-id="{{ $book->id }}" title="Hapus" id="deleteButton">
+										<button type="submit" class="btn btn-danger" data-book-id="{{ $book->id }}" title="Hapus" onclick="confirmDelete({{ $book->id }}, '{{ $book->title }}', '{{ $book->cover_image ? asset('storage/'.$book->cover_image) : asset('images/sample-book-cover.png') }}')">
 											<i class="fas fa-trash"></i>
 										</button>
 										<form id="delete-form-{{ $book->id }}" action="{{ route('buku.destroy', $book->id) }}" method="post" style="display:inline">
@@ -309,7 +332,7 @@
 							</tr>
 							@empty
 							<tr>
-								<td colspan="5" class="text-center font-weight-bold text-danger py-5">Tidak ada data buku!</td>
+								<td colspan="10" class="text-center font-weight-bold text-danger py-5">Tidak ada data buku!</td>
 							</tr>
 							@endforelse
 						</tbody>
@@ -327,6 +350,29 @@
 
 @section('js')
 <script>
+	// Book delete confirmation.
+	function confirmDelete(bookId, bookTitle, bookCover) {
+		// Call SweetAlert2's function.
+		Swal.fire({
+			icon: 'warning',
+			title: 'Apakah Anda yakin?',
+			imageUrl: bookCover,
+			imageWidth: 200,
+			imageHeight: 300,
+			html: 'Setelah dihapus, Anda tidak dapat memulihkan buku <b>"' + bookTitle + '"</b>! <span class="text-danger">Data penyewaan buku ini juga akan dihapus!</span>',
+			confirmButtonColor: '#3085d6',
+			confirmButtonText: 'Ya, hapus!',
+			showCancelButton: true,
+			cancelButtonColor: '#d33',
+			cancelButtonText: 'Batal'
+		}).then((result) => {
+			if(result.isConfirmed) {
+				// Submit book's delete form.
+				document.getElementById('delete-form-' + bookId).submit();
+			}
+		});
+	};
+
 	$(document).ready(function(){
 		// Change title field colors.
 		$('#title').change(function(e) {
@@ -411,8 +457,18 @@
 					const fileSizeMB = (file.size / maxSizeBytes).toFixed(2); // Rounded.	
 					$('#fileSize').text(fileSizeMB + ' MB');
 
+					// Change the file input field color.
+					$('.custom-file-label').removeClass('bg-danger text-white');
+
+					// Display image preview.
+					$('#imageContainer').removeClass('d-none');
+					$('#coverMetadata').addClass('mt-4');
+
 					// Show error message.
-					$('#fileError').removeClass('d-none');
+					$("#fileError").removeClass('d-none');
+					$('#fileError2').addClass('d-none');
+
+					canSubmit = true;
 
 					// If file is larger than 2 MB.
 					if (file.size > (2048576)) {
@@ -495,7 +551,39 @@
 			$('#cancelUpload').addClass('d-none');
 		});
 
+		// Reset all input fields
 		$('#resetButton').click(function() {
+			// Title.
+			$("#title").val('');
+			$("#title").removeClass('bg-danger text-white');
+			$("#title").next('.text-danger').addClass('d-none');
+
+			// Author.
+			$("#author").val('');
+			$("#author").removeClass('bg-danger text-white');
+			$("#author").next('.text-danger').addClass('d-none');
+
+			// ISBN.
+			$("#isbn").val('');
+			$("#isbn").removeClass('bg-danger text-white');
+			$("#isbn").next('.text-danger').addClass('d-none');
+
+			// Published year.
+			$("#published_year").val('');
+			$("#published_year").removeClass('bg-danger text-white');
+			$("#published_year").next('.text-danger').addClass('d-none');
+
+			// Stock.
+			$("#stock").val('');
+			$("#stock").removeClass('bg-danger text-white');
+			$("#stock").next('.text-danger').addClass('d-none');
+
+			// Rental price.
+			$("#rental_price").val('');
+			$("#rental_price").removeClass('bg-danger text-white');
+			$("#rental_price").next('.text-danger').addClass('d-none');
+
+			// Cover image.
 			$('#cover_image').val('');
 
 			// Reset file input label.
@@ -517,15 +605,9 @@
 			// Hide the cancel button.
 			$('#cancelUpload').addClass('d-none');
 		});
-	
-		// Delete confirmation.
-		$('.delete-btn').on('click', function(e) {
-			e.preventDefault();
-			var bookId = $(this).data('book-id');
-			if (confirm('Apakah Anda yakin ingin menghapus buku ini?')) {
-				$('#delete-form-' + bookId).submit();
-			}
-		});
+
+		// Initialize DataTables to books table.
+		$('#booksTable').DataTable();
 	});
 	</script>
 @endsection

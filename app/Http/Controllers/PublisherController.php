@@ -11,8 +11,8 @@ class PublisherController extends Controller
 	// Display publishers.
 	public function index()
 	{
-		$data['publishers'] = Publisher::all();
-		return view('pages.publishers.index', $data);
+		$publishers = Publisher::orderBy('name')->get();
+		return view('pages.publishers.index', compact('publishers'));
 	}
 
 	// Remove the specified publisher.

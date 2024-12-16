@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('members', function (Blueprint $table) {
+            $table->string('profile_photo')->nullable();
             // FK to member type.
             $table->unsignedBigInteger('type_id')->after('full_name');
 

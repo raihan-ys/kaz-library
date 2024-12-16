@@ -13,11 +13,11 @@ class PublishersTableSeeder extends Seeder
      */
     public function run(): void
     {
+        Publisher::create(['name' => 'Bandung Informatika']);
         Publisher::create(['name' => 'Elex Media Komputindo']);
+        Publisher::create(['name' => 'Grasindo']);
+        Publisher::create(['name' => 'Jubilee Enterprise']);
         Publisher::create(['name' => 'Kompas Gramedia']);
         Publisher::create(['name' => 'Penerbit Andi']);
-        Publisher::create(['name' => 'Bandung Informatika']);
-        Publisher::create(['name' => 'Jubilee Enterprise']);
-        Publisher::create(['name' => 'Grasindo']);
     }
 }

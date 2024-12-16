@@ -17,6 +17,7 @@ class UpdateMemberRequest extends FormRequest
       'full_name' => 'required|string|max:100',
       'type_id' => 'required|integer|exists:member_types,id',
       'address' => 'required|string|max:255',
+      'profile_photo' => 'file|image|mimes:png|max:2048',
     ];
   }
   
@@ -37,6 +38,10 @@ class UpdateMemberRequest extends FormRequest
       'address.required' => 'Alamat wajib diisi!',
       'address.string' => 'Alamat harus berupa string!',
       'address.max' => 'Panjang alamat maksimal 255 karakter!',
+      'profile_photo.file' => 'Foto profil harus berupa berkas!',
+			'profile_photo.image' => 'Berkas harus berupa gambar!',
+			'profile_photo.mimes' => 'Foto profil harus berupa berkas berformat PNG!',
+			'profile_photo.max' => 'Foto profil tidak boleh lebih dari 2MB!',
     ];
   }
 }

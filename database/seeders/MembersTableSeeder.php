@@ -13,25 +13,25 @@ class MembersTableSeeder extends Seeder
     public function run(): void
     {
 			Member::create([
-				'full_name' => 'John Cena',
+				'full_name' => 'John Doe',
 				'type_id' => '1',
-				'address' => 'Jl. Purnama Sari',
+				'address' => 'Jl. Purnama Sari, Cluster Taman Sari, Kec. Tangkerang Selatan',
 				'phone' => '+62-819-9057-6161',
-				'email' => 'johncena@wwe.com',
+				'email' => 'johndoe@gmail.com',
 			]);
       Member::create([
-				'full_name' => 'Optimus Prime',
+				'full_name' => 'Jane Sue',
 				'type_id' => '2',
-				'address' => 'Jl. Wono Sari',
+				'address' => 'Jl. Delima, Kec. Tangkerang Utara',
 				'phone' => '+62-812-7638-356',
-				'email' => 'oprime@iacon.com',
+				'email' => 'janesue@gmail.com',
 			]);
 			Member::create([
-				'full_name' => 'Megatron',
+				'full_name' => 'Arnold Arn',
 				'type_id' => '3',
-				'address' => 'Jl. Taman Sari',
+				'address' => 'Jl. Melur, Kec. Sukajadi',
 				'phone' => '+62-819-2255-4411',
-				'email' => 'megs@iacon.com',
+				'email' => 'arnoldarn	@gmail.com',
 			]);
     }
 }

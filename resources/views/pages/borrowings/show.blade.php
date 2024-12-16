@@ -43,15 +43,6 @@
 				{{-- body --}}
 				<div class="card-body">
 
-					{{-- success message --}}
-					@if(session('success'))
-					<div class="alert alert-success">
-						<span class="font-weight-bold" style="float: right; cursor: pointer;" id="closeAlert">&times;</span>
-						<i class="fas fa-check"></i>
-						{{ session('success') }}
-					</div>
-					@endif
-
 					{{-- late return alert --}}
 					@if($isLate)
 					<div class="alert text-white" style="background-color: red">
@@ -65,6 +56,30 @@
 						Buku ini sudah terlambat selama {{ $lateDays }} hari. Denda yang dikenakan saat ini: Rp. {{ number_format($lateFee, 0, ',', '.') }}.
 						@endif
 					</div>
+					@endif
+
+					{{-- success message --}}
+					@if(session('success'))
+					<div class="toast bg-success" role="alert" aria-live="assertive" aria-atomic="true" style="position: absolute; top: 20px; right: 20px;">
+						{{-- toast header --}}
+						<div class="toast-header" style="font-size: 20px;">
+							<i class="fas fa-check mr-1"></i>
+							<strong class="mr-auto">Sukses!</strong>
+							<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						{{-- toast body --}}
+						<div class="toast-body" style="font-size: 15px">
+							{{ session('success') }}
+						</div>
+					</div>
+					<script>
+						$(document).ready(function(){
+							$('.toast').toast({ delay: 5000 });
+							$('.toast').toast('show');
+						});
+					</script>
 					@endif
 
 					<div class="row">

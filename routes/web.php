@@ -14,7 +14,6 @@ use App\Http\Controllers\{
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,7 +37,10 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'],
 	function () {
 		Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 		Route::get('/data/books-by-month', [DashboardController::class, 'getBooksByMonthData'])->name('dashboard.data.books_by_month');
-});
+		Route::get('/data/borrowings-by-category', [DashboardController::class, 'getBorrowingsByCategory'])->name('dashboard.data.borrowings_by_category');
+		Route::get('/data/members-by-type', [DashboardController::class, 'getMembersByType'])->name('dashboard.data.members_by_type');
+	}
+);
 
 // Users.
 Route::resource('/user', UserController::class)->name('index', 'user')->middleware(['auth', 'role:admin']);

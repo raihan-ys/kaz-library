@@ -176,14 +176,14 @@
                     </li>
                     {{-- newest books --}}
                     <li class="nav-item">
-                        <a  href="#newestBooks">
+                        <a href="#newestBooks">
                             <i class="fas fa-book"></i>
                             Buku Terbaru
                         </a>
                     </li>
                     {{-- most borrowed --}}
                     <li class="nav-item">
-                        <a  href="#mostBorrowed">
+                        <a href="#mostBorrowedBooks">
                             <i class="fas fa-book"></i>
                             Buku Terlaris
                         </a>
@@ -230,11 +230,10 @@
         <div class="col-md-6 p-3 text-white d-flex flex-column justify-content-center">
             <h3 class="font-weight-bold">
                 Selamat Datang di
-                <span class="font-weight-bolder h3" style="color: orangered">Kaz-Library</span>
-                !
+                <span class="font-weight-bolder h3" style="color: orangered">Kaz-Library</span>!
             </h3>
             <p style="text-align: justify;">
-                Selamat datang di e-Library Kazee, pusat sumber informasi yang dirancang untuk mendukung kebutuhan akademik dan penelitian Anda. Kami bangga menyediakan koleksi buku, jurnal ilmiah, makalah penelitian, dan berbagai sumber daya lainnya yang dapat diakses dengan mudah dan cepat.
+                Selamat datang di <i>e-Library</i> Kazee, pusat sumber informasi yang dirancang untuk mendukung kebutuhan akademik dan penelitian Anda. Kami bangga menyediakan koleksi buku, jurnal ilmiah, makalah penelitian, dan berbagai sumber daya lainnya yang dapat diakses dengan mudah dan cepat.
             </p>
             @guest
             <a class="btn btn-outline-light" href="{{ route('login') }}">
@@ -294,7 +293,7 @@
             <div class="col-md-3 p-2 pr-3">
                 <h2>Ayo Daftar!</h2>
                 <p style="text-align: justify;">
-                    Dengan mendaftar menjadi anggota perpustakaan ini, Anda akan menikmati berbagai keuntungan yang dirancang untuk mendukung kebutuhan informasi dan pengembangan pengetahuan Anda. Sebagai anggota, Anda mendapatkan akses eksklusif ke koleksi buku, jurnal, dan e-resources yang lengkap dan selalu diperbarui!
+                    Dengan mendaftar menjadi anggota perpustakaan ini, Anda akan menikmati berbagai keuntungan yang dirancang untuk mendukung kebutuhan informasi dan pengembangan pengetahuan Anda. Sebagai anggota, Anda mendapatkan akses eksklusif ke koleksi buku, jurnal, dan <i>e-resources</i> yang lengkap dan selalu diperbarui!
                 </p>
                 <a class="btn btn-outline-primary" href="#">Pendaftaran</a> 
             </div>
@@ -306,7 +305,7 @@
                     </div>
                     <div class="card-body">
                         <h5 class="font-weight-bold">Koleksi Buku</h5>
-                        <small>Hingga Buku Dengan Bahasa Asing</small>
+                        <small>Hingga Buku dengan Bahasa Asing</small>
                         <p class="mt-2" style="text-align: justify;">Menawarkan koleksi buku teks yang lengkap dan bervariasi, mencakup berbagai bidang ilmu pengetahuan, sastra, dan teknologi.</p>
                     </div>
                 </div>
@@ -341,46 +340,54 @@
         </div>
         {{-- /.features --}}
 
-        {{-- book collection --}}
-        <div class="container mt-5" id="newestBooks">
-            {{-- recommended --}}
-            <div class="row mb-5">
+        {{-- books collection --}}
+        @if(count($books) > 0)
+        <div class="container mt-5">
+
+            {{-- recommended and latest release books --}}
+            <div class="row mb-5" id="newestBooks">
                 <div class="col-12">
                     <h2 class="text-center mb-4">Buku Terbaru & Rekomendasi</h2>
                 </div>
-                @for ($i = 1; $i <= 4; $i++)
+                @foreach ($books as $book)
                 <div class="col-md-3 mb-4">
                     <div class="card h-100">
-                        <img src="{{ asset('images/journals.jpeg') }}" class="card-img-top" alt="Buku {{ $i }}">
+                        <img src="{{ $book->cover_image ? asset('storage/'.$book->cover_image) : asset('images/sample-book-cover.png') }}" alt="Book's Cover Image Preview" class="card-img-top">
                         <div class="card-body">
-                            <h5 class="card-title">Judul Buku {{ $i }}</h5>
-                            <p class="card-text">Penulis: Nama Penulis {{ $i }}</p>
-                            <a href="#" class="btn btn-primary">Lihat Detail</a>
+                            <h5 class="card-title mb-1">Judul Buku: <b>{{ $book->title }}</b></h5>
+                            <p class="card-text">Penulis: <b>{{ $book->author }}</b></p>
                         </div>
+                        <div class="card-footer"><a href="#" class="btn btn-primary btn-block">Lihat Detail</a></div>
                     </div>
                 </div>
-                @endfor
+                @endforeach
             </div>
-            {{-- most borrowed --}}
-            <div class="row" id="mostBorrowed">
+
+            {{-- most borrowedbooks --}}
+            @if(count($mostBorrowedBooks) > 0)
+            <div class="row" id="mostBorrowedBooks">
                 <div class="col-12">
                     <h2 class="text-center mb-4">Buku Terlaris</h2>
                 </div>
-                @for ($i = 1; $i <= 4; $i++)
+                @foreach ($mostBorrowedBooks as $borrowing)
                 <div class="col-md-3 mb-4">
                     <div class="card h-100">
-                        <img src="{{ asset('images/books.jpeg') }}" class="card-img-top" alt="Buku Terlaris {{ $i }}">
+                        <img src="{{ $borrowing->book->cover_image ? asset('storage/'.$borrowing->book->cover_image) : asset('images/sample-book-cover.png') }}" alt="Book's Cover Image Preview" class="card-img-top">
                         <div class="card-body">
-                            <h5 class="card-title">Judul Buku Terlaris {{ $i }}</h5>
-                            <p class="card-text">Penulis: Nama Penulis {{ $i }}</p>
-                            <p class="card-text"><small class="text-muted">Dipinjam: {{ rand(50, 200) }} kali</small></p>
-                            <a href="#" class="btn btn-primary">Lihat Detail</a>
+                            <h5 class="card-title mb-1">Judul Buku: <b>{{ $borrowing->book->title }}</b></h5>
+                            <p class="card-text">Penulis: <b>{{ $borrowing->book->author }}</b></p>
+                            <p class="card-text"><small class="text-muted">Dipinjam: <b>{{ $borrowing->total_borrowed }} kali</b></small></p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#" class="btn btn-primary btn-block">Lihat Detail</a>
                         </div>
                     </div>
                 </div>
-                @endfor
+                @endforeach
             </div>
+            @endif
         </div>
+        @endif
         {{-- /.book collection --}}
 	</div>
 	<footer class="footer p-3">

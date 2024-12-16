@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Detail Buku - Kaz-Library')
+@section('title', 'Detail Anggota - Kaz-Library')
 @section('page-header')
 <div class="row m-0">
 	<div class="col-12 col-lg-8 offset-lg-2">
@@ -9,16 +9,16 @@
 
 					{{-- page title --}}
 					<div class="col-sm-6">
-						<h1>Detail Buku</h1>
+						<h1>Detail Anggota</h1>
 					</div>
 
 					{{-- breadcrumb --}}
 					<div class="col-sm-6">
 						<ol class="breadcrumb float-sm-right">
 							<li class="breadcrumb-item">
-								<a href="{{ route('buku') }}">
-									<i class="fas fa-book"></i>
-									Buku
+								<a href="{{ route('anggota') }}">
+									<i class="fas fa-users"></i>
+									Anggota
 								</a>
 							</li>
 							<li class="breadcrumb-item active">
@@ -40,11 +40,10 @@
 		<div class="col-12 col-lg-8 offset-lg-2">
 			<div class="card" style="border-top: #181C32 solid 5px">
 				<div class="card-header">
-					<h5 class="font-weight-bold">Detail Buku</h5>
+					<h5 class="font-weight-bold">Detail Anggota</h5>
 				</div>
 				
 				<div class="card-body">
-
 					{{-- success message --}}
 					@if(session('success'))
 					<div class="toast bg-success" role="alert" aria-live="assertive" aria-atomic="true" style="position: absolute; top: 20px; right: 20px;">
@@ -68,72 +67,53 @@
 						});
 					</script>
 					@endif
-					{{-- /.success message --}}
 
-					{{-- book data --}}
+					{{-- member data --}}
 					<div class="row">
-						{{-- book cover image --}}
+						{{-- profile photo --}}
 						<div class="m-auto">
-							<img src="{{ $book->cover_image ? asset('storage/'.$book->cover_image) : asset('images/sample-book-cover.png') }}" alt="Book's Cover Image Preview" class="img-fluid img-thumbnail" style="max-width: 300px">
+							<img src="{{ $member->profile_photo ? asset('storage/'.$member->profile_photo) : asset('images/sample-user-photo.jpeg') }}" alt="Member's Profile Photo Preview" class="img-fluid img-thumbnail" style="width: 200px; height: 200px">
 						</div>
 				
 						<div class="col-md-8">
-							{{-- title --}}
+							{{-- full name --}}
 							<div class="form-group">
-								<label for="title">Judul</label>
-								<p id="title">{{ $book->title }}</p>
+								<label for="full_name">Nama</label>
+								<p id="full_name">{{ $member->full_name }}</p>
 							</div>
 
-							{{-- author --}}
+							{{-- type --}}
 							<div class="form-group">
-								<label for="author">Penulis</label>
-								<p id="author">{{ $book->author }}</p>
+								<label for="type_name">Tipe</label>
+								<p id="type_name">{{ $member->type_name }}</p>
 							</div>
 
-							{{-- isbn --}}
+							{{-- address --}}
 							<div class="form-group">
-								<label for="isbn">ISBN</label>
-								<p id="isbn">{{ $book->isbn }}</p>
+								<label for="address">Alamat</label>
+								<p id="address">{{ $member->address }}</p>
 							</div>
 
-							{{-- published year --}}
+							{{-- phone --}}
 							<div class="form-group">
-								<label for="published_year">Tahun terbit</label>
-								<p id="published_year">{{ $book->published_year }}</p>
+								<label for="phone">Nomor Telepon</label>
+								<p id="phone">{{ $member->phone }}</p>
 							</div>
 
-							{{-- category --}}
+							{{-- email --}}
 							<div class="form-group">
-								<label for="category_id">Kategori</label>
-								<p id="category_id">{{ $book->category->name }}</p>
-							</div>
-
-							{{-- publisher --}}
-							<div class="form-group">
-								<label for="publisher">Penerbit</label>
-								<p id="publisher">{{ $book->publisher->name }}</p>
-							</div>
-
-							{{-- stock --}}
-							<div class="form-group">
-								<label for="status">Stok</label>
-								<p>{{ $book->stock }}</p>
-							</div>
-
-							{{-- rental price --}}
-							<div class="form-group">
-								<label for="status">Biaya Sewa</label>
-								<p> Rp.{{ number_format($book->rental_price, 0, ',', '.') }}</p>
+								<label for="email">Email</label>
+								<p id="email">{{ $member->email }}</p>
 							</div>
 						</div>
 					</div>
-					{{-- /.book data --}}
+					{{-- /.member data --}}
 				</div>
 				{{-- /.body --}}
 
 				{{-- footer --}}
 				<div class="card-footer">
-					<a href="{{ route('buku') }}" class="btn btn-secondary"><i class="fas fa-arrow-left mr-1"></i>Kembali</a>
+					<a href="{{ route('anggota') }}" class="btn btn-secondary"><i class="fas fa-arrow-left mr-1"></i>Kembali</a>
 				</div>
 			</div>
 		</div>

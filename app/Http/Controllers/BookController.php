@@ -9,6 +9,7 @@ use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
@@ -17,19 +18,25 @@ class BookController extends Controller
 	// Display all books.
 	public function index()
 	{
-		$data['books'] = Book::with('category', 'publisher')->get();
-		$data['categories'] = Category::all();
-		$data['publishers'] = Publisher::all();
+		$books = DB::table('books')
+			->join('categories', 'books.category_id', '=', 'categories.id')
+			->join('publishers', 'books.publisher_id', '=', 'publishers.id')
+			->select('books.*', 'categories.name as category_name', 'publishers.name as publisher_name')
+			->orderBy('title')
+			->get();
 
-		return view('pages.books.index', $data);
+		$categories = Category::orderBy('name')->get();
+		$publishers = Publisher::orderBy('name')->get();
+
+		return view('pages.books.index', compact('books', 'categories', 'publishers'));
 	}
 
 	// Show a specified book detail.
 	public function show($id) {
 		// Find the specified book.
-		$data['book'] = Book::findOrFail($id);
+		$book = Book::findOrFail($id);
 
-		return view('pages.books.show', $data);
+		return view('pages.books.show', compact('book'));
 	}
 
 	// Insert book.
@@ -69,12 +76,12 @@ class BookController extends Controller
 	public function edit($id)
 	{
 		// Find the specified book.
-		$data['book'] = Book::findOrFail($id);
+		$book = Book::findOrFail($id);
 
-		$data['categories'] = Category::all();
-		$data['publishers'] = Publisher::all();
+		$categories = Category::orderBy('name')->get();
+		$publishers = Publisher::orderBy('name')->get();
 
-		return view('pages.books.edit', $data);
+		return view('pages.books.edit', compact('book', 'categories', 'publishers'));
 	}
 
 	// Update specified book.
@@ -91,20 +98,21 @@ class BookController extends Controller
 
     // Custom validation for ISBN.
     $request->validate(
-		[
-			'isbn' => [
-				'required',
-				'string',
-				'max:20',
-				Rule::unique('books')->ignore($book->id),
+			[
+				'isbn' => [
+					'required',
+					'string',
+					'max:20',
+					Rule::unique('books')->ignore($book->id),
+				]
+			], 
+			[
+				'isbn.required' => 'ISBN wajib diisi!',
+				'isbn.string' => 'ISBN harus berupa string!',
+				'isbn.max' => 'panjang ISBN maksimal 20 karakter!',
+				'isbn.unique' => 'ISBN ini sudah digunakan oleh buku lain!',
 			]
-    ], 
-		[
-			'isbn.required' => 'ISBN wajib diisi!',
-			'isbn.string' => 'ISBN harus berupa string!',
-			'isbn.max' => 'panjang ISBN maksimal 20 karakter!',
-			'isbn.unique' => 'ISBN ini sudah digunakan oleh buku lain!',
-    ]);
+		);
 
 		// If a file is uploaded as cover image.
 		if($request->hasFile('cover_image')) {

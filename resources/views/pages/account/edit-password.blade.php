@@ -86,7 +86,7 @@
 						{{-- new password --}}
 						<div class="form-group">
 							<label for="new_password">Password Baru</label>
-							<input type="password" class="form-control {{ $errors->has('new_password') ? 'bg-danger text-white' : '' }}" id="new_password" name="new_password" value="{{ old('new_password') }}" placeholder="Masukkan password baru" maxlength="255" required>
+							<input type="password" class="form-control {{ $errors->has('new_password') ? 'bg-danger text-white' : '' }}" id="new_password" name="new_password" value="{{ old('new_password') }}" placeholder="Masukkan password baru" minlength="8" required>
 							<small class="form-text text-muted">Password terdiri dari minimal 8 karakter dan terdiri dari huruf kecil, huruf kapital dan angka.</small>
 							@if($errors->has('new_password'))
 							{{-- error message --}}
@@ -99,7 +99,7 @@
 						{{-- new password confirmation --}}
 						<div class="form-group">
 							<label for="new_password_confirmation">Konfirmasi Password Baru</label>
-							<input type="password" class="form-control {{ $errors->has('new_password_confirmation') ? 'bg-danger text-white' : '' }}" id="new_password_confirmation" name="new_password_confirmation" value="{{ old('new_password_confirmation') }}" placeholder="Konfirmasi password baru" maxlength="255" required>
+							<input type="password" class="form-control {{ $errors->has('new_password_confirmation') ? 'bg-danger text-white' : '' }}" id="new_password_confirmation" name="new_password_confirmation" value="{{ old('new_password_confirmation') }}" placeholder="Konfirmasi password baru" minlength="8" required>
 							@if($errors->has('new_password_confirmation'))
 							{{-- error message --}}
 							<span class="text-danger">

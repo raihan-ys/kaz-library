@@ -12,11 +12,11 @@ class CategoriesTableSeeder extends Seeder
      */
     public function run(): void
     {
-        Category::create(['name' => 'Komputer']);
-        Category::create(['name' => 'Kesehatan']);
+        Category::create(['name' => 'Anak-anak']);
         Category::create(['name' => 'Fiksi Ilmiah']);
         Category::create(['name' => 'Improvisasi Diri']);
+        Category::create(['name' => 'Komputer']);
+        Category::create(['name' => 'Kesehatan']);
         Category::create(['name' => 'Novel']);
-        Category::create(['name' => 'Anak-anak']);
     }
 }

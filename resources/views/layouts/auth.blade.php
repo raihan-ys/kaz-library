@@ -51,9 +51,38 @@
 			font-size: 1.5rem;
 		}
  	</style>
+
+	{{-- jQuery JS --}}
+	<script type="text/javascript" src="{{ asset('adminlte/plugins/jquery/jquery.min.js') }}"></script>
 </head>
 
 <body class="hold-transition login-page">
+
+	{{-- success message --}}
+	@if(session('success'))
+	<div class="toast bg-success" role="alert" aria-live="assertive" aria-atomic="true" style="position: absolute; top: 20px; right: 20px;">
+		{{-- toast header --}}
+		<div class="toast-header" style="font-size: 20px;">
+			<i class="fas fa-check mr-1"></i>
+			<strong class="mr-auto">Sukses!</strong>
+			<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		{{-- toast body --}}
+		<div class="toast-body" style="font-size: 15px">
+			{{ session('success') }}
+		</div>
+	</div>
+	<script>
+		$(document).ready(function(){
+			$('.toast').toast({ delay: 5000 });
+			$('.toast').toast('show');
+		});
+	</script>
+	@endif
+	{{-- /.success message --}}
+
 	{{-- login box --}}
 	<div class="login-box">
 		{{-- logo --}}
@@ -67,22 +96,8 @@
  	</div>
  	<!-- /.login-box -->
 
-	<!-- AdminLTE JS -->
-	<script src="{{ asset('adminlte/plugins/jquery/jquery.min.js') }}"></script>
-	<script src="{{ asset('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-	<script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
-	{{-- Custom JS --}}
-	<script type="text/javascript">
-		$(document).ready(function() {
-			// Get elements.
-			const closeAlert = $("#closeAlert");
-
-			// Close alerts.
-			closeAlert.click(function() {
-				closeAlert.parent().hide();
-			});
-		});
-	</script>
+	{{-- Bootstrap 4 JS --}}
+	<script type="text/javascript" src="{{ asset('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 	@yield('js')
 </body>
 </html>

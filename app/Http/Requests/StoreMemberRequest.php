@@ -19,6 +19,7 @@ class StoreMemberRequest extends FormRequest
 			'address' => 'required|string|max:255',
 			'phone' => 'required|string|max:15|unique:members,phone',
 			'email' => 'required|string|email|max:255|unique:members,email',
+			'profile_photo' => 'file|image|mimes:png|max:2048',
 		];
 	}
 
@@ -48,6 +49,10 @@ class StoreMemberRequest extends FormRequest
 			'email.email' => 'Mohon masukkan email yang valid!',
 			'email.max' => 'Panjang email maksimal 255 karakter!',
 			'email.unique' => 'Email ini sudah terdaftar!',
+			'profile_photo.file' => 'Foto profil harus berupa berkas!',
+			'profile_photo.image' => 'Berkas harus berupa gambar!',
+			'profile_photo.mimes' => 'Foto profil harus berupa berkas berformat PNG!',
+			'profile_photo.max' => 'Foto profil tidak boleh lebih dari 2MB!',
 		];
 	}
 }

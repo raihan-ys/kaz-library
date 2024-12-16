@@ -17,11 +17,11 @@ class BorrowingController extends Controller
     // Display all borrowings.
     public function index()
     {
-        $data['borrowings'] = Borrowing::with('member', 'book')->orderBy('borrow_date', 'DESC')->get();
-        $data['members'] = Member::all();
-        $data['books'] = Book::all();
+        $borrowings = Borrowing::with('member', 'book')->orderBy('borrow_date', 'DESC')->get();
+        $members = Member::orderBy('full_name')->get();
+        $books = Book::orderBy('title')->get();
         
-        return view('pages.borrowings.index', $data);
+        return view('pages.borrowings.index', compact('borrowings', 'members', 'books'));
     }
 
     // Store a newly created borrowing.
@@ -81,8 +81,8 @@ class BorrowingController extends Controller
         // Check if the specified borrowing exist.
         $borrowing = Borrowing::findOrFail($id);
         
-        $members = Member::all();
-        $books = Book::all();
+        $members = Member::orderBy('full_name')->get();
+        $books = Book::orderBy('title')->get();
 
         return view('pages.borrowings.edit', compact('borrowing', 'members', 'books'));
     }

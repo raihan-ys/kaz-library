@@ -28,32 +28,47 @@
 		<div class="col-12">
 			<div class="card">
 				<div class="card-body">
-					<table class="table table-bordered table-hover">
+					<table class="table table-bordered table-hover table-striped dataTable dtr-inline" id="usersTable">
 						<thead class="text-white" style="background-color: #181C32">
 							<tr>
 								<th scope="col">#</th>
-								<th scope="col">Nama Lengkap</th>
+								<th scope="col">Nama</th>
 								<th scope="col">Email</</th>
 								<th scope="col">Dibuat Pada</th>
 							</tr>
 						</thead>
-		 			<tbody>
-						@forelse ($librarians as $librarian)
-						<tr>
-							<td>{{ $loop->iteration }}</td>
-							<td class="text-bold">{{ $librarian->name }}</td>
-							<td>{{ $librarian->email }}</td>
-							<td>{{ $librarian->created_at }}</td>
-						</tr>
-						@empty
-						<tr>
-							<td colspan="5" class="text-center font-weight-bold text-danger py-5">Tidak ada Pustakawan!</td>
-						</tr>
- 						@endforelse
-					</tbody>
-				</table>
+						<tbody>
+							@forelse ($librarians as $librarian)
+							<tr>
+								<td>{{ $loop->iteration }}</td>
+								<td class="text-bold">{{ $librarian->name }}</td>
+								<td>{{ $librarian->email }}</td>
+								<td>{{ $librarian->created_at }}</td>
+							</tr>
+							@empty
+							<tr>
+								<td colspan="5" class="text-center font-weight-bold text-danger py-5">Tidak ada Pustakawan!</td>
+							</tr>
+							@endforelse
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
+@endsection
+
+@section('js')
+<script>
+	$(document).ready(function() {
+		// Initialize DataTables to users table.
+		$('#usersTable').DataTable({
+			dom: 'Bfrtip', // Set the elements to shown in the table.
+			buttons: [
+				'copy', 'csv', 'excel', 'pdf', 'print'
+			]
+		});
+	});
+</script>
 @endsection

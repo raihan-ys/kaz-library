@@ -4,15 +4,6 @@
 
 <div class="card">
     <div class="card-body login-card-body">
-
-        {{-- success message --}}
-        @if(session('success'))
-        <div class="alert alert-success">
-            <span class="font-weight-bold" style="float: right; cursor: pointer;" id="closeAlert">&times;</span>
-            <i class="fas fa-check"></i>
-            {{ session('success') }}
-        </div>
-        @endif
         
         <p class="login-box-msg">Masuk untuk memulai sesi Anda</p>
 
@@ -38,7 +29,7 @@
 
             {{-- password --}}
             <div class="input-group mb-3">
-                <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Kata Sandi" required>
+                <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password" required>
                 <div class="input-group-append">
                     <div class="input-group-text">
                         <span class="fas fa-lock"></span>

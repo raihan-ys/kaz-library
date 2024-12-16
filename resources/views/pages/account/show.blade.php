@@ -53,17 +53,32 @@
 
 					{{-- success message --}}
 					@if(session('success'))
-					<div class="alert alert-success">
-						<span class="font-weight-bold" style="float: right; cursor: pointer;" id="closeAlert">&times;</span>
-						<i class="fas fa-check"></i>
-						{{ session('success') }}
+					<div class="toast bg-success" role="alert" aria-live="assertive" aria-atomic="true" style="position: absolute; top: 20px; right: 20px;">
+						{{-- toast header --}}
+						<div class="toast-header" style="font-size: 20px;">
+							<i class="fas fa-check mr-1"></i>
+							<strong class="mr-auto">Sukses!</strong>
+							<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						{{-- toast body --}}
+						<div class="toast-body" style="font-size: 15px">
+							{{ session('success') }}
+						</div>
 					</div>
+					<script>
+						$(document).ready(function(){
+							$('.toast').toast({ delay: 5000 });
+							$('.toast').toast('show');
+						});
+					</script>
 					@endif
 
 					<div class="row">
-						{{-- avatar --}}
+						{{-- profile photo --}}
 						<div class="m-auto">
-							<img src="{{ $user->profile_photo ? asset('storage/'.$user->profile_photo) : asset('images/sample-user-photo.jpeg') }}" alt="User's Avatar" class="rounded img-fluid" style="width: 200px; height: 200px">
+							<img src="{{ $user->profile_photo ? asset('storage/'.$user->profile_photo) : asset('images/sample-user-photo.jpeg') }}" alt="User's Profile Photo Preview" class="rounded img-fluid" style="width: 200px; height: 200px">
 						</div>
 
 						<div class="col-md-8">

@@ -57,10 +57,10 @@ class AccountController extends Controller
 		$request->validate(
 			[
 				'email' => [
-				'required',
-				'string',
-				'max:255',
-				Rule::unique('users')->ignore($user->id),
+					'required',
+					'string',
+					'max:255',
+					Rule::unique('users')->ignore($user->id),
 				]
 			],
 			[

@@ -16,6 +16,7 @@ class Member extends Model
         'address',
         'phone',
         'email',
+        'profile_photo',
     ];
 
     /**

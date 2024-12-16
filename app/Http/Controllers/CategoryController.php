@@ -11,9 +11,9 @@ class CategoryController extends Controller
 	// Display categories.
 	public function index()
 	{
-		$data['categories'] = Category::all();
+		$categories = Category::orderBy('name')->get();
 		
-		return view('pages.categories.index', $data);
+		return view('pages.categories.index', compact('categories'));
 	}
 
 	// Remove the specified category.

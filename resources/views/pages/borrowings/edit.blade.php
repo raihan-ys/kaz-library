@@ -179,6 +179,42 @@
 @section('js')
 <script>
 	$(document).ready(function() {
+		// Change member id field colors.
+		$('#member_id').change(function(e) {
+			$("#member_id").removeClass('bg-danger text-white');
+			$(this).next('.text-danger').addClass('d-none');
+		});
+
+		// Change book id field colors.
+		$('#book_id').change(function(e) {
+			$("#book_id").removeClass('bg-danger text-white');
+			$(this).next('.text-danger').addClass('d-none');
+		});
+
+		// Change borrow date field colors.
+		$('#borrow_date').change(function(e) {
+			$("#borrow_date").removeClass('bg-danger text-white');
+			$(this).next('.text-danger').addClass('d-none');
+		});
+
+		// Change return date field colors.
+		$('#return_date').change(function(e) {
+			$("#return_date").removeClass('bg-danger text-white');
+			$(this).next('.text-danger').addClass('d-none');
+		});
+
+		// Change rental price field colors.
+		$('#rental_price').change(function(e) {
+			$("#rental_price").removeClass('bg-danger text-white');
+			$(this).next('.text-danger').addClass('d-none');
+		});
+
+		// Change status field colors.
+		$('#status').change(function(e) {
+			$("#status").removeClass('bg-danger text-white');
+			$(this).next('.text-danger').addClass('d-none');
+		});
+
 		// Update the return date value.
     function updateReturnDateField() {
 			var status = $('#status').val();

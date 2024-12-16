@@ -17,6 +17,9 @@
 	<link rel="stylesheet" href="{{ asset('adminlte/plugins/fontawesome-free/css/all.min.css') }}">
 	{{-- Overlay Scrollbars CSS --}}
 	<link rel="stylesheet" href="{{ asset('adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
+	{{-- DataTables CSS --}}
+	<link rel="stylesheet" href="{{ asset('adminlte/plugins/datatables-bs4/css/datatables.bootstrap4.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
 	@yield('css')
 	{{-- Custom CSS --}}
 	<style>
@@ -24,6 +27,12 @@
 		@font-face {
 			font-family: "Poppins";
 			src: url("{{ asset('fonts/poppins/poppins.woff2') }}") format("truetype");
+			font-weight: normal;
+			font-style: normal;
+		}
+		@font-face {
+			font-family: "Play";
+			src: url("{{ asset('fonts/play/play.woff2') }}") format("truetype");
 			font-weight: normal;
 			font-style: normal;
 		}
@@ -93,19 +102,18 @@
 	{{-- overlayScrollbars JS --}}
 	<script type="text/javascript" src="{{ asset('adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"><script>
 	{{-- AdminLTE JS --}}
-	<script type="text/javascript" src="{{ asset('adminlte/dist/js/adminlte.js') }}"></script>
-	{{-- Custom JS --}}
-	<script type="text/javascript">
-		$(document).ready(function() {
-			// Get elements.
-			const closeAlert = $("#closeAlert");
-
-			// Close alerts.
-			closeAlert.click(function() {
-				closeAlert.parent().hide();
-			});
-		});
-	</script>
+	<script type="text/javascript" src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
+	{{-- SweetAlert2 JS  --}}
+	<script type="text/javascript" src="{{ asset('adminlte/plugins/sweetalert2/sweetalert2.all.min.js') }}"></script>
+	{{-- DataTables JS --}}
+	<script type="text/javascript" src="{{ asset('adminlte/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('adminlte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+	{{-- Date Range Picker JS --}}
+	<script type="text/javascript" src="{{ asset('adminlte/plugins/daterangepicker/js/daterangepicker.js') }}"></script>
+	{{-- Moment JS --}}
+	<script type="text/javascript" src="{{ asset('adminlte/plugins/moment/moment.min.js') }}"></script>
+	{{--  --}}
 	@yield('js')
 </body>
 </html>

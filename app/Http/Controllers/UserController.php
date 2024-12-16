@@ -10,7 +10,9 @@ class UserController extends Controller
 {
     public function index()
     {
-        $librarians = User::select('id', 'name', 'email', 'created_at')->get();
+        $librarians = User::select('id', 'name', 'email', 'created_at')
+            ->orderBy('name')
+            ->get();
 
         return view('pages.users.index', compact('librarians'));
     }

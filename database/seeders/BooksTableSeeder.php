@@ -19,33 +19,33 @@ class BooksTableSeeder extends Seeder
             'published_year' => 2003,
             'category_id' => 1,
             'publisher_id' => 1,
-            'cover_image' => 'path/to/cover/image1.jpg',
+            'cover_image' => null,
             'stock' => 3,
-            'rental_price' => 10000,
+            'rental_price' => 1000,
             'created_at' => now(),
         ]);
         Book::create([
             'title' => 'Example Book 2',
             'author' => 'Author name 2',
-            'isbn' => 2222222222222,
+            'isbn' => 1234567892222,
             'published_year' => 2017,
             'category_id' => 2,
             'publisher_id' => 2,
-            'cover_image' => 'path/to/cover/image2.jpg',
+            'cover_image' => null,
             'stock' => 10,
-            'rental_price' => 6000,
+            'rental_price' => 2000,
             'created_at' => now(),
         ]);
         Book::create([
             'title' => 'Example Book 3',
             'author' => 'Author name 3',
-            'isbn' => 3333333333333,
+            'isbn' => 1234567893333,
             'published_year' => 2023,
             'category_id' => 3,
             'publisher_id' => 3,
-            'cover_image' => 'path/to/cover/image3.jpg',
-            'stock' => 30,
-            'rental_price' => 7000,
+            'cover_image' => null,
+            'stock' => 15,
+            'rental_price' => 3000,
         ]);
     }
 }

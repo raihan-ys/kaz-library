@@ -127,8 +127,8 @@
 					{{-- image preview --}}
 					<div class="row" id="previewContainer">
 						<div class="col-3" id="imageContainer">
-							<label for="photoPreview">Pratinjau Foto</label>
-							<img id="photoPreview" src="{{ $user->profile_photo ? asset('storage/'.$user->profile_photo) : asset('images/sample-user-photo.jpeg') }}" alt="Image Preview" class="img-fluid" style="width: 200px; height: 200px;"/>
+							<label for="photoPreview">Pratinjau Foto</label><br>
+							<img id="photoPreview" src="{{ $user->profile_photo ? asset('storage/'.$user->profile_photo) : asset('images/sample-user-photo.jpeg') }}" alt="User's Profile Photo Preview" class="img-fluid" style="width: 200px; height: 200px;"/>
 						</div>
 
 						{{-- Metadata from previous file --}}
@@ -150,12 +150,12 @@
 								<li><span id="fileSize"></span></li>
 								<li><span id="fileType"></span></li>
 							</ul>
-							<div class="text-danger d-none" id="fileError">
-								File terlalu besar, maksimal ukuran 1 MB.
-							</div>
-							<div class="text-danger d-none" id="fileError2">
-								File melebihi ukuran 2 MB, tidak dapat diunggah.
-							</div>
+						</div>
+						<div class="text-danger d-none" id="fileError">
+							File terlalu besar, maksimal ukuran 1 MB.
+						</div>
+						<div class="text-danger d-none" id="fileError2">
+							File melebihi ukuran 2 MB, tidak dapat diunggah.
 						</div>
 					</div>
 					{{-- /.image preview --}}
@@ -231,6 +231,19 @@
 					// Display size in MB if file is too large.
 					const fileSizeMB = (file.size / maxSizeBytes).toFixed(2);
 					$('#fileSize').text(fileSizeMB + ' MB');
+
+					// Change the file input field color.
+					$('.custom-file-label').removeClass('bg-danger text-white');
+
+					// Display image preview.
+					$('#imageContainer').removeClass('d-none');
+					$('#photoMetadata').addClass('mt-4');
+
+					// Show error message.
+					$("#fileError").removeClass('d-none');
+					$('#fileError2').addClass('d-none');
+
+					canSubmit = true;
 
 					// If file is larger than 2 MB.
 					if (file.size > 2048576) {

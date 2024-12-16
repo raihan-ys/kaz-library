@@ -28,9 +28,11 @@
 			<div class="card" style="border-top: #181C32 solid 5px">
 				{{-- header --}}
 				<div class="card-header">
+					@if(count($books) > 0 && count($members) > 0)
 					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createBorrowingModal">
 						<i class="fas fa-plus mr-1"></i>Tambah Penyewaan
 					</button>
+					
 
 					{{-- create borrowing modal --}}
 					<div class="modal fade" id="createBorrowingModal">
@@ -44,7 +46,7 @@
 									</button>
 								</div>
 
-								<form id="createBookForm" action="{{ route('penyewaan.store') }}" method="post">
+								<form id="createBorrowingForm" action="{{ route('penyewaan.store') }}" method="post">
 									{{-- body --}}
 									<div class="modal-body">
 										@csrf
@@ -56,9 +58,9 @@
 										<div class="form-group">
 											<label for="member_id">Anggota</label>
 											<select name="member_id" id="member_id" class="form-control {{ $errors->has('member_id') ? 'bg-danger text-white' : '' }}" required>
-												<option selected diabled hidden>- Pilih Anggota -</option>
+												<option selected disabled hidden>- Pilih Anggota -</option>
 												@foreach($members as $member)
-												<option value="{{ $member->id }}" {{ $member->id === old('member_id') ? 'selected' : '' }}>{{ $member->full_name }}</option>
+												<option value="{{ $member->id }}" {{ old('member_id') == $member->id ? 'selected' : '' }}>{{ $member->full_name }}</option>
 												@endforeach
 											</select>
 											@if($errors->has('member_id'))
@@ -75,7 +77,7 @@
 											<select name="book_id" id="book_id" class="form-control {{ $errors->has('book_id') ? 'bg-danger text-white' : '' }}" required>
 												<option selected disabled hidden>- Pilih Buku -</option>
 												@foreach($books as $book)
-												<option value="{{ $book->id }}" {{ $book->id === old('book_id') ? 'selected' : '' }} data-rental-price="{{ $book->rental_price }}">{{ $book->title }}</option>
+												<option value="{{ $book->id }}" {{ old('book_id') == $book->id ? 'selected' : '' }} data-rental-price="{{ $book->rental_price }}">{{ $book->title }}</option>
 												@endforeach
 											</select>
 											@if($errors->has('book_id'))
@@ -115,7 +117,7 @@
 
 									{{-- footer --}}
 									<div class="modal-footer justify-content-between btn-group">
-										<button type="reset" class="btn btn-outline-danger">Reset</button>
+										<button type="reset" id="resetButton" class="btn btn-outline-danger">Reset</button>
 										<button type="submit" class="btn btn-outline-primary" id="createBook">Simpan</button>
 									</div>
 								</form>
@@ -128,11 +130,26 @@
 
 					{{-- success message --}}
 					@if(session('success'))
-					<div class="alert alert-success mt-1">
-						<span class="font-weight-bold" style="float: right; cursor: pointer;" id="closeAlert">&times;</span>
-						<i class="fas fa-check"></i>
-						{{ session('success') }}
+					<div class="toast bg-success" role="alert" aria-live="assertive" aria-atomic="true" style="position: absolute; top: 20px; right: 20px;">
+						{{-- toast header --}}
+						<div class="toast-header" style="font-size: 20px;">
+							<i class="fas fa-check mr-1"></i>
+							<strong class="mr-auto">Sukses!</strong>
+							<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						{{-- toast body --}}
+						<div class="toast-body" style="font-size: 15px">
+							{{ session('success') }}
+						</div>
 					</div>
+					<script>
+						$(document).ready(function(){
+							$('.toast').toast({ delay: 5000 });
+							$('.toast').toast('show');
+						});
+					</script>
 					@endif
 
 					{{-- error messages --}}
@@ -152,11 +169,12 @@
 					@endif
 					{{-- /.error messages --}}
 				</div>
+				@endif
 				{{-- /.header --}}
 
 				{{-- body --}}
 				<div class="card-body table-responsive">
-					<table class="table table-bordered table-hover">
+					<table class="table table-bordered table-hover table-striped dataTable dtr-inline" id="borrowingsTable">
 						<thead class="text-white" style="background-color: #181C32">
 							<tr>
 								<th scope="col">#</th>
@@ -223,7 +241,7 @@
 											<i class="fas fa-edit"></i>
 										</a>
 										{{-- delete --}}
-										<button type="submit" class="delete-btn btn btn-danger" data-brw-id="{{ $brw->id }}" title="Hapus" id="deleteButton">
+										<button type="submit" class="btn btn-danger" data-brw-id="{{ $brw->id }}" title="Hapus" onclick="confirmDelete({{ $brw->id }}, '{{ $brw->book->title }}', '{{ $brw->book->cover_image ? asset('storage/'.$brw->book->cover_image) : asset('images/sample-book-cover.png') }}','{{ $brw->member->full_name }}')">
 											<i class="fas fa-trash"></i>
 										</button>
 										<form id="delete-form-{{ $brw->id }}" action="{{ route('penyewaan.destroy', $brw->id) }}" method="post" style="display:none">
@@ -253,7 +271,54 @@
 
 @section('js')
 <script>
+	// Borrowing delete confirmation.
+	function confirmDelete(brwId, bookTitle, bookCover, memberName) {
+		// Call SweetAlert2's function.
+		Swal.fire({
+			icon: 'warning',
+			title: 'Apakah Anda yakin?',
+			imageUrl: bookCover,
+			imageWidth: 200,
+			imageHeight: 300,
+			html: 'Setelah dihapus, Anda tidak dapat memulihkan peminjaman buku <b>"' + bookTitle + '"</b> oleh <b>"' + memberName + '"</b>! <span class="text-danger">',
+			confirmButtonColor: '#3085d6',
+			confirmButtonText: 'Ya, hapus!',
+			showCancelButton: true,
+			cancelButtonColor: '#d33',
+			cancelButtonText: 'Batal'
+		}).then((result) => {
+			if(result.isConfirmed) {
+				// Submit borrowing's delete form.
+				document.getElementById('delete-form-' + brwId).submit();
+			}
+		});
+	}
+
 	$(document).ready( function() {
+		// Change member id field colors.
+		$('#member_id').change(function(e) {
+			$("#member_id").removeClass('bg-danger text-white');
+			$(this).next('.text-danger').addClass('d-none');
+		});
+
+		// Change book id field colors.
+		$('#book_id').change(function(e) {
+			$("#book_id").removeClass('bg-danger text-white');
+			$(this).next('.text-danger').addClass('d-none');
+		});
+
+		// Change borrow date field colors.
+		$('#borrow_date').change(function(e) {
+			$("#borrow_date").removeClass('bg-danger text-white');
+			$(this).next('.text-danger').addClass('d-none');
+		});
+
+		// Change rental price colors.
+		$('#rental_price').change(function(e) {
+			$("#rental_price").removeClass('bg-danger text-white');
+			$(this).next('.text-danger').addClass('d-none');
+		});
+
 		// Update rental price on book id change.
 		$('#book_id').on('change', function() {
 			const rentalPrice = $('#rental_price');
@@ -261,13 +326,29 @@
 			rentalPrice.val(selectedOption.data('rental-price'));
 		});
 
-		// Submit the delete form on button click.	
-		$('.delete-btn').on('click', function() {
-			var brwId = $(this).data('brw-id');
-			if (confirm('Apakah Anda yakin ingin menghapus peminjaman ini?')) {
-				$('#delete-form-' +  $(this).data('brw-id')).submit();
-			}
+		// Reset all input fields.
+		$('#resetButton').click(function() {
+			// Member ID.
+			$("#member_id").removeClass('bg-danger text-white');
+			$("#member_id").next('.text-danger').addClass('d-none');
+
+			// Book ID.
+			$("#book_id").removeClass('bg-danger text-white');
+			$("#book_id").next('.text-danger').addClass('d-none');
+
+			// Borrow date.
+			$("#borrow_date").val('');
+			$("#borrow_date").removeClass('bg-danger text-white');
+			$("#borrow_date").next('.text-danger').addClass('d-none');
+
+			// Rental price.
+			$("#rental_price").val('');
+			$("#rental_price").removeClass('bg-danger text-white');
+			$("#rental_price").next('.text-danger').addClass('d-none');
 		});
+
+		// Initialize DataTables to borrowings table.
+		$('#borrowingsTable').DataTable();
 	});
 </script>
 @endsection

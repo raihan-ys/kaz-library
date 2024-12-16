@@ -208,8 +208,8 @@
 					{{-- image preview --}}
 					<div class="row" id="previewContainer">
 						<div class="col-3" id="imageContainer">
-							<label for="coverPreview">Pratinjau Sampul</label>
-							<img id="coverPreview" src="{{ $book->cover_image ? asset('storage/'.$book->cover_image) : asset('images/sample-book-cover.png') }}" alt="Image Preview" class="img-fluid"/>
+							<label for="coverPreview">Pratinjau Sampul</label><br>
+							<img id="coverPreview" src="{{ $book->cover_image ? asset('storage/'.$book->cover_image) : asset('images/sample-book-cover.png') }}" alt="Book's Cover Image Preview" class="img-fluid"/>
 						</div>
 
 						{{-- Metadata from previous file --}}
@@ -231,12 +231,12 @@
 								<li><span id="fileSize"></span></li>
 								<li><span id="fileType"></span></li>
 							</ul>
-							<div class="text-danger d-none" id="fileError">
-								File terlalu besar, maksimal ukuran 1 MB.
-							</div>
-							<div class="text-danger d-none" id="fileError2">
-								File melebihi ukuran 2 MB, tidak dapat diunggah.
-							</div>
+						</div>
+						<div class="text-danger d-none" id="fileError">
+							File terlalu besar, maksimal ukuran 1 MB.
+						</div>
+						<div class="text-danger d-none" id="fileError2">
+							File melebihi ukuran 2 MB, tidak dapat diunggah.
 						</div>
 					</div>
 					{{-- /.image preview --}}
@@ -342,8 +342,21 @@
 				// Check if file size exceeds the limit.
 				if (file.size > maxSizeBytes) {
 					// Display size in MB if file is too large.
-					const fileSizeMB = (file.size / maxSizeBytes).toFixed(2);
+					const fileSizeMB = (file.size / maxSizeBytes).toFixed(2); // Rounded.
 					$('#fileSize').text(fileSizeMB + ' MB');
+
+					// Change the file input field color.
+					$('.custom-file-label').removeClass('bg-danger text-white');
+
+					// Display image preview.
+					$('#imageContainer').removeClass('d-none');
+					$('#coverMetadata').addClass('mt-4');
+
+					// Show error message.
+					$("#fileError").removeClass('d-none');
+					$('#fileError2').addClass('d-none');
+
+					canSubmit = true;
 
 					// If file is larger than 2 MB.
 					if (file.size > 2048576) {

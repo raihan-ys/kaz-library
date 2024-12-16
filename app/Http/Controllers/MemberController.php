@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateMemberRequest;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class MemberController extends Controller
@@ -19,7 +20,8 @@ class MemberController extends Controller
         // Select all from members table join with member types table.
         $members = DB::table('members')
             ->join('member_types', 'members.type_id', '=', 'member_types.id')
-            ->select('members.*', 'member_types.name')
+            ->select('members.*', 'member_types.name as type_name')
+            ->orderBy('full_name')
             ->get();
 
         $member_types = MemberType::all();
@@ -27,16 +29,50 @@ class MemberController extends Controller
         return view('pages.members.index', compact('members', 'member_types'));
     }
 
+    // Show a specified member detail.
+    public function show($id)
+    {
+        // Find the specified member.
+        $member = DB::table('members')
+            ->join('member_types', 'members.type_id', '=', 'member_types.id')
+            ->select('members.*', 'member_types.name as type_name')
+            ->where('members.id', $id)
+            ->first();
+
+        return view('pages.members.show', compact('member'));
+    }
+
     // Store a newly created member in storage.
     public function store(StoreMemberRequest $request)
     {
         // Input validation.
 		$validated = $request->validated();
+        
+        // Handle file upload.
+		if($request->hasFile('profile_photo')) {
+			$file = $request->file('profile_photo');
+
+			// Store the file and get the path.
+			$path = $file->store('profile_photos', 'public');
+			// Save the path to the validated data.
+			$validated['profile_photo'] = $path;
+		}
 
 		// Create new member with validated data.
-		Member::create($validated);
+		try {
+			$member = Member::create($validated);
+			$id = $member->id;
+		} catch(\Illuminate\Validation\ValidationException $e) {
+			// Set file metadata in session to display to user.
+			session()->flash('file_metadata', [
+				'name' => $file->getClientOriginalName(),
+				'size' => $file->getSize(),
+				'type' => $file->getClientMimeType(),
+			]);
+			return redirect()->back()->withErrors($e->validator)->withInput();
+		}
 
-		return redirect()->route('anggota')->with('success', 'Anggota berhasil ditambahkan!');
+		return redirect()->route('anggota.show', $id)->with('success', 'Anggota berhasil ditambahkan!');
     }
 
     // Show the form for editing the specified member.
@@ -72,42 +108,61 @@ class MemberController extends Controller
 
         // Custom validation for phone number.
         $request->validate(
-        [
-            'phone' => [
-            'required',
-            'string',
-            'max:15',
-            Rule::unique('members')->ignore($member->id),
+            [
+                'phone' => [
+                    'required',
+                    'string',
+                    'max:15',
+                    Rule::unique('members')->ignore($member->id),
+                ]
+            ], 
+            [
+                'phone.required' => 'Nomor telepon wajib diisi!',
+                'phone.string' => 'Nomor telepon harus berupa string!',
+                'phone.max' => 'panjang nomor telepon maksimal 15 karakter!',
+                'phone.unique' => 'Nomor telepon ini sudah terdaftar!',
             ]
-        ], 
-		[
-			'phone.required' => 'Nomor telepon wajib diisi!',
-			'phone.string' => 'Nomor telepon harus berupa string!',
-			'phone.max' => 'panjang nomor telepon maksimal 15 karakter!',
-			'phone.unique' => 'Nomor telepon ini sudah terdaftar!',
-        ]);
+        );
 
         // Custom validation for email.
         $request->validate(
-        [
-            'email' => [
-            'required',
-            'string',
-            'max:255',
-            Rule::unique('members')->ignore($member->id),
+            [
+                'email' => [
+                    'required',
+                    'string',
+                    'max:255',
+                    Rule::unique('members')->ignore($member->id),
+                ]
+            ],
+            [
+                'email.required' => 'Email wajib diisi!',
+                'email.string' => 'Email harus berupa string!',
+                'email.max' => 'panjang email maksimal 255 karakter!',
+                'email.unique' => 'Email ini sudah terdaftar!',
             ]
-        ],
-		[
-			'email.required' => 'Email wajib diisi!',
-			'email.string' => 'Email harus berupa string!',
-			'email.max' => 'panjang email maksimal 255 karakter!',
-			'email.unique' => 'Email ini sudah terdaftar!',
-        ]);
+        );
+
+        // If a file is uploaded as profile photo.
+		if($request->hasFile('profile_photo')) {
+			// Delete the original file to replace it.
+			$old_photo = $member->profile_photo;
+			if($old_photo) {
+				Storage::disk('public')->delete($old_photo);
+			}
+
+			$file = $request->file('profile_photo');
+
+			// Store the new file and get the path.
+			$path = $file->store('profile_photos', 'public');
+
+			// Save the path to the validated data.
+			$validated['profile_photo'] = $path;
+		}
 
 		// Update member with all validated data.
 		$member->update($validated);
 		
-		return redirect()->route('anggota')->with('success', 'Anggota berhasil diperbarui!');
+		return redirect()->route('anggota.show', $id)->with('success', 'Anggota berhasil diperbarui!');
     }
 
     // Remove the specified member.
@@ -115,6 +170,11 @@ class MemberController extends Controller
     {
         // Find the specified member.
         $member = Member::findOrFail($id);
+
+        // Delete member's cover image.
+		if($member->profile_photo) {
+			Storage::disk('public')->delete($member->profile_photo);
+		}
 
         // Remove the specified member.
         $member->delete();

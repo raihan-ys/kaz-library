@@ -28,12 +28,12 @@
 			<div class="card" style="border-top: #181C32 solid 5px">
 				{{-- header --}}
 				<div class="card-header">
-					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createBookModal">
+					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createMemberModal">
 						<i class="fas fa-plus mr-1"></i>Tambah Anggota
 					</button>
 
-					{{-- create user modal --}}
-					<div class="modal fade" id="createBookModal">
+					{{-- create member modal --}}
+					<div class="modal fade" id="createMemberModal">
 						<div class="modal-dialog modal-lg">
 							<div class="modal-content">
 								{{-- header --}}
@@ -44,7 +44,7 @@
 									</button>
 								</div>
 
-								<form id="createUserForm" action="{{ route('anggota.store') }}" method="post">
+								<form id="createMemberForm" action="{{ route('anggota.store') }}" method="post" enctype="multipart/form-data">
 									{{-- body --}}
 									<div class="modal-body">
 										@csrf
@@ -65,7 +65,6 @@
 										<div class="form-group">
 											<label for="type_id">Tipe</label>
 											<select name="type_id" id="type_id" class="form-control {{ $errors->has('type_id') ? 'bg-danger text-white' : '' }}" required>
-												<option selected disabled hidden>- Pilih Tipe Anggota -</option>
 												@foreach($member_types as $type)
 												<option value="{{ $type->id }}" {{ old('type_id') == $type->id ? 'selected' : '' }}>{{ $type->name }}</option>
 												@endforeach
@@ -107,13 +106,79 @@
 											</span>
 											@endif
 										</div>
+
+										{{-- profile photo --}}
+										<div class="col-12">
+											
+											{{-- file input --}}
+											<div class="form-group">
+												<label for="profile_photo">Foto Profil</label>
+												<div class="input-group">
+													<div class="custom-file">
+														<input type="file" class="custom-file-input" id="profile_photo" name="profile_photo" accept=".png">
+														<label class="custom-file-label {{ $errors->has('profile_photo') ? 'bg-danger text-white' : '' }}" for="profile_photo">Pilih gambar PNG</label>
+													</div>
+													<div class="input-group-append">
+														<span class="input-group-text" id="uploadButton">Unggah</span>
+													</div>
+												</div>
+												{{-- cancel upload --}}
+												<button type="button" class="btn btn-danger d-none mt-2" id="cancelUpload">
+													<i class="fas fa-trash"></i>
+													Batalkan Pilihan
+												</button>
+												{{-- error message --}}
+												@if ($errors->has('profile_photo'))
+												<div class="text-danger">
+													{{ $errors->first('profile_photo') }}
+												</div>
+												@endif
+											</div>
+											{{-- /.file input --}}
+
+											{{-- image preview --}}
+											<div class="row d-none" id="previewContainer">
+												<div class="col-3" id="imageContainer">
+													<label for="photoPreview">Pratinjau Foto</label><br>
+													<img id="photoPreview" src="#" alt="Member's Profile Photo Preview" class="img-fluid" style="width: 200px; height: 200px;"/>
+												</div>
+
+												{{-- Metadata from previous file --}}
+												@if(session('file_metadata'))
+												<div class="alert alert-danger">
+													<strong>File Metadata:</strong>
+													<ul>
+														<li>Nama File: {{ session('file_metadata.name') }}</li>
+														<li>Ukuran File: {{ session('file_metadata.size') }} bytes</li>
+														<li>Jenis File: {{ session('file_metadata.type') }}</li>
+													</ul>
+												</div>
+												@endif
+
+												{{-- Current file metadata --}}
+												<div class="col-9">
+													<ul id="photoMetadata" class="list-unstyled mt-4">
+														<li><span id="fileName"></span></li>
+														<li><span id="fileSize"></span></li>
+														<li><span id="fileType"></span></li>
+													</ul>
+												</div>
+												<div class="text-danger d-none" id="fileError">
+													File terlalu besar, maksimal ukuran 1 MB.
+												</div>
+												<div class="text-danger d-none" id="fileError2">
+													File melebihi ukuran 2 MB, tidak dapat diunggah.
+												</div>
+											</div>
+											{{-- /.image preview --}}
+										</div>
 									</div>
 									{{-- /.body --}}
 
 									{{-- footer --}}
 									<div class="modal-footer justify-content-between btn-group">
-										<button type="reset" class="btn btn-outline-danger">Reset</button>
-										<button type="submit" class="btn btn-outline-primary" id="createBook">Simpan</button>
+										<button type="reset" id="resetButton" class="btn btn-outline-danger">Reset</button>
+										<button type="submit" class="btn btn-outline-primary" id="createMember">Simpan</button>
 									</div>
 								</form>
 							</div>
@@ -121,15 +186,30 @@
 						</div>
 						<!-- /.modal-dialog -->
 					</div>
-					{{-- /.create book modal --}}
+					{{-- /.create member modal --}}
 
 					{{-- success message --}}
 					@if(session('success'))
-					<div class="alert alert-success mt-1">
-						<span class="font-weight-bold" style="float: right; cursor: pointer;" id="closeAlert">&times;</span>
-						<i class="fas fa-check"></i>
-						{{ session('success') }}
+					<div class="toast bg-success" role="alert" aria-live="assertive" aria-atomic="true" style="position: absolute; top: 20px; right: 20px;">
+						{{-- toast header --}}
+						<div class="toast-header" style="font-size: 20px;">
+							<i class="fas fa-check mr-1"></i>
+							<strong class="mr-auto">Sukses!</strong>
+							<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						{{-- toast body --}}
+						<div class="toast-body" style="font-size: 15px">
+							{{ session('success') }}
+						</div>
 					</div>
+					<script>
+						$(document).ready(function(){
+							$('.toast').toast({ delay: 5000 });
+							$('.toast').toast('show');
+						});
+					</script>
 					@endif
 
 					{{-- error messages --}}
@@ -153,7 +233,7 @@
 
 				{{-- body --}}
 				<div class="card-body table-responsive">
-					<table class="table table-bordered table-hover">
+					<table class="table table-bordered table-hover table-striped dataTable dtr-inline" id="membersTable">
 						<thead class="text-white" style="background-color: #181C32">
 							<tr>
 								<th scope="col">#</th>
@@ -170,18 +250,22 @@
 							<tr>
 								<td>{{ $loop->iteration }}</td>
 								<td class="font-weight-bold">{{ $member->full_name }}</td>
-								<td>{{ $member->name }}</td>
+								<td>{{ $member->type_name }}</td>
 								<td>{{ $member->address }}</td>
 								<td>{{ $member->phone }}</td>
 								<td>{{ $member->email }}</td>
 								<td>
 									<div class="btn-group">
+										{{-- show --}}
+										<a href="{{ route('anggota.show', $member->id) }}" class="btn btn-info" title="Detail">
+											<i class="fas fa-eye"></i>
+										</a>
 										{{-- update --}}
 										<a href="{{ route('anggota.edit', $member->id) }}" class="btn btn-warning" title="Edit">
 											<i class="fas fa-edit"></i>
 										</a>
 										{{-- delete --}}
-										<button type="button" class="delete-btn btn btn-danger" data-member-id="{{ $member->id }}" title="Hapus">
+										<button type="button" class="btn btn-danger" data-member-id="{{ $member->id }}" title="Hapus" onclick="confirmDelete({{ $member->id }}, '{{ $member->full_name }}', '{{ $member->profile_photo ? asset('storage/'.$member->profile_photo) : asset('images/sample-user-photo.jpeg') }}')">
 											<i class="fas fa-trash"></i>
 										</button>
 										<form id="delete-form-{{ $member->id }}" action="{{ route('anggota.destroy', $member->id) }}" method="post" style="display:none">
@@ -193,7 +277,7 @@
 							</tr>
 							@empty
 							<tr>
-								<td colspan="6" class="text-center font-weight-bold text-danger py-5">Tidak ada anggota yang terdaftar!</td>
+								<td colspan="7" class="text-center font-weight-bold text-danger py-5">Tidak ada anggota yang terdaftar!</td>
 							</tr>
 							@endforelse
 						</tbody>
@@ -211,13 +295,239 @@
 
 @section('js')
 <script>
+	// Member delete confirmation.
+	function confirmDelete(memberId, memberName, memberPhoto) {
+		// Call SweetAlert2's function.
+		Swal.fire({
+			icon: 'warning',
+			title: 'Apakah Anda yakin?',
+			imageUrl: memberPhoto,
+			imageWidth: 200,
+			imageHeight: 200,
+			html: 'Setelah dihapus, Anda tidak dapat memulihkan data <b>"' + memberName + '"</b>! <span class="text-danger">Data penyewaan buku oleh anggota ini juga akan dihapus!</span>',
+			confirmButtonColor: '#3085d6',
+			confirmButtonText: 'Ya, hapus!',
+			showCancelButton: true,
+			cancelButtonColor: '#d33',
+			cancelButtonText: 'Batal'
+		}).then((result) => {
+			if(result.isConfirmed) {
+				// Submit member's delete form.
+				document.getElementById('delete-form-' + memberId).submit();
+			}
+		})
+	};
+
 	$(document).ready(function(){
-		$('.delete-btn').on('click', function() {
-			var memberId = $(this).data('member-id');
-			if (confirm('Apakah Anda yakin ingin menghapus anggota ini?')) {
-				$('#delete-form-' + memberId).submit();
+		// Change full name field colors.
+		$('#full_name').change(function(e) {
+			$("#full_name").removeClass('bg-danger text-white');
+			$(this).next('.text-danger').addClass('d-none');
+		});
+
+		// Change type id field colors.
+		$('#type_id').change(function(e) {
+			$("#type_id").removeClass('bg-danger text-white');
+			$(this).next('.text-danger').addClass('d-none');
+		});
+
+		// Change address field colors.
+		$('#address').change(function(e) {
+			$("#address").removeClass('bg-danger text-white');
+			$(this).next('.text-danger').addClass('d-none');
+		});
+
+		// Change phone field colors.
+		$('#phone').change(function(e) {
+			$("#phone").removeClass('bg-danger text-white');
+			$(this).next('.text-danger').addClass('d-none');
+		});
+
+		// Change email field colors.
+		$('#email').change(function(e) {
+			$("#email").removeClass('bg-danger text-white');
+			$(this).next('.text-danger').addClass('d-none');
+		});
+
+		// File input change event.
+		let canSubmit = true;
+		$('#profile_photo').change(function(e) {
+			// Change field colors.
+			$("#profile_photo").removeClass('bg-danger text-white');
+			$(this).next('.text-danger').addClass('d-none');
+
+			// Get uploaded file.
+			const file = e.target.files[0];
+			if(file) {
+				// Maximum file size in bytes (1 MB).
+				const maxSizeBytes = 1048576;
+
+				// Read the file.
+				const reader = new FileReader();
+				reader.onload = function(e) {
+					// Set image preview.
+					$("#photoPreview").attr('src', e.target.result);
+
+					// Show the preview container.
+					$("#previewContainer").removeClass('d-none');
+					$("#cancelUpload").removeClass('d-none');
+				}
+
+				// Read the file as a data URL.
+				reader.readAsDataURL(file);
+
+				// Update the label with the file name.
+				$(this).next('.custom-file-label').html(file.name);
+							
+				// Update metadata information.
+				$('#fileName').text(file.name);
+
+				// Check if file size exceeds the limit.
+				if (file.size > maxSizeBytes) {
+					// Display size in MB if file is too large.
+					const fileSizeMB = (file.size / maxSizeBytes).toFixed(2);
+					$('#fileSize').text(fileSizeMB + ' MB');
+
+					// Change the file input field color.
+					$('.custom-file-label').removeClass('bg-danger text-white');
+
+					// Display image preview.
+					$('#imageContainer').removeClass('d-none');
+					$('#photoMetadata').addClass('mt-4');
+
+					// Show error message.
+					$("#fileError").removeClass('d-none');
+					$('#fileError2').addClass('d-none');
+
+					canSubmit = true;
+
+					// If file is larger than 2 MB.
+					if (file.size > 2048576) {
+						// Change the file input field color.
+						$('.custom-file-label').addClass('bg-danger text-white');
+
+						// Hide image preview.
+						$('#imageContainer').addClass('d-none');
+						$('#photoMetadata').removeClass('mt-4');
+
+						// Show error message.
+						$('#fileError').addClass('d-none');
+						$('#fileError2').removeClass('d-none');
+
+						canSubmit = false;
+					}
+				} else {
+					// Reset the file input field color.
+					$('.custom-file-label').removeClass('bg-danger text-white');
+
+					// Display size in KB if it's within the limit.
+					$('#fileSize').text((file.size / 1024).toFixed(2) + ' KB');
+
+					// Hide error message.
+					$('#fileError').addClass('d-none');
+					$('#fileError2').addClass('d-none');
+
+					// Display preview.
+					$('#imageContainer').removeClass('d-none');
+
+					$('#photoMetadata').addClass('mt-4');
+
+					canSubmit = true;
+				}
+				// Display file type.
+				$('#fileType').text(file.type);
+
+				// Prevent form submission based on the flag.
+				$('#createMemberForm').submit(function(e) {
+					if (!canSubmit) {
+						e.preventDefault();
+						return alert('Foto profil belum diunggah dengan benar!');
+					}
+				});
+			} else {	
+				// Reset file input label.
+				$(this).next('.custom-file-label').html('Pilih gambar');
+
+				// Clear metadata information.
+				$('#fileName, #fileSize, #fileType').text('');
 			}
 		});
+
+		// Reset all input fields.
+		$('#resetButton').click(function() {
+			// Full name.
+			$("#full_name").val('');
+			$("#full_name").removeClass('bg-danger text-white');
+			$("#full_name").next('.text-danger').addClass('d-none');
+
+			// Type ID.
+			$("#type_id").removeClass('bg-danger text-white');
+			$("#type_id").next('.text-danger').addClass('d-none');
+
+			// Address.
+			$("#address").val('');
+			$("#address").removeClass('bg-danger text-white');
+			$("#address").next('.text-danger').addClass('d-none');
+
+			// Phone.
+			$("#phone").val('');
+			$("#phone").removeClass('bg-danger text-white');
+			$("#phone").next('.text-danger').addClass('d-none');
+
+			// Email.
+			$("#email").val('');
+			$("#email").removeClass('bg-danger text-white');
+			$("#email").next('.text-danger').addClass('d-none');
+
+			// Profile photo.
+			$('#profile_photo').val('');
+
+			// Reset file input label.
+			$('.custom-file-label').removeClass('bg-danger text-white');
+			$('.custom-file-label').html('Pilih gambar PNG');
+
+			// Reset preview image.
+			$('#previewContainer').addClass('d-none');
+
+			// Hide any error messages.
+			$('#fileError').addClass('d-none');
+			$('#fileError2').addClass('d-none');
+
+			// Clear metadata information
+			$('#fileName').text('');
+			$('#fileSize').text('');
+			$('#fileType').text('');
+
+			// Hide the cancel button.
+			$('#cancelUpload').addClass('d-none');
+		});
+
+		// Reset file input.
+		$('#cancelUpload').click(function() {
+			$('#profile_photo').val('');
+
+			// Reset file input label.
+			$('.custom-file-label').removeClass('bg-danger text-white');
+			$('.custom-file-label').html('Pilih gambar PNG');
+
+			// Reset preview image.
+			$('#previewContainer').addClass('d-none');
+
+			// Hide any error messages.
+			$('#fileError').addClass('d-none');
+			$('#fileError2').addClass('d-none');
+
+			// Clear metadata information
+			$('#fileName').text('');
+			$('#fileSize').text('');
+			$('#fileType').text('');
+
+			// Hide the cancel button.
+			$('#cancelUpload').addClass('d-none');
+		});
+
+		// Initialize DataTables to members table.
+		$('#membersTable').DataTable();
 	});
 </script>
 @endsection
