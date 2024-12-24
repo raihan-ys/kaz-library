@@ -64,9 +64,12 @@
 	$(document).ready(function() {
 		// Initialize DataTables to users table.
 		$('#usersTable').DataTable({
-			dom: 'Bfrtip', // Set the elements to shown in the table.
+			dom: 'Bfrtip',
 			buttons: [
-				'copy', 'csv', 'excel', 'pdf', 'print'
+				'copy',
+				'csv',
+				'excel',
+				'print',
 			]
 		});
 	});

@@ -527,7 +527,15 @@
 		});
 
 		// Initialize DataTables to members table.
-		$('#membersTable').DataTable();
+		$('#membersTable').DataTable({
+			dom: 'Bfrtip',
+			buttons: [
+				'copy',
+				'csv',
+				'excel',
+				'print',
+			]
+		});
 	});
 </script>
 @endsection

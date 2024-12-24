@@ -607,7 +607,15 @@
 		});
 
 		// Initialize DataTables to books table.
-		$('#booksTable').DataTable();
+		$('#booksTable').DataTable({
+			dom: 'Bfrtip',
+			buttons: [
+				'copy',
+				'csv',
+				'excel',
+				'print',
+			]
+		});
 	});
 	</script>
 @endsection

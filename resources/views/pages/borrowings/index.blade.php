@@ -1,5 +1,11 @@
 @extends('layouts.app')
 @section('title', 'Daftar Penyewaan - Kaz-Library')
+
+@section('css')
+<link rel="stylesheet" href="{{ asset('adminlte/plugins/daterangepicker/daterangepicker.css') }}">
+<link rel="stylesheet" href="{{ asset('adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
+@endsection
+
 @section('page-header')
 <div class="row m-0">
 	<div class="col-12">
@@ -87,12 +93,17 @@
 											</span>
 											@endif
 										</div>
-										
+									
 										<div class="form-row">
 											{{-- borrow date --}}
 											<div class="col-md-6 mb-3">
 												<label for="borrow_date">Tanggal</label>
-												<input type="date" name="borrow_date" id="borrow_date" class="form-control {{ $errors->has('borrow_date') ? 'bg-danger text-white' : '' }}" placeholder="Masukkan Tanggal Peminjaman" maxlength="20" value="{{ old('borrow_date') }}" required>
+												<div class="input-group date" id="borrow_date" data-target-input="nearest">
+													<input type="text" data-target="#borrow_date" name="borrow_date" class="datetimepicker-input form-control {{ $errors->has('borrow_date') ? 'bg-danger text-white' : '' }}" placeholder="Masukkan Tanggal Peminjaman" value="{{ old('borrow_date') }}" required readonly>
+													<div class="input-group-append" data-target="#borrow_date" data-toggle="datetimepicker">
+														<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+													</div>
+												</div>
 												@if($errors->has('borrow_date'))
 												{{-- error message --}}
 												<span class="text-danger">
@@ -100,6 +111,7 @@
 												</span>
 												@endif
 											</div>
+
 											{{-- rental_price--}}
 											<div class="col-md-6 mb-3">
 												<label for="rental_price">Biaya Sewa</label>
@@ -122,9 +134,9 @@
 									</div>
 								</form>
 							</div>
-							<!-- /.modal-content -->
+							{{-- /.modal-content --}}
 						</div>
-						<!-- /.modal-dialog -->
+						{{-- /.modal-dialog --}}
 					</div>
 					{{-- /.create borrowing modal --}}
 
@@ -270,6 +282,12 @@
 @endsection
 
 @section('js')
+{{-- Moment.js (required by daterangepicker) --}}
+<script src="{{ asset('adminlte/plugins/moment/moment.min.js') }}"></script>
+{{-- Daterangepicker JS --}}
+<script src="{{ asset('adminlte/plugins/daterangepicker/daterangepicker.js') }}"></script>
+{{-- Tempus Dominus Bootstrap 4 --}}
+<script src="{{ asset('adminlte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
 <script>
 	// Borrowing delete confirmation.
 	function confirmDelete(brwId, bookTitle, bookCover, memberName) {
@@ -295,6 +313,11 @@
 	}
 
 	$(document).ready( function() {
+		// Initialize date time picker for borrow date field.
+		$('#borrow_date').datetimepicker({
+			format: 'YYYY-MM-DD'
+		});
+
 		// Change member id field colors.
 		$('#member_id').change(function(e) {
 			$("#member_id").removeClass('bg-danger text-white');
@@ -348,7 +371,15 @@
 		});
 
 		// Initialize DataTables to borrowings table.
-		$('#borrowingsTable').DataTable();
+		$('#borrowingsTable').DataTable({
+			dom: 'Bfrtip',
+			buttons: [
+				'copy',
+				'csv',
+				'excel',
+				'print',
+			]
+		});
 	});
 </script>
 @endsection

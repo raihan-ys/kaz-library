@@ -115,7 +115,15 @@
 
 	$(document).ready(function() {
 		// Initialize DataTables to categories table.
-		$('#categoriesTable').DataTable();
+		$('#categoriesTable').DataTable({
+			dom: 'Bfrtip',
+			buttons: [
+				'copy',
+				'csv',
+				'excel',
+				'print',
+			]
+		});
 	});
 </script>
 @endsection

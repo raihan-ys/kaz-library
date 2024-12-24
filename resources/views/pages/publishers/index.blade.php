@@ -114,7 +114,15 @@
 
 	$(document).ready(function() {
 		// Initialize DataTables to publishers table.
-		$('#publishersTable').DataTable();
+		$('#publishersTable').DataTable({
+			dom: 'Bfrtip',
+			buttons: [
+				'copy',
+				'csv',
+				'excel',
+				'print',
+			]
+		});
 	});
 </script>
 @endsection

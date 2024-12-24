@@ -17,9 +17,10 @@
 	<link rel="stylesheet" href="{{ asset('adminlte/plugins/fontawesome-free/css/all.min.css') }}">
 	{{-- Overlay Scrollbars CSS --}}
 	<link rel="stylesheet" href="{{ asset('adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
-	{{-- DataTables CSS --}}
-	<link rel="stylesheet" href="{{ asset('adminlte/plugins/datatables-bs4/css/datatables.bootstrap4.min.css') }}">
-	<link rel="stylesheet" href="{{ asset('adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+	{{-- DataTables & plugins CSS --}}
+	<link rel="stylesheet" href="{{ asset('adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
 	@yield('css')
 	{{-- Custom CSS --}}
 	<style>
@@ -105,15 +106,19 @@
 	<script type="text/javascript" src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
 	{{-- SweetAlert2 JS  --}}
 	<script type="text/javascript" src="{{ asset('adminlte/plugins/sweetalert2/sweetalert2.all.min.js') }}"></script>
-	{{-- DataTables JS --}}
+	{{-- DataTables & plugins JS --}}
 	<script type="text/javascript" src="{{ asset('adminlte/plugins/datatables/jquery.dataTables.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('adminlte/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('adminlte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
-	{{-- Date Range Picker JS --}}
-	<script type="text/javascript" src="{{ asset('adminlte/plugins/daterangepicker/js/daterangepicker.js') }}"></script>
-	{{-- Moment JS --}}
-	<script type="text/javascript" src="{{ asset('adminlte/plugins/moment/moment.min.js') }}"></script>
-	{{--  --}}
+	<script type="text/javascript" src="{{ asset('adminlte/plugins/jszip/jszip.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('adminlte/plugins/pdfmake/pdfmake.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('adminlte/plugins/pdfmake/vfs_fonts.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('adminlte/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('adminlte/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
 	@yield('js')
 </body>
 </html>

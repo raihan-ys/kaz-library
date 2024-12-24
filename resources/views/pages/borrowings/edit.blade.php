@@ -1,6 +1,12 @@
 @extends('layouts.app')
 @section('title', 'Edit Penyewaan - Kaz-Library')
 @section('page-header')
+
+@section('css')
+<link rel="stylesheet" href="{{ asset('adminlte/plugins/daterangepicker/daterangepicker.css') }}">
+<link rel="stylesheet" href="{{ asset('adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
+@endsection
+
 <div class="row m-0">
 	<div class="col-12">
 		<section class="content-header">
@@ -110,7 +116,12 @@
 					{{-- borrow date --}}
 					<div class="col-md-6 mb-3">
 						<label for="borrow_date">Tanggal Peminjaman</label>
-						<input type="date" name="borrow_date" id="borrow_date" class="form-control {{ $errors->has('borrow_date') ? 'bg-danger text-white' : '' }}" placeholder="Masukkan Tanggal Peminjaman" maxlength="20" value="{{ old('borrow_date',\Carbon\Carbon::parse($borrowing->borrow_date)->format('Y-m-d')) }}" required>
+						<div class="input-group date" id="borrow_date" data-target-input="nearest">
+							<input type="text" name="borrow_date" data-target="#borrow_date" class="datetimepicker-input form-control {{ $errors->has('borrow_date') ? 'bg-danger text-white' : '' }}" placeholder="Masukkan Tanggal Peminjaman" maxlength="20" value="{{ old('borrow_date',\Carbon\Carbon::parse($borrowing->borrow_date)->format('Y-m-d')) }}" required readonly>
+							<div class="input-group-append" data-target="#borrow_date" data-toggle="datetimepicker">
+								<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+							</div>
+						</div>
 						{{-- error message --}}
 						@if($errors->has('borrow_date'))
 						<span class="text-danger">
@@ -135,7 +146,12 @@
 					{{-- return date --}}
 					<div class="col-md-6 mb-3">
 						<label for="return_date">Tanggal Pengembalian</label>
-						<input type="date" name="return_date" id="return_date" class="form-control {{ $errors->has('return_date') ? 'bg-danger text-white' : '' }}" maxlength="20" value="{{ old('return_date', $borrowing->status === 'dikembalikan' ?	\Carbon\Carbon::parse($borrowing->return_date)->format('Y-m-d') : '') }}" required>
+						<div class="input-group date" id="return_date" data-target-input="nearest">
+							<input type="text" name="return_date" data-target="#return_date" class="datetimepicker-input form-control {{ $errors->has('return_date') ? 'bg-danger text-white' : '' }}" value="{{ old('return_date', $borrowing->status === 'dikembalikan' ?	\Carbon\Carbon::parse($borrowing->return_date)->format('Y-m-d') : '') }}" required readonly>
+							<div class="input-group-append" data-target="#return_date" data-toggle="datetimepicker">
+								<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+							</div>
+						</div>
 						{{-- error message --}}
 						@if($errors->has('return_date'))
 						<span class="text-danger">
@@ -177,8 +193,24 @@
 @endsection
 
 @section('js')
+{{-- Moment.js (required by daterangepicker) --}}
+<script src="{{ asset('adminlte/plugins/moment/moment.min.js') }}"></script>
+{{-- Daterangepicker JS --}}
+<script src="{{ asset('adminlte/plugins/daterangepicker/daterangepicker.js') }}"></script>
+{{-- Tempus Dominus Bootstrap 4 --}}
+<script src="{{ asset('adminlte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
 <script>
 	$(document).ready(function() {
+		// Initialize date time picker for borrow date field.
+		$('#borrow_date').datetimepicker({
+			format: 'YYYY-MM-DD'
+		});
+
+		// Initialize date time picker for return date field.
+		$('#return_date').datetimepicker({
+			format: 'YYYY-MM-DD'
+		});
+
 		// Change member id field colors.
 		$('#member_id').change(function(e) {
 			$("#member_id").removeClass('bg-danger text-white');
