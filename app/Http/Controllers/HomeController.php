@@ -16,12 +16,13 @@ class HomeController extends Controller
         $books = Book::orderBy('published_year', 'DESC')->take(4)->get();
 
         // Get most borrowed books with 'Borrowing' model.
-        $mostBorrowedBooks = Borrowing::select('book_id', DB::raw('count(*) as total_borrowed'))
-            ->groupBy('book_id') // Group the borrowings by 'book_id'.
+        $mostBorrowedBooks = Borrowing::join('books', 'books.id', '=', 'borrowings.book_id')
+            ->select('borrowings.book_id', DB::raw('count(*) as total_borrowed', 'books.title as book_title', 'books.author as book_author', 'books.cover_image as book_cover'))
+            ->groupBy('borrowings.book_id')
             ->orderBy('total_borrowed', 'DESC')
             ->take(4)
-            ->with('book') // Eager load the book relationship (Function in 'Borrowing' model).
             ->get();
+            
         return view('pages.home', compact('books', 'mostBorrowedBooks'));
     }
 }

@@ -43,7 +43,7 @@
 								<td>{{ $loop->iteration }}</td>
 								<td class="text-bold">{{ $librarian->name }}</td>
 								<td>{{ $librarian->email }}</td>
-								<td>{{ $librarian->created_at }}</td>
+								<td>{{ formatDate($librarian->created_at, 'd-m-Y') }}</td>
 							</tr>
 							@empty
 							<tr>

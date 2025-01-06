@@ -308,7 +308,7 @@
 								<td>{{ $book->category_name }}</td>
 								<td>{{ $book->publisher_name }}</td>
 								<td>{{ $book->stock }}</td>
-								<td>Rp.{{ number_format($book->rental_price, 0, ',', '.') }}</td>
+								<td>{{ formatRp($book->rental_price, 2) }}</td>
 								<td>
 									<div class="btn-group">
 										{{-- show --}}

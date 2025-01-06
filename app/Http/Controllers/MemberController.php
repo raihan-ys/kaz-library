@@ -18,8 +18,7 @@ class MemberController extends Controller
     public function index()
     {
         // Select all from members table join with member types table.
-        $members = DB::table('members')
-            ->join('member_types', 'members.type_id', '=', 'member_types.id')
+        $members = Member::join('member_types', 'members.type_id', '=', 'member_types.id')
             ->select('members.*', 'member_types.name as type_name')
             ->orderBy('full_name')
             ->get();

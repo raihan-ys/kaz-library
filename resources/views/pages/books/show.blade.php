@@ -123,7 +123,7 @@
 							{{-- rental price --}}
 							<div class="form-group">
 								<label for="status">Biaya Sewa</label>
-								<p> Rp.{{ number_format($book->rental_price, 0, ',', '.') }}</p>
+								<p>{{ formatRp($book->rental_price, 2) }}</p>
 							</div>
 						</div>
 					</div>

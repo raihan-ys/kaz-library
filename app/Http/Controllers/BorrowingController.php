@@ -16,8 +16,12 @@ class BorrowingController extends Controller
 {
     // Display all borrowings.
     public function index()
-    {
-        $borrowings = Borrowing::with('member', 'book')->orderBy('borrow_date', 'DESC')->get();
+    {   // with('member', 'book')
+        $borrowings = Borrowing::join('members', 'members.id', '=', 'borrowings.member_id')
+            ->join('books', 'books.id', '=', 'borrowings.book_id')
+            ->select('borrowings.*', 'members.full_name', 'books.title as book_title', 'books.cover_image as book_cover')
+            ->orderBy('borrow_date', 'DESC')
+            ->get();
         $members = Member::orderBy('full_name')->get();
         $books = Book::orderBy('title')->get();
         

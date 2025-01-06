@@ -51,9 +51,9 @@
 							Keterlambatan!
 						</h5><hr class="bg-white">
 						@if($borrowing->return_date)
-						Buku ini terlambat dikembalikan selama {{ $lateDays }} hari. Denda yang dikenakan: Rp. {{ number_format($lateFee, 0, ',', '.') }}.
+						Buku ini terlambat dikembalikan selama {{ $lateDays }} hari. Denda yang dikenakan: {{ formatRp($lateFee, 2) }}.
 						@else
-						Buku ini sudah terlambat selama {{ $lateDays }} hari. Denda yang dikenakan saat ini: Rp. {{ number_format($lateFee, 0, ',', '.') }}.
+						Buku ini sudah terlambat selama {{ $lateDays }} hari. Denda yang dikenakan saat ini: {{ formatRp($lateFee, 2) }}.
 						@endif
 					</div>
 					@endif
@@ -105,13 +105,13 @@
 							{{-- borrow date --}}
 							<div class="form-group">
 								<label for="borrow_date">Tanggal Peminjaman</label>
-								<p>{{ \Carbon\Carbon::parse($borrowing->borrow_date)->format('d-m-Y') }}</p>
+								<p>{{ formatDate($borrowing->borrow_date, 'd-m-Y') }}</p>
 							</div>
 
 							{{-- return date --}}
 							<div class="form-group">
 								<label for="return_date">Tanggal Pengembalian</label>
-								<p>{{ $borrowing->return_date ?\Carbon\Carbon::parse($borrowing->return_date)->format('d-m-Y') : '-' }}</p>
+								<p>{{ $borrowing->return_date ? formatDate($borrowing->return_date, 'd-m-Y') : '-' }}</p>
 							</div>
 
 							{{-- status --}}

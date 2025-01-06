@@ -9,7 +9,6 @@ use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
@@ -18,9 +17,8 @@ class BookController extends Controller
 	// Display all books.
 	public function index()
 	{
-		$books = DB::table('books')
-			->join('categories', 'books.category_id', '=', 'categories.id')
-			->join('publishers', 'books.publisher_id', '=', 'publishers.id')
+		$books = Book::join('categories', 'categories.id', '=', 'books.category_id')
+			->join('publishers', 'publishers.id', '=', 'books.publisher_id')
 			->select('books.*', 'categories.name as category_name', 'publishers.name as publisher_name')
 			->orderBy('title')
 			->get();

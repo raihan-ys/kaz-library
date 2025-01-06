@@ -372,10 +372,10 @@
                 @foreach ($mostBorrowedBooks as $borrowing)
                 <div class="col-md-3 mb-4">
                     <div class="card h-100">
-                        <img src="{{ $borrowing->book->cover_image ? asset('storage/'.$borrowing->book->cover_image) : asset('images/sample-book-cover.png') }}" alt="Book's Cover Image Preview" class="card-img-top">
+                        <img src="{{ $borrowing->book_cover ? asset('storage/'.$borrowing->book_cover) : asset('images/sample-book-cover.png') }}" alt="Book's Cover Image Preview" class="card-img-top">
                         <div class="card-body">
-                            <h5 class="card-title mb-1">Judul Buku: <b>{{ $borrowing->book->title }}</b></h5>
-                            <p class="card-text">Penulis: <b>{{ $borrowing->book->author }}</b></p>
+                            <h5 class="card-title mb-1">Judul Buku: <b>{{ $borrowing->book_title }}</b></h5>
+                            <p class="card-text">Penulis: <b>{{ $borrowing->book_author }}</b></p>
                             <p class="card-text"><small class="text-muted">Dipinjam: <b>{{ $borrowing->total_borrowed }} kali</b></small></p>
                         </div>
                         <div class="card-footer">

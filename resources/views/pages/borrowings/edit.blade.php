@@ -117,7 +117,7 @@
 					<div class="col-md-6 mb-3">
 						<label for="borrow_date">Tanggal Peminjaman</label>
 						<div class="input-group date" id="borrow_date" data-target-input="nearest">
-							<input type="text" name="borrow_date" data-target="#borrow_date" class="datetimepicker-input form-control {{ $errors->has('borrow_date') ? 'bg-danger text-white' : '' }}" placeholder="Masukkan Tanggal Peminjaman" maxlength="20" value="{{ old('borrow_date',\Carbon\Carbon::parse($borrowing->borrow_date)->format('Y-m-d')) }}" required readonly>
+							<input type="text" name="borrow_date" data-target="#borrow_date" class="datetimepicker-input form-control {{ $errors->has('borrow_date') ? 'bg-danger text-white' : '' }}" placeholder="Masukkan Tanggal Peminjaman" maxlength="20" value="{{ old('borrow_date',  \Carbon\Carbon::parse($borrowing->borrow_date)) }}" required readonly>
 							<div class="input-group-append" data-target="#borrow_date" data-toggle="datetimepicker">
 								<div class="input-group-text"><i class="fa fa-calendar"></i></div>
 							</div>
@@ -147,7 +147,7 @@
 					<div class="col-md-6 mb-3">
 						<label for="return_date">Tanggal Pengembalian</label>
 						<div class="input-group date" id="return_date" data-target-input="nearest">
-							<input type="text" name="return_date" data-target="#return_date" class="datetimepicker-input form-control {{ $errors->has('return_date') ? 'bg-danger text-white' : '' }}" value="{{ old('return_date', $borrowing->status === 'dikembalikan' ?	\Carbon\Carbon::parse($borrowing->return_date)->format('Y-m-d') : '') }}" required readonly>
+							<input type="text" name="return_date"  data-target="#return_date" class="datetimepicker-input form-control {{ $errors->has('return_date') ? 'bg-danger text-white' : '' }}" value="{{ old('return_date', $borrowing->return_date ? \Carbon\Carbon::parse($borrowing->return_date) : '') }}" required readonly>
 							<div class="input-group-append" data-target="#return_date" data-toggle="datetimepicker">
 								<div class="input-group-text"><i class="fa fa-calendar"></i></div>
 							</div>
@@ -203,12 +203,19 @@
 	$(document).ready(function() {
 		// Initialize date time picker for borrow date field.
 		$('#borrow_date').datetimepicker({
-			format: 'YYYY-MM-DD'
+			format: 'YYYY-MM-DD',
+			maxDate: moment().add(0, 'days')
 		});
 
 		// Initialize date time picker for return date field.
 		$('#return_date').datetimepicker({
-			format: 'YYYY-MM-DD'
+			format: 'YYYY-MM-DD',
+			minDate: moment($('#borrow_date').val(), 'YYYY-MM-DD').isValid() ? $('#borrow_date').val() : null // Set minDate to the value of 'borrow_date' if valid.
+		});
+
+		// Update minDate when 'borrow_date' changes.
+		$('#borrow_date').on('change', function() {
+			$('#return_date').datetimepicker('minDate', $(this).val());
 		});
 
 		// Change member id field colors.
@@ -248,19 +255,22 @@
 		});
 
 		// Update the return date value.
-    function updateReturnDateField() {
+		function updateReturnDateField() {
 			var status = $('#status').val();
-			if (status == 'dipinjam') {
-				$('#return_date').val('').prop('disabled', true);
-			} else if (status == 'dikembalikan') {
-				$('#return_date').prop('disabled', false);
+			if (status === 'dipinjam') {
+				$('input[name="return_date"]').val('').prop('disabled', true);
+				$('input[name="return_date"]').prop('required', false);
+			} else if (status === 'dikembalikan') {
+				$('input[name="return_date"]').prop('required', true);
+				$('input[name="return_date"]').prop('disabled', false);
 			} else {
-				$('#return_date').val('').prop('disabled', true);
+				$('input[name="return_date"]').val('').prop('disabled', true);
+				$('input[name="return_date"]').prop('required', false);
 			}
-    }
+		}
 
-    // Check when the status changes.
-    $('#status').change(function() {
+		// Check when the status changes.
+		$('#status').change(function() {
 			updateReturnDateField();
     });
 
@@ -272,7 +282,7 @@
 		});
 
 		// Initial check when the page loads.
-    updateReturnDateField();
+		updateReturnDateField();
 	});
 </script>
 @endsection

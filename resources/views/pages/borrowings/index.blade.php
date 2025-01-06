@@ -205,9 +205,9 @@
 							<tr>
 								<td>{{ $loop->iteration }}</td>
 								<td class="font-weight-bold">{{ $brw->member->full_name }}</td>
-								<td class="font-weight-bold">{{ $brw->book->title }}</td>
-								<td>{{ \Carbon\Carbon::parse($brw->borrow_date)->format('d/m/Y') }}</td>
-								<td>{{ $brw->return_date ? \Carbon\Carbon::parse($brw->return_date)->format('d/m/Y') : '-' }}</td>
+								<td class="font-weight-bold">{{ $brw->book_title }}</td>
+								<td>{{ formatDate($brw->borrow_date, 'd-m-Y') }}</td>
+								<td>{{ $brw->return_date ? formatDate($brw->return_date, 'd-m-Y') : '-' }}</td>
 								<td>{{ $brw->status }}</td>
 								<td>
 									<?php
@@ -237,7 +237,7 @@
 								</td>
 								<td>
 									@if($isLate)
-									Rp. {{ number_format($lateFee, 0, ',', '.') }}
+									{{ formatRp($lateFee, 2) }}
 									@else
 									-
 									@endif
@@ -253,7 +253,7 @@
 											<i class="fas fa-edit"></i>
 										</a>
 										{{-- delete --}}
-										<button type="submit" class="btn btn-danger" data-brw-id="{{ $brw->id }}" title="Hapus" onclick="confirmDelete({{ $brw->id }}, '{{ $brw->book->title }}', '{{ $brw->book->cover_image ? asset('storage/'.$brw->book->cover_image) : asset('images/sample-book-cover.png') }}','{{ $brw->member->full_name }}')">
+										<button type="submit" class="btn btn-danger" data-brw-id="{{ $brw->id }}" title="Hapus" onclick="confirmDelete({{ $brw->id }}, '{{ $brw->book_title }}', '{{ $brw->book_cover ? asset('storage/'.$brw->book_cover) : asset('images/sample-book-cover.png') }}','{{ $brw->member->full_name }}')">
 											<i class="fas fa-trash"></i>
 										</button>
 										<form id="delete-form-{{ $brw->id }}" action="{{ route('penyewaan.destroy', $brw->id) }}" method="post" style="display:none">
@@ -315,7 +315,8 @@
 	$(document).ready( function() {
 		// Initialize date time picker for borrow date field.
 		$('#borrow_date').datetimepicker({
-			format: 'YYYY-MM-DD'
+			format: 'YYYY-MM-DD',
+			maxDate: moment().add(0, 'days')
 		});
 
 		// Change member id field colors.

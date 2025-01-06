@@ -2,9 +2,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Borrowing extends Model
 {
+    // Using SoftDeletes Trait.
+    use SoftDeletes;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -20,6 +24,9 @@ class Borrowing extends Model
         'rental_price',
         'late_fee',
     ];
+
+    // Defining 'deleted_at' column for soft deletes.
+    protected $dates = ['deleted_at'];
 
     /**
      * Get the member that owns the borrowing.
