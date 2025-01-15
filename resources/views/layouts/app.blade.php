@@ -10,7 +10,7 @@
 	<title>@yield('title', 'Kaz-Library')</title>
 
 	{{-- Favicon --}}
-	<link rel="shortcut icon" href="{{ asset('images/logo.webp') }}">
+	<link rel="shortcut icon" href="{{ asset('images/logo.jpg') }}">
 	{{-- AdminLTE CSS --}}
 	<link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
 	{{-- Font Awesome CSS --}}

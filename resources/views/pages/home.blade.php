@@ -7,7 +7,7 @@
 	<meta name="description" content="E-Library Institut Az Zuhra">
 	<title>Home - Kaz-Library</title>
 	{{-- Favicon --}}	
-	<link type="image/png" href="{{ asset('images/logo.webp') }}" rel="icon">
+	<link type="image/png" href="{{ asset('images/logo.jpg') }}" rel="icon">
 	{{-- AdminLTE CSS --}}
 	<link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
     {{-- Font --}}
@@ -133,7 +133,7 @@
 
 			{{-- brand logo --}}
 			<a class="navbar-brand" href="#">
-				<img class="rounded img-fluid" style="max-width: 100%; height: 100px;" src="{{ asset('images/logo.webp') }}" alt="Logo Kaz-library">
+				<img class="rounded img-fluid" style="max-width: 100%; height: 100px;" src="{{ asset('images/logo.jpg') }}" alt="Logo Kaz-library">
             </a>
 
 			{{-- navbar toggler --}}
