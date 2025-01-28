@@ -24,136 +24,481 @@
 
 @section('content')
 <div class="container-fluid"></div>
+
 	<div class="row">
 
-		{{-- line chart point modal --}}
-		<div class="modal fade" id="lineChartPointModal" tabindex="-1" role="dialog" aria-labelledby="dataPointModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-md" role="document">
-				<div class="modal-content">
-
-					{{-- header --}}
-					<div class="modal-header">
-						<h5 class="modal-title" id="dataPointModalLabel">Detail Peminjaman</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+		{{-- books count --}}
+		<div class="col-12 col-lg-3">
+			<div class="card">
+				<div class="card-body d-flex flex-row">
+					{{-- icon --}}
+					<div class="badge badge-info p-3">
+						<i class="fas fa-book" style="font-size: 20px"></i>
 					</div>
-
-					{{-- body --}}
-					<div class="modal-body">
-						<p id="lineChartModalContent"></p>
-					</div>
-					
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-					</div>
-				</div>
-			</div>
-		</div>
-		{{-- /.line chart point modal --}}
-
-		{{-- bar chart point modal --}}
-		<div class="modal fade" id="barChartPointModal" tabindex="-1" role="dialog" aria-labelledby="dataPointModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-md" role="document">
-				<div class="modal-content">
-
-					{{-- header --}}
-					<div class="modal-header">
-						<h5 class="modal-title" id="dataPointModalLabel">Detail Peminjaman Buku</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-
-					{{-- body --}}
-					<div class="modal-body">
-						<p id="barChartModalContent"></p>
-					</div>
-					
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-					</div>
-				</div>
-			</div>
-		</div>
-		{{-- /.bar chart point modal --}}
-
-		{{-- pie chart point modal --}}
-		<div class="modal fade" id="pieChartPointModal" tabindex="-1" role="dialog" aria-labelledby="dataPointModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-md" role="document">
-				<div class="modal-content">
-
-					{{-- header --}}
-					<div class="modal-header">
-						<h5 class="modal-title" id="dataPointModalLabel">Detail Jumlah Anggota</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-
-					{{-- body --}}
-					<div class="modal-body">
-						<p id="pieChartModalContent"></p>
-					</div>
-					
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-					</div>
-				</div>
-			</div>
-		</div>
-		{{-- /.pie chart point modal --}}
-
-		{{-- line chart penyewaan buku --}}
-		<div class="col-12 col-lg-4">
-			<div class="card" style="border-top: 5px solid #181C32">
-				<div class="card-body" id="lineChartContainer">
 					{{-- loader --}}
-					<div class="text-center my-5" id="lineChartLoader" style="color: orangered;">
+					<div class="text-center pl-2" id="booksCountLoader" style="color: orangered;">
+						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+					</div>
+					{{-- count --}}
+					<div class="ml-2 d-none" id="booksCountContainer">
+						<p class="mb-1">Total Buku</p>
+						<b id="booksCount"></b>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{{-- borrowed books count --}}
+		<div class="col-12 col-lg-3">
+			<div class="card">
+				<div class="card-body d-flex flex-row">
+					{{-- icon --}}
+					<div class="badge badge-success p-3">
+						<i class="fas fa-address-book" style="font-size: 20px"></i>
+					</div>
+					{{-- loader --}}
+					<div class="text-center pl-2" id="borrowedBooksCountLoader" style="color: orangered;">
+						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+					</div>
+					{{-- count --}}
+					<div class="ml-2 d-none" id="borrowedBooksCountContainer">
+						<p class="mb-1">Buku Disewa</p>
+						<b 	id="borrowedBooksCount"></b>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{{-- books returned late --}}
+		<div class="col-12 col-lg-3">
+			<div class="card">
+				<div class="card-body d-flex flex-row">
+					{{-- icon --}}
+					<div class="badge badge-warning p-3">
+						<i class="fas fa-calendar text-white" style="font-size: 20px"></i>
+					</div>
+					{{-- loader --}}
+					<div class="text-center pl-2" id="booksReturnedLateCountLoader" style="color: orangered;">
+						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+					</div>
+					{{-- count --}}
+					<div class="ml-2 d-none" id="booksReturnedLateCountContainer">
+						<p class="mb-1">Buku Telat Kembali</p>
+						<b id="booksReturnedLateCount"></b>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{{-- members count --}}
+		<div class="col-12 col-lg-3">
+			<div class="card">
+				<div class="card-body d-flex flex-row">
+					{{-- icon --}}
+					<div class="badge badge-danger p-3">
+						<i class="fas fa-users" style="font-size: 20px"></i>
+					</div>
+					{{-- loader --}}
+				<div class="text-center pl-2" id="membersCountLoader" style="color: orangered;">
+					<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+				</div>
+					{{-- count --}}
+					<div class="ml-2 d-none" id="membersCountContainer">
+						<p class="mb-1">Total Anggota</p>
+						<b id="membersCount"></b>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{{-- /.row --}}
+
+	<div class="row">
+
+		{{-- book categories chart --}}
+		<div class="col-12 col-lg-4">
+			
+			<div class="modal fade" id="bookCategoriesModal" tabindex="-1" role="dialog" aria-labelledby="dataPointModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-md" role="document">
+					<div class="modal-content">
+
+						{{-- header --}}
+						<div class="modal-header">
+							<h5 class="modal-title" id="dataPointModalLabel">Detail Kategori Buku</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+
+						{{-- body --}}
+						<div class="modal-body">
+							<p id="bookCategoriesModalContent"></p>
+						</div>
+						
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			{{-- /.point modal --}}
+
+			<div class="card" style="border-top: 5px solid #181C32">
+				<div id="bookCategoriesContainer" class="card-body">
+					{{-- loader --}}
+					<div class="text-center my-5" id="bookCategoriesLoader" style="color: orangered;">
 						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
 					</div>
 					{{-- empty data message --}}
-					<p class="text-center font-weight-bold text-danger d-none" id="lineChartEmptyMessage">Tidak ada data buku atau penyewaan!</p>
+					<p class="text-center font-weight-bold text-danger d-none" id="bookCategoriesEmptyMessage">Tidak ada buku yang terdaftar!</p>
 				</div>
 				{{-- /.card-body --}}
 			</div>
 			{{-- /.card --}}
 		</div>
-		{{-- /.line chart penyewaan buku --}}
+		{{-- /.book categories chart --}}
 
-		{{-- bar chart jumlah peminjaman --}}
+		<div class="col-12 col-lg-4 d-flex flex-column">
+			{{-- popular categories chart --}}
+			<div class="flex-fill">
+				{{-- point modal --}}
+				<div class="modal fade" id="popularCatagoriesPointModal" tabindex="-1" role="dialog" aria-labelledby="dataPointModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-md" role="document">
+						<div class="modal-content">
+
+							{{-- header --}}
+							<div class="modal-header">
+								<h5 class="modal-title" id="dataPointModalLabel">Detail Kategori Buku</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+
+							{{-- body --}}
+							<div class="modal-body">
+								<p id="popularCatagoriesModalContent"></p>
+							</div>
+							
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				{{-- /.point modal --}}
+
+				<div class="card" style="border-top: 5px solid #181C32">
+					<div id="popularCategoriesContainer" class="card-body">
+						{{-- loader --}}
+						<div class="text-center my-5" id="popularCatagoriesLoader" style="color: orangered;">
+							<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+						</div>
+						{{-- empty data message --}}
+						<p class="text-center font-weight-bold text-danger d-none" id="popularCatagoriesEmptyMessage">Tidak ada data buku atau penyewaan!</p>
+					</div>
+					{{-- /.card-body --}}
+				</div>
+				{{-- /.card --}}
+			</div>
+			{{-- /.popular categories chart --}}
+
+			{{-- books status chart --}}
+			<div class="flex-fill">
+
+				{{-- point modal --}}
+				<div class="modal fade" id="bookStatusModal" tabindex="-1" role="dialog" aria-labelledby="dataPointModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-md" role="document">
+						<div class="modal-content">
+	
+							{{-- header --}}
+							<div class="modal-header">
+								<h5 class="modal-title" id="dataPointModalLabel">Status Buku</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+	
+							{{-- body --}}
+							<div class="modal-body">
+								<p id="bookStatusModalContent"></p>
+							</div>
+							
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				{{-- /.point modal --}}
+	
+				<div class="card">
+					<div id="booksStatusContainer" class="card-body">
+						{{-- loader --}}
+						<div class="text-center my-5" id="bookStatusLoader" style="color: orangered;">
+							<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+						</div>
+						{{-- empty data message --}}
+						<p class="text-center font-weight-bold text-danger d-none" id="bookStatusEmptyMessage">Tidak ada buku yang terdaftar!</p>
+					</div>
+					{{-- /.card-body --}}
+				</div>
+				{{-- /.card --}}
+			</div>
+			{{-- /.books status chart --}}
+		</div>
+
+		{{-- popular books --}}
 		<div class="col-12 col-lg-4">
+
+			{{-- point modal --}}
+			<div class="modal fade" id="popularBooksModal" tabindex="-1" role="dialog" aria-labelledby="dataPointModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-md" role="document">
+					<div class="modal-content">
+
+						{{-- header --}}
+						<div class="modal-header">
+							<h5 class="modal-title" id="dataPointModalLabel">Status Buku</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+
+						{{-- body --}}
+						<div class="modal-body">
+							<p id="popularBooksModalContent"></p>
+						</div>
+						
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			{{-- /.point modal --}}
+
 			<div class="card" style="border-top: 5px solid #181C32">
-				<div id="barChartContainer" class="card-body">
+				<div class="card-body" id="popularBooksContainer">
 					{{-- loader --}}
-					<div class="text-center my-5" id="barChartLoader" style="color: orangered;">
+					<div class="text-center my-5" id="popularBooksLoader" style="color: orangered;">
 						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
 					</div>
-					{{-- empty data message --}}
-					<p class="text-center font-weight-bold text-danger d-none" id="barChartEmptyMessage">Tidak ada data buku atau penyewaan!</p>
+					{{-- empty message --}}
+					<p class="text-center font-weight-bold text-danger d-none" id="popularBooksEmptyMessage">Tidak ada data buku atau penyewaan!</p>
 				</div>
 				{{-- /.card-body --}}
 			</div>
 			{{-- /.card --}}
 		</div>
-		{{-- /.bar chart jumlah peminjaman --}}
+		
+	</div>
+	{{-- /.row --}}
 
-		{{-- pie chart distribusi anggota --}}
+	<div class="row">
+		{{-- borrowings per month line chart --}}
 		<div class="col-12 col-lg-4">
+
+			{{-- point modal --}}
+			<div class="modal fade" id="borrowingsPerMonthPointModal" tabindex="-1" role="dialog" aria-labelledby="dataPointModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-md" role="document">
+					<div class="modal-content">
+
+						{{-- header --}}
+						<div class="modal-header">
+							<h5 class="modal-title" id="dataPointModalLabel">Detail Peminjaman</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+
+						{{-- body --}}
+						<div class="modal-body">
+							<p id="borrowingsPerMonthModalContent"></p>
+						</div>
+						
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			{{-- /.point modal --}}
+
 			<div class="card" style="border-top: 5px solid #181C32">
-				<div id="pieChartContainer" class="card-body">
+				<div class="card-body" id="borrowingsPerMonthContainer">
 					{{-- loader --}}
-					<div class="text-center my-5" id="pieChartLoader" style="color: orangered;">
+					<div class="text-center my-5" id="borrowingsPerMonthLoader" style="color: orangered;">
 						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
 					</div>
 					{{-- empty data message --}}
-					<p class="text-center font-weight-bold text-danger d-none" id="pieChartEmptyMessage">Tidak ada anggota yang terdaftar!</p>
+					<p class="text-center font-weight-bold text-danger d-none" id="borrowingsPerMonthMessage">Tidak ada data buku atau penyewaan!</p>
 				</div>
 				{{-- /.card-body --}}
 			</div>
 			{{-- /.card --}}
 		</div>
-		{{-- /.pie chart distribusi anggota --}}
+		{{-- /.borrowings per month line chart --}}
+
+		{{-- borrowings per category bar chart --}}
+		<div class="col-12 col-lg-4">
+
+			{{-- point modal --}}
+			<div class="modal fade" id="borrowingsPerCategoryPointModal" tabindex="-1" role="dialog" aria-labelledby="dataPointModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-md" role="document">
+					<div class="modal-content">
+
+						{{-- header --}}
+						<div class="modal-header">
+							<h5 class="modal-title" id="dataPointModalLabel">Detail Kategori Buku</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+
+						{{-- body --}}
+						<div class="modal-body">
+							<p id="borrowingsPerCategoryModalContent"></p>
+						</div>
+						
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			{{-- /.point modal --}}
+
+			<div class="card" style="border-top: 5px solid #181C32">
+				<div id="borrowingsPerCategoryContainer" class="card-body">
+					{{-- loader --}}
+					<div class="text-center my-5" id="borrowingsPerCategoryLoader" style="color: orangered;">
+						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+					</div>
+					{{-- empty data message --}}
+					<p class="text-center font-weight-bold text-danger d-none" id="borrowingsPerCategoryEmptyMessage">Tidak ada data buku atau penyewaan!</p>
+				</div>
+				{{-- /.card-body --}}
+			</div>
+			{{-- /.card --}}
+		</div>
+		{{-- /.borrowings per category bar chart --}}
+
+		{{-- members per type pie chart --}}
+		<div class="col-12 col-lg-4">
+			{{-- point modal --}}
+			<div class="modal fade" id="membersPerTypePointModal" tabindex="-1" role="dialog" aria-labelledby="dataPointModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-md" role="document">
+					<div class="modal-content">
+
+						{{-- header --}}
+						<div class="modal-header">
+							<h5 class="modal-title" id="dataPointModalLabel">Detail Jumlah Anggota</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+
+						{{-- body --}}
+						<div class="modal-body">
+							<p id="membersPerTypeModalContent"></p>
+						</div>
+						
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			{{-- point modal --}}
+
+			<div class="card" style="border-top: 5px solid #181C32">
+				<div id="membersPerTypeContainer" class="card-body">
+					{{-- loader --}}
+					<div class="text-center my-5" id="membersPerTypeLoader" style="color: orangered;">
+						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+					</div>
+					{{-- empty data message --}}
+					<p class="text-center font-weight-bold text-danger d-none" id="membersPerTypeEmptyMessage">Tidak ada anggota yang terdaftar!</p>
+				</div>
+				{{-- /.card-body --}}
+			</div>
+			{{-- /.card --}}
+		</div>
+		{{-- /.members per type pie chart--}}
+
+	</div>
+	{{-- /.row --}}
+
+	<div class="row">
+
+		{{-- latest borrowing table --}}
+		<div class="col-12 col-lg-6">
+			<div class="card" style="border-top: 5px solid #181C32">
+				<div class="card-header d-flex justify-content-between align-items-center">
+					<b style="text-align: left; font-size: 20px">Penyewaan Terbaru</b>
+					<a href="{{ route('penyewaan') }}" class="text-bold ml-auto" style="font-size: 20px">Lihat Semua</a>
+				</div>
+				<div id="latestBorrowingTable" class="card-body">
+					{{-- loader --}}
+					<div class="text-center my-5" id="latestBorrowingLoader" style="color: orangered;">
+						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+					</div>
+					{{-- empty data message --}}
+					<p class="text-center font-weight-bold text-danger d-none" id="latestBorrowingEmptyMessage">Tidak ada data buku atau penyewaan!</p>
+					{{-- table --}}
+					<table class="table table-striped d-none" id="latestBorrowingTableContent">
+						<thead>
+							<tr>
+								<th>Buku</th>
+								<th>Penyewa</th>
+								<th>Tgl. Pinjam</th>
+								<th>Aksi</th>
+							</tr>
+						</thead>
+						<tbody id="latestBorrowingTableBody">
+
+						</tbody>
+					</table>
+				</div>
+				{{-- /.card-body --}}
+			</div>
+			{{-- /.card --}}
+		</div>
+		{{-- /.latest borrowing table --}}
+
+		{{-- returned late books table --}}
+		<div class="col-12 col-lg-6">
+			<div class="card" style="border-top: 5px solid #181C32">
+				<div class="card-header d-flex justify-content-between align-items-center">
+					<b style="text-align: left; font-size: 20px">Pengembalian Terlambat</b>
+				</div>
+				<div id="returnedLateBooksTable" class="card-body">
+					{{-- loader --}}
+					<div class="text-center my-5" id="returnedLateBooksLoader" style="color: orangered;">
+						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+					</div>
+					{{-- empty data message --}}
+					<p class="text-center font-weight-bold text-danger d-none" id="returnedLateBooksEmptyMessage">Tidak ada data buku atau penyewaan!</p>
+					{{-- table --}}
+					<table class="table table-striped d-none" id="returnedLateBooksTableContent">
+						<thead>
+							<tr>
+								<th>Buku</th>
+								<th>Penyewa</th>
+								<th>Telat</th>
+								<th>Denda</th>
+								<th>Aksi</th>
+							</tr>
+						</thead>
+						<tbody id="returnedLateBooksTableBody">
+
+						</tbody>
+					</table>
+				</div>
+				{{-- /.card-body --}}
+			</div>
+			{{-- /.card --}}
+		</div>
+		{{-- /.latest borrowing table --}}
 
 	</div>
 	{{-- /.row --}}
@@ -166,12 +511,431 @@
 <script type="text/javascript" src="{{ asset('vendor/highcharts/code/modules/exporting.js') }}"></script>
 <script type="text/javascript" src="{{ asset('vendor/highcharts/code/modules/accessibility.js') }}"></script>
 <script>
-	// Show loader.
-	$("#lineChartLoader").show();
-	$("#barChartLoader").show();
-	$("#pieChartLoader").show();
+	// Fetch data for books count.
+	$.ajax({
+		url: "{{ route('dashboard.data.books_count') }}",
+		method: "GET",
+		success: function(response) {
+			// Show containers.
+			$("#booksCountContainer").removeClass('d-none');
+			$("#borrowedBooksCountContainer").removeClass('d-none');
+			$("#booksReturnedLateCountContainer").removeClass('d-none');
 
-	// Ajax Request to fetch data for line chart.
+			// Set books count.
+			$("#booksCount").text(response.booksCount);
+			$("#borrowedBooksCount").text(response.borrowedBooksCount);
+			$("#booksReturnedLateCount").text(response.booksReturnedLateCount);
+
+			// Hide loader.
+			$("#booksCountLoader").hide();
+			$("#borrowedBooksCountLoader").hide();
+			$("#booksReturnedLateCountLoader").hide();
+		},
+		error: function(xhr, status, error) {
+			console.error('AJAX Error ', error);
+			// Hide loader in case of error.
+			$("#booksCountLoader").hide();
+			$("#borrowedBooksCountLoader").hide();
+			$("#booksReturnedLateCountLoader").hide();
+		}
+	});
+
+	// Fetch data for members count.
+	$.ajax({
+		url: "{{ route('dashboard.data.members_count') }}",
+		method: "GET",
+		success: function(response) {
+			// Show container.
+			$("#membersCountContainer").removeClass('d-none');
+
+			// Set members count.
+			$("#membersCount").text(response.membersCount);
+
+			// Hide loader.
+			$("#membersCountLoader").hide();
+		},
+		error: function(xhr, status, error) {
+			console.error('AJAX Error ', error);
+			// Hide loader in case of error.
+			$("#membersCountLoader").hide();
+		}
+	});
+
+	// Fetch data for book categories chart.
+	$.ajax({
+		url: "{{ route('dashboard.data.books_by_category') }}",
+		method: "GET",
+		success: function(response) {
+			const booksByCategory = response.booksByCategory.map(item => ({
+        name: item.ctg_name,
+        y: item.count
+      }));
+
+			// Check if there's categories data.
+			if(booksByCategory < 1) {
+				// Hide loader.
+				$("#bookCategoriesLoader").hide();
+
+				// Show empty data message.
+				$("#bookCategoriesEmptyMessage").removeClass('d-none');
+			} else {
+				// Create donut chart.
+				Highcharts.chart('bookCategoriesContainer', {
+					chart: {
+						type: 'pie',
+						height: 561
+					},
+					title: {
+						text: 'Kategori Buku',
+						style: {
+							fontFamily: 'Poppins, sans-serif',
+						}
+					},
+					plotOptions: {
+						pie: {
+							innerSize: '50%',
+							cursor: 'pointer',
+							dataLabels: { enabled: false },
+							showInLegend: true
+						},
+						series:{
+							point: {
+								events: {
+									click: function() {
+										// Set modal content.
+										$('#bookCategoriesModalContent').html('Kategori: <b>' + this.name + '</b> <br> Jumlah: <b>' + this.y + '</b>');
+										$('#bookCategoriesModal').modal('show');
+									}
+								}
+							}
+						}
+					},
+					series: [{
+						name: 'Jumlah Buku',
+						data: booksByCategory
+					}],
+					credits: {
+						enabled: false
+					},
+					tooltip: {
+						formatter: function() {
+							return 'Kategori: <b>' + this.point.name + '</b><br>Jumlah: <b>' + this.point.y + '</b>';
+						},
+						style: {
+							fontFamily: 'Poppins, sans-serif'
+						}
+					},
+					legend: {
+						itemStyle: {
+							fontFamily: 'Poppins, sans-serif',
+							fontSize: '15px',
+							color: '#000000'
+						}
+					}
+				});
+			}
+		},
+		error: function(xhr, status, error) {
+			console.error('AJAX Error ', error);
+			// Hide loader in case of error.
+			$('#bookCategoriesLoader').hide();
+		}
+	});
+
+	// Fetch data for popular categories chart.
+	$.ajax({
+		url: "{{ route('dashboard.data.popular_categories') }}",
+		method: "GET",
+		success: function(response) {
+			const popularCategoriesKeys = response.popularCategoriesKeys;
+			const popularCategoriesValues = response.popularCategoriesValues;
+
+			// Check if there's popular categories data.
+			if(popularCategoriesKeys < 1) {
+				// Hide loader.
+				$("#popularCatagoriesLoader").hide();
+
+				// Show empty data message.
+				$("#popularCatagoriesEmptyMessage").removeClass('d-none');
+			} else {
+				// Create bar chart.
+				Highcharts.chart('popularCategoriesContainer', {
+					chart: {
+						type: 'bar',
+						height: 250
+					},
+					title: {
+						text: 'Kategori Terpopuler',
+						style: {
+							fontFamily: 'Poppins, sans-serif'
+						}
+					},
+					xAxis: {
+						// X Axis categories.
+						categories: popularCategoriesKeys,
+						labels: {
+							style: {
+								fontFamily: 'Poppins, sans-serif'
+							}
+						}
+					},
+					yAxis: {
+						// Y Axis title.
+						title: {
+							text: 'Jumlah Peminjaman',
+							style: {
+								fontFamily: 'Poppins, sans-serif'
+							}
+						}
+					},
+					plotOptions: {
+						series: {
+							cursor: 'pointer'
+						}
+					},
+					credits: {
+						enabled: false
+					},
+					tooltip: {
+						formatter: function() {
+							return 'Kategori: <b>' + this.x + '</b> <br> Dipinjam: <b>' + this.y + ' kali</b>';
+						},
+						style: {
+							fontFamily: 'Poppins, sans-serif'
+						}
+					},
+					legend: {
+						itemStyle: {
+							fontFamily: 'Poppins, sans-serif',
+							fontSize: '12px',
+							color: '#000000'
+						}
+					},
+					series: [{
+						// Data series.
+						name: 'Kategori',
+						data: popularCategoriesValues,
+						color: '#90EE90',
+						point: {
+							events: {
+								click: function() {
+									// Set modal content.
+									$('#borrowingsPerCategoryModalContent').html('Kategori: <b>' + this.category + '</b> <br> Dipinjam: <b>' + this.y + ' kali</b>');
+									$('#borrowingsPerCategoryPointModal').modal('show');
+								}
+							}
+						},
+						dataLabels: {
+							style: {
+								fontFamily: 'Poppins, sans-serif'
+							}
+						}
+					}],
+				});
+			}
+		},
+		error: function(xhr, status, error) {
+			console.error('AJAX Error ', error);
+			// Hide loader in case of error.
+			$('#popularCatagoriesLoader').hide();
+		}
+	});
+
+	// Fetch data for books status chart.
+	$.ajax({
+		url: "{{ route('dashboard.data.books_status') }}",
+		method: "GET",
+		success: function(response) {
+			const booksStatus = [
+				{ name: 'Tersedia', y: response.availableBooksCount },
+				{ name: 'Dipinjam', y: response.borrowedBooksCount }
+			];
+
+			// Check if there's books data.
+			if(booksStatus < 1) {
+				// Hide loader.
+				$("#booksStatusLoader").hide();
+
+				// Show empty data message.
+				$("#booksStatusEmptyMessage").removeClass('d-none');
+			} else {
+				// Calculate the percentage of available books.
+				const totalBooks = booksStatus.reduce((acc, point) => acc + point.y, 0);
+				const availableBooks = booksStatus.find(point => point.name === 'Tersedia').y;
+				const percentageAvailable = ((availableBooks / totalBooks) * 100).toFixed(2);
+
+				// Create donut chart.
+				Highcharts.chart('booksStatusContainer', {
+					chart: {
+						type: 'pie',
+						height: 250
+					},
+					title: {
+						text: 'Status Buku',
+						style: {
+							fontFamily: 'Poppins, sans-serif'
+						}
+					},
+					subtitle: {
+						text: '<b>' + percentageAvailable + '%</b><br> Tersedia',
+						verticalAlign: 'middle',
+						style: {
+							fontFamily: 'Poppins, sans-serif',
+							color: '#000000'
+						}
+					},
+					plotOptions: {
+						pie: {
+							innerSize: '70%',
+							cursor: 'pointer',
+							dataLabels: { enabled: false },
+							showInLegend: true,
+							size: 150
+						},
+						series:{
+							point: {
+								events: {
+									click: function() {
+										// Set modal content.
+										$('#bookStatusModalContent').html('Status: <b>' + this.name + '</b> <br> Jumlah: <b>' + this.y + '</b>');
+										$('#bookStatusModal').modal('show');
+									}
+								}
+							}
+						}
+					},
+					series: [{
+						name: 'Jumlah Buku',
+						data: booksStatus
+					}],
+					credits: {
+						enabled: false
+					},
+					tooltip: {
+						formatter: function() {
+							return 'Status: <b>' + this.point.name + '</b><br>Jumlah: <b>' + this.point.y + '</b>';
+						},
+						style: {
+							fontFamily: 'Poppins, sans-serif'
+						}
+					},
+					legend: {
+						itemStyle: {
+							fontFamily: 'Poppins, sans-serif',
+							fontSize: '15px',
+							color: '#000000'
+						}
+					}
+				});
+			}
+		},
+		error: function(xhr, status, error) {
+			console.error('AJAX Error ', error);
+			// Hide loader in case of error.
+			$('#booksStatusLoader').hide();
+		}
+	});
+
+	// Fetch data for popular books chart.
+	$.ajax({
+		url: "{{ route('dashboard.data.get_popular_books') }}",
+		method: "GET",
+		success: function(response) {
+			const popularBooksKeys = response.popularBooksKeys;
+			const popularBooksValues = response.popularBooksValues;
+
+			// Check if there's popular books data.
+			if(popularBooksKeys < 1) {
+				// Hide loader.
+				$("#popularBooksLoader").hide();
+
+				// Show empty data message.
+				$("#popularBooksEmptyMessage").removeClass('d-none');
+			} else {
+				// Create bar chart.
+				Highcharts.chart('popularBooksContainer', {
+					chart: {
+						type: 'column',
+						height: 561
+					},
+					title: {
+						text: 'Buku Terpopuler',
+						style: {
+							fontFamily: 'Poppins, sans-serif'
+						}
+					},
+					xAxis: {
+						// X Axis categories.
+						categories: popularBooksKeys,
+						labels: {
+							style: {
+								fontFamily: 'Poppins, sans-serif'
+							}
+						}
+					},
+					yAxis: {
+						// Y Axis title.
+						title: {
+							text: 'Jumlah Peminjaman',
+							style: {
+								fontFamily: 'Poppins, sans-serif'
+							}
+						}
+					},
+					plotOptions: {
+						series: {
+							cursor: 'pointer',
+							color: '#4B0082'
+						}
+					},
+					credits: {
+						enabled: false
+					},
+					tooltip: {
+						formatter: function() {
+							return 'Buku: <b>' + this.x + '</b> <br> Dipinjam: <b>' + this.y + ' kali</b>';
+						},
+						style: {
+							fontFamily: 'Poppins, sans-serif'
+						}
+					},
+					legend: {
+						itemStyle: {
+							fontFamily: 'Poppins, sans-serif',
+							fontSize: '12px',
+							color: '#000000'
+						}
+					},
+					series: [{
+						// Data series.
+						name: 'Buku',
+						data: popularBooksValues,
+						point: {
+							events: {
+								click: function() {
+									// Set modal content.
+									$('#popularBooksModalContent').html('Buku: <b>' + this.category + '</b> <br> Dipinjam: <b>' + this.y + ' kali</b>');
+									$('#popularBooksModal').modal('show');
+								}
+							}
+						},
+						dataLabels: {
+							style: {
+								fontFamily: 'Poppins, sans-serif'
+							}
+						}
+					}],
+				});
+			}
+		},
+		error: function(xhr, status, error) {
+			console.error('AJAX Error ', error);
+			// Hide loader in case of error.
+			$('#popularBooksLoader').hide();
+		}
+	})
+
+	// Fetch data for borrowings per month chart.
 	$.ajax({
 		url: "{{ route('dashboard.data.books_by_month') }}",
 		method: "GET",
@@ -182,26 +946,92 @@
 			// Check if there's borrowings data.
 			if(borrowings < 1) {
 				// Hide loader.
-				$("#lineChartLoader").hide();
+				$("#borrowingsPerMonthLoader").hide();
 
 				// Show empty data message.
-				$("#lineChartEmptyMessage").removeClass('d-none');
+				$("#borrowingsPerMonthEmptyMessage").removeClass('d-none');
 			} else {
 				// Create line chart.
-				createLineChart('lineChartContainer', 'Jumlah Peminjaman Buku Per Bulan', borrowMonths, borrowings);
-
-				// Hide loader.
-				$("#lineChartLoader").hide();
+				Highcharts.chart('borrowingsPerMonthContainer', {
+					chart: {
+						type: 'line' 
+					},
+					title: {
+						text: 'Jumlah Peminjaman Buku Per Bulan',
+						style: {
+							fontFamily: 'Poppins, sans-serif'
+						}
+					},
+					xAxis: {
+						// X-axis categories.
+						categories: borrowMonths
+					},
+					yAxis: {
+						title: {
+							// Y-axis title.
+							text: 'Jumlah Peminjaman',
+							style: {
+								fontFamily: 'Poppins, sans-serif'
+							}
+						}
+					},
+					credits: {
+						enabled: false
+					},
+					legend: {
+						itemStyle: {
+							fontFamily: 'Poppins, sans-serif',
+							fontSize: '12px',
+							color: '#000000'
+						}
+					},
+					series: [
+						{
+							// Data series.
+							name: 'Peminjaman',
+							color: '#ff4400',
+							data: borrowings,
+							point: {
+								events: {
+									click: function() {
+										// Set modal content.
+										$('#borrowingsPerMonthModalContent').html('Bulan: <b>' + this.category + '</b> <br> Jumlah: <b>' + this.y + '</b>');
+										$('#borrowingsPerMonthPointModal').modal('show');
+									}
+								}
+							},
+							dataLabels: {
+								enabled: true,
+								style: {
+									fontFamily: 'Poppins, sans-serif',
+									fontSize: '12px',
+									color: '#000000'
+								}
+							}
+						},
+					],
+					exporting: {
+						enabled: true
+					},
+					tooltip: {
+						formatter: function() {
+							return 'Bulan: <b>' + this.x + '</b><br>Jumlah: <b>' + this.y + '</b>';
+						},
+						style: {
+							fontFamily: 'Poppins, sans-serif'
+						}
+					},
+				});	
 			}
 		},
 		error: function(xhr, status, error) {
 			console.error('AJAX Error ', error);
 			// Hide loader in case of error.
-			$('#lineChartLoader').hide();
+			$('#borrowingsPerMonthLoader').hide();
 		}
 	});
 
-	// Ajax Request to fetch data for bar chart.
+	// Fetch data for borrowings per category chart.
 	$.ajax({
 		url: "{{ route('dashboard.data.borrowings_by_category') }}",
 		method: "GET",
@@ -212,26 +1042,89 @@
 			// Check if there's borrowings data.
 			if(borrowingsKeys < 1) {
 				// Hide loader.
-				$("#barChartLoader").hide();
+				$("#borrowingsPerCategoryLoader").hide();
 
 				// Show empty data message.
-				$("#barChartEmptyMessage").removeClass('d-none');
+				$("#borrowingsPerCategoryEmptyMessage").removeClass('d-none');
 			} else {
 				// Create bar chart.
-				createBarChart('barChartContainer', 'Jumlah Buku yang Dipinjam per Kategori', borrowingsKeys, borrowingsValues);
-
-				// Hide loader.
-				$("#barChartLoader").hide();
+				Highcharts.chart('borrowingsPerCategoryContainer', {
+					chart: {
+						type: 'bar'
+					},
+					title: {
+						text: 'Jumlah Buku yang Dipinjam per Kategori',
+						style: {
+							fontFamily: 'Poppins, sans-serif'
+						}
+					},
+					xAxis: {
+						// X Axis categories.
+						categories: borrowingsKeys,
+						labels: {
+							style: {
+								fontFamily: 'Poppins, sans-serif'
+							}
+						}
+					},
+					yAxis: {
+						// Y Axis title.
+						title: {
+							text: 'Jumlah Buku',
+							style: {
+								fontFamily: 'Poppins, sans-serif'
+							}
+						}
+					},
+					credits: {
+						enabled: false
+					},
+					tooltip: {
+						formatter: function() {
+							return 'Kategori: <b>' + this.x + '</b> <br> Jumlah: <b>' + this.y + '</b>';
+						},
+						style: {
+							fontFamily: 'Poppins, sans-serif'
+						}
+					},
+					legend: {
+						itemStyle: {
+							fontFamily: 'Poppins, sans-serif',
+							fontSize: '12px',
+							color: '#000000'
+						}
+					},
+					series: [{
+						// Data series.
+						name: 'Kategori',
+						data: borrowingsValues,
+						color: '#ff4400',
+						point: {
+							events: {
+								click: function() {
+									// Set modal content.
+									$('#borrowingsPerCategoryModalContent').html('Kategori: <b>' + this.category + '</b> <br> Jumlah: <b>' + this.y + '</b>');
+									$('#borrowingsPerCategoryPointModal').modal('show');
+								}
+							}
+						},
+						dataLabels: {
+							style: {
+								fontFamily: 'Poppins, sans-serif'
+							}
+						}
+					}],
+				});
 			}
 		},
 		error: function(xhr, status, error) {
 			console.error('AJAX Error ', error);
 			// Hide loader in case of error.
-			$('barChartLoader').hide();
+			$('borrowingsPerCategoryLoader').hide();
 		}
 	});
 
-	// Ajax Request to fetch data for pie chart.
+	// Fetch data for members per type chart.
 	$.ajax({
 		url: "{{ route('dashboard.data.members_by_type') }}",
 		method: "GET",
@@ -241,10 +1134,10 @@
 			// Check if there's members data.
 			if(members < 1) {
 				// Hide loader.
-				$("#pieChartLoader").hide();
+				$("#membersPerTypeLoader").hide();
 
 				// Show empty data message.
-				$("#pieChartEmptyMessage").removeClass('d-none');
+				$("#membersPerTypeEmptyMessage").removeClass('d-none');
 			} else {
 				// Calculate total members.
 				const totalMembers = members.reduce((sum, item) => sum + item.count, 0);
@@ -264,242 +1157,168 @@
 				});
 
 				// Create pie chart.
-				createPieChart('pieChartContainer', 'Distribusi Anggota Berdasarkan Tipe Keanggotaan', data);
-
-				// Hide loader.
-				$("#pieChartLoader").hide();
+				Highcharts.chart('membersPerTypeContainer', {
+					chart: {
+						type: 'pie',
+					},
+					title: {
+						text: 'Distribusi Anggota Berdasarkan Tipe Keanggotaan',
+						style: {
+							fontFamily: 'Poppins, sans-serif'
+						} 
+					},
+					tooltip: {
+						formatter: function () {
+							return 'Tipe: <b>' + this.key + '</b> <br> Persentase: <b>' + Math.round(this.percentage) + ' %</b> <br> Jumlah: <b>' + this.y + '</b>';
+						},
+						style: {
+							fontFamily: 'Poppins, sans-serif'
+						}
+					},
+					credits: {
+						enabled: false
+					},
+					plotOptions: {
+						series: {
+							cursor: 'pointer',
+							point: {
+								events: {
+									click: function() {
+										// Set modal content.
+										$('#membersPerTypeModalContent').html('Tipe: <b>' + this.name + '</b> <br> Persentase: <b>' + Math.round(this.x) + ' %</b> <br> Jumlah: <b>' + this.y + '</b>');
+										$('#membersPerTypePointModal').modal('show');
+									}
+								}
+							},
+							dataLabels: [
+								{
+									enabled: true,
+									distance: 20	
+								}, 
+								{
+									enabled: true,
+									distance: -40,
+									// Data labels format.
+									format: '{point.percentage:.0f} %',
+									style: {
+										fontSize: '1em',
+										fontFamily: 'Poppins, sans-serif',
+										textOutline: 'none',
+										opacity: 0.7
+									},
+									filter: {
+										operator: '>',
+										property: 'percentage',
+										value: 10
+									}
+								}
+							]
+						}
+					},
+					series: [
+						{
+							name: 'Anggota',
+							colorByPoint: true,
+							data: data,
+						}
+					]
+				});
 			}
 		},
 		error: function(xhr, status, error) {
 			console.error('AJAX Error ', error);
 			// Hide loader in case of error.
-			$('pieChartLoader').hide();
+			$('membersPerTypeLoader').hide();
 		}
 	});
 
-	// Create line chart.
-	function createLineChart(container, title, categories, data) {
-		Highcharts.chart(container, {
-			chart: {
-				// Specify chart type as line.
-				type: 'line' 
-			},
-			title: {
-				// Chart title.
-				text: title,
-				style: {
-					fontFamily: 'Poppins, sans-serif'
-				}
-			},
-			xAxis: {
-				// X-axis categories.
-				categories: categories
-			},
-			yAxis: {
-				title: {
-					// Y-axis title.
-					text: 'Jumlah Peminjaman',
-					style: {
-						fontFamily: 'Poppins, sans-serif'
-					}
-				}
-			},
-			credits: {
-				enabled: false
-			},
-			legend: {
-				// Customize series name.
-				itemStyle: {
-					fontFamily: 'Poppins, sans-serif',
-					fontSize: '12px',
-					color: '#000000'
-				}
-			},
-			series: [
-				{
-					// Data series.
-					name: 'Peminjaman',
-					color: '#ff4400',
-					data: data,
-					point: {
-						events: {
-							click: function() {
-								// Set modal content.
-								$('#lineChartModalContent').html('Bulan: <b>' + this.category + '</b> <br> Jumlah: <b>' + this.y + '</b>');
-								$('#lineChartPointModal').modal('show');
-							}
-						}
-					},
-					dataLabels: {
-						enabled: true,
-						style: {
-							fontFamily: 'Poppins, sans-serif',
-							fontSize: '12px',
-							color: '#000000'
-						}
-					}
-				},
-			],
-			exporting: {
-				enabled: true
-			},
-			tooltip: {
-				formatter: function() {
-					return 'Bulan: <b>' + this.x + '</b><br>Jumlah: <b>' + this.y + '</b>';
-				},
-				style: {
-					fontFamily: 'Poppins, sans-serif'
-				}
-			},
-		});	
-	}
+	// Fetch data for latest borrowings table.
+	$.ajax({
+		url: "{{ route('dashboard.data.latest_borrowings') }}",
+		method: "GET",
+		success: function(response) {
+			const latestBorrowings = response.latestBorrowings;
 
-	// Create bar chart.
-	function createBarChart(container, title, categories, data) {
-		Highcharts.chart(container, {
-			chart: {
-				// Specify chart type as bar.
-				type: 'bar'
-			},
-			title: {
-				// Set chart title.
-				text: title,
-				style: {
-					fontFamily: 'Poppins, sans-serif'
-				}
-			},
-			xAxis: {
-				// X Axis categories.
-				categories: categories,
-				labels: {
-					style: {
-						fontFamily: 'Poppins, sans-serif'
-					}
-				}
-			},
-			yAxis: {
-				// Y Axis title.
-				title: {
-					text: 'Jumlah Buku',
-					style: {
-						fontFamily: 'Poppins, sans-serif'
-					}
-				}
-			},
-			credits: {
-				enabled: false
-			},
-			tooltip: {
-				formatter: function() {
-					return 'Kategori: <b>' + this.x + '</b> <br> Jumlah: <b>' + this.y + '</b>';
-				},
-				style: {
-					fontFamily: 'Poppins, sans-serif'
-				}
-			},
-			legend: {
-				// Customize series name.
-				itemStyle: {
-					fontFamily: 'Poppins, sans-serif',
-					fontSize: '12px',
-					color: '#000000'
-				}
-			},
-			series: [{
-				// Data series.
-				name: 'Kategori',
-				data: data,
-				color: '#ff4400',
-				point: {
-					events: {
-						click: function() {
-							// Set modal content.
-							$('#barChartModalContent').html('Kategori: <b>' + this.category + '</b> <br> Jumlah: <b>' + this.y + '</b>');
-							$('#barChartPointModal').modal('show');
-						}
-					}
-				},
-				dataLabels: {
-					style: {
-						fontFamily: 'Poppins, sans-serif'
-					}
-				}
-			}],
-		});
-	}
+			// Check if there's latest borrowings data.
+			if(latestBorrowings.length < 1) {
+				// Hide loader.
+				$("#latestBorrowingLoader").hide();
 
-	// Create pie chart.
-	function createPieChart(container, title, data) {
-		Highcharts.chart(container, {
-			chart: {
-				// Set the chart type as pie.
-				type: 'pie',
-			},
-			title: {
-				// Set the chart title.
-				text: title,
-				style: {
-					fontFamily: 'Poppins, sans-serif'
-				} 
-			},
-			tooltip: {
-				// Tooltip format.
-				formatter: function () {
-					return 'Tipe: <b>' + this.key + '</b> <br> Persentase: <b>' + Math.round(this.percentage) + ' %</b> <br> Jumlah: <b>' + this.y + '</b>';
-				},
-				style: {
-					fontFamily: 'Poppins, sans-serif'
-				}
-			},
-			credits: {
-				enabled: false
-			},
-			plotOptions: {
-				series: {
-					allowPointSelect: true,
-					cursor: 'pointer',
-					point: {
-						events: {
-							click: function() {
-								// Set modal content.
-								$('#pieChartModalContent').html('Tipe: <b>' + this.name + '</b> <br> Persentase: <b>' + Math.round(this.x) + ' %</b> <br> Jumlah: <b>' + this.y + '</b>');
-								$('#pieChartPointModal').modal('show');
-							}
-						}
-					},
-					dataLabels: [
-						{
-							enabled: true,
-							distance: 20	
-						}, 
-						{
-							enabled: true,
-							distance: -40,
-							// Data labels format.
-							format: '{point.percentage:.0f} %',
-							style: {
-								fontSize: '1em',
-								fontFamily: 'Poppins, sans-serif',
-								textOutline: 'none',
-								opacity: 0.7
-							},
-							filter: {
-								operator: '>',
-								property: 'percentage',
-								value: 10
-							}
-						}
-					]
-				}
-			},
-			series: [
-				{
-					name: 'Anggota',
-					colorByPoint: true,
-					data: data,
-				}
-			]
-		});
-	}
+				// Show empty data message.
+				$("#latestBorrowingEmptyMessage").removeClass('d-none');
+			} else {
+				// Populate table.
+				let tableBody = '';
+
+				latestBorrowings.forEach(borrowing => {
+					tableBody += `
+						<tr>
+							<td>${borrowing.book.title}</td>
+							<td>${borrowing.member.full_name}</td>
+							<td>${borrowing.borrow_date}</td>
+							<td><a class="btn btn-info" href="{{ route('penyewaan') }}/${borrowing.id}" title="Detail"><i class="fas fa-eye"</i></a></td>
+						</tr>
+					`;
+				});
+				$("#latestBorrowingTableBody").html(tableBody);
+
+				// Show table.
+				$("#latestBorrowingTableContent").removeClass('d-none');
+
+				// Hide loader.
+				$("#latestBorrowingLoader").hide();
+			}
+		},
+		error: function(xhr, status, error) {
+			console.error('AJAX Error ', error);
+			// Hide loader in case of error.
+			$("#latestBorrowingLoader").hide();
+		}
+	});
+
+	// Fetch data for returned late books table.
+	$.ajax({
+		url: "{{ route('dashboard.data.returned_late_books') }}",
+		method: "GET",
+		success: function(response) {
+			const returnedLateBooks = response.returnedLateBooks;
+
+			// Check if there's returned late books data.
+			if(returnedLateBooks.length < 1) {
+				// Hide loader.
+				$("#returnedLateBooksLoader").hide();
+
+				// Show empty data message.
+				$("#returnedLateEmptyMessage").removeClass('d-none');
+			} else {
+				// Populate table.
+				let tableBody = '';
+
+				returnedLateBooks.forEach(borrowing => {
+					tableBody += `
+						<tr>
+							<td>${borrowing.book.title}</td>
+							<td>${borrowing.member.full_name}</td>
+							<td>${borrowing.borrow_date}</td>
+							<td>${borrowing.return_date}</td>
+							<td><a class="btn btn-info" href="{{ route('penyewaan') }}/${borrowing.id}" title="Detail"><i class="fas fa-eye"</i></a></td>
+						</tr>
+					`;
+				});
+				$("#returnedLateBooksTableBody").html(tableBody);
+
+				// Show table.
+				$("#returnedLateBooksTableContent").removeClass('d-none');
+
+				// Hide loader.
+				$("#returnedLateBooksLoader").hide();
+			}
+		},
+		error: function(xhr, status, error) {
+			console.error('AJAX Error ', error);
+			// Hide loader in case of error.
+			$("#returnedLateBooksLoader").hide();
+		}
+	});
 </script>
 @endsection

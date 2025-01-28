@@ -5,7 +5,7 @@
 	{{-- meta --}}
 	<meta charset="UTF-8">
  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="E-Library Kazee Digital">
+	<meta name="description" content="E-Library Scarlet Devil Mansion">
 
  	<title>@yield('title') - {{ config('app.name', 'Laravel') }}</title>
 
@@ -19,7 +19,7 @@
  	<style>
 		/* fonts */
 		@font-face {
-			font-family: "Poppins";
+			font-family: "Poppins", sans-serif;
 			src: url("{{ asset('fonts/poppins/poppins.woff2') }}") format("truetype");
 			font-weight: normal;
 			font-style: normal;
@@ -88,7 +88,7 @@
 		{{-- logo --}}
  		<div class="login-logo rounded">
  			<a href="{{ url('/') }}" class="text-white">
-				<b>{{ config('app.name', 'Kaz-Library') }}</b>
+				<b>{{ config('app.name', 'SDM-Library') }}</b>
 			</a>
  		</div>
  		<!-- /.logo -->

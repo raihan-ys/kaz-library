@@ -1,4 +1,4 @@
-<aside class="main-sidebar sidebar-light-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #181C32">
 
 	<!-- Brand Logo -->
 	<a href="/" class="brand-link" style="background-color: #181C32;">

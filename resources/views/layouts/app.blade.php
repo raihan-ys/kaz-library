@@ -84,7 +84,9 @@
 		{{-- content --}}
 		<div class="content-wrapper">
 			{{-- content header --}}
-			@yield('page-header')
+			<section style="font-family: 'Play', sans-serif">
+				@yield('page-header')
+			</section>
 			{{-- main content --}}
 			<section class="content">
 				@yield('content')

@@ -141,14 +141,49 @@ class BookController extends Controller
 		// Find the specified book.
 		$book = Book::findOrFail($id);
 
-		// Delete book's cover image.
-		if($book->cover_image) {
-			Storage::disk('public')->delete($book->cover_image);
-		}
-
-		// Delete specified book.
+		// Delete the specified book.
 		$book->delete();
 
 		return redirect()->route('buku')->with('success', 'Buku berhasil dihapus!');
+	}
+
+	// Display soft deleted books.
+	public function trashed()
+	{
+		// Retrieve only soft deleted books.
+		$books = Book::onlyTrashed()->join('categories', 'categories.id', '=', 'books.category_id')
+			->join('publishers', 'publishers.id', '=', 'books.publisher_id')
+			->select('books.*', 'categories.name as category_name', 'publishers.name as publisher_name')
+			->orderBy('title')
+			->get();
+
+		return view('pages.books.trashed', compact('books'));
+	}
+
+	// Retrieve the soft deleted book.
+	public function restore($id)
+	{
+		// Retrieve the soft deleted book by its ID.
+		$book = Book::withTrashed()->findOrFail($id);
+
+		$book->restore();
+		
+		return redirect()->route('buku')->with('success', 'Buku berhasil dipulihkan!');
+	}
+	
+	// Force delete the specified book.
+	public function forceDelete($id)
+	{
+		// Retrieve the soft deleted book by its ID.
+		$book = Book::withTrashed()->findOrFail($id);
+
+		// Delete the cover image if it exists.
+		if ($book->cover_image) {
+			Storage::disk('public')->delete($book->cover_image);
+		}
+	
+		$book->forceDelete();
+
+		return redirect()->route('buku.trashed')->with('success', 'Buku berhasil dihapus secara permanen!');
 	}
 }

@@ -26,4 +26,30 @@ class CategoryController extends Controller
 
 		return redirect()->route('kategori')->with('success', 'Kategori berhasil dihapus!');
 	}
+
+	// Display soft deleted categories.
+	public function trashed()
+	{
+		$categories = Category::onlyTrashed()->orderBy('name')->get();
+		
+		return view('pages.categories.trashed', compact('categories'));
+	}
+
+	// Restore the specified category.
+	public function restore($id)
+	{
+		$category = Category::withTrashed()->findOrFail($id);
+		$category->restore();
+		
+		return redirect()->route('kategori')->with('success', 'Kategori berhasil dipulihkan!');
+	}
+
+	// Force delete the specified category.
+	public function forceDelete($id)
+	{
+		$category = Category::withTrashed()->findOrFail($id);
+		$category->forceDelete();
+		
+		return redirect()->route('kategori.trashed')->with('success', 'Kategori berhasil dihapus secara permanen!');
+	}
 }

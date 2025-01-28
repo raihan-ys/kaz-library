@@ -33,11 +33,37 @@
 
 		{{-- fullscreen --}}
 		<li class="nav-item">
-			<a class="nav-link" style="color: orangered" data-bs-widget="fullscreen" href="#" role="button">
+			<a class="nav-link" style="color: orangered" data-bs-widget="fullscreen" title="Expand page" href="#" role="button">
 				<i class="fas fa-expand-arrows-alt"></i>
 			</a>
 		</li>
 		{{-- /.fullscreen --}}
+
+		{{-- success message --}}
+		@if(session('success'))
+		<div class="toast bg-success" role="alert" aria-live="assertive" aria-atomic="true" style="position: absolute; top: 20px; right: 20px;">
+			{{-- toast header --}}
+			<div class="toast-header" style="font-size: 20px;">
+				<i class="fas fa-check mr-1"></i>
+				<strong class="mr-auto">Sukses!</strong>
+				<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			{{-- toast body --}}
+			<div class="toast-body" style="font-size: 15px">
+				{{ session('success') }}
+			</div>
+		</div>
+		<script>
+			$(document).ready(function(){
+				$('.toast').toast({ delay: 5000 });
+				$('.toast').toast('show');
+			});
+		</script>
+		@endif
+		{{-- /.success message --}}
+
 	</ul>
 	{{-- /.Right navbar links --}}
 </nav>

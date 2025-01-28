@@ -38,7 +38,7 @@ class BorrowingController extends Controller
         $book = Book::find($request->book_id);
         if($book->stock > 0) {
             // The book's stock decreased.
-            $book->stock-= 1;
+            $book->stock -= 1;
             $book->save();
             
             // Create new borrowing with validated data.
@@ -151,4 +151,47 @@ class BorrowingController extends Controller
         $borrowing->delete();
         return redirect()->route('penyewaan')->with('success', 'Peminjaman berhasil dihapus!');
     }
+
+    // Display soft deleted borrowings.
+	public function trashed()
+	{
+		// Retrieve only soft deleted borrowings.
+		$borrowings = Borrowing::onlyTrashed()->join('members', 'members.id', '=', 'borrowings.member_id')
+            ->join('books', 'books.id', '=', 'borrowings.book_id')
+            ->select('borrowings.*', 'members.full_name', 'books.title as book_title', 'books.cover_image as book_cover')
+            ->orderBy('borrow_date', 'DESC')
+            ->get();
+
+		return view('pages.borrowings.trashed', compact('borrowings'));
+	}
+
+	// Retrieve the soft deleted borrowing.
+	public function restore($id)
+	{
+		// Retrieve the soft deleted borrowing by its ID.
+		$borrowing = Borrowing::withTrashed()->findOrFail($id);
+
+		$borrowing->restore();
+        
+        // Check the book's stock.
+        if($borrowing->status === 'dipinjam') {
+            // The book's stock decreased.
+            $book = Book::findOrFail($borrowing->book_id);
+            $book->stock -= 1;
+            $book->save();
+        }
+		
+		return redirect()->route('penyewaan')->with('success', 'Peminjaman berhasil dipulihkan!');
+	}
+	
+    // Force delete the specified borrowing.
+	public function forceDelete($id)
+	{
+		// Retrieve the soft deleted borrowing by its ID.
+		$borrowing = Borrowing::withTrashed()->findOrFail($id);
+	
+		$borrowing->forceDelete();
+
+		return redirect()->route('penyewaan.trashed')->with('success', 'Peminjaman berhasil dihapus secara permanen!');
+	}
 }

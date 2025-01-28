@@ -10,6 +10,7 @@ class Publisher extends Model
     // Using SoftDeletes Trait.
     use SoftDeletes;
 
+    // The attributes that are mass assignable.
     protected $fillable = ['name'];
 
     // Defining 'deleted_at' column for soft deletes.

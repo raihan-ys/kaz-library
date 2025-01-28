@@ -170,14 +170,48 @@ class MemberController extends Controller
         // Find the specified member.
         $member = Member::findOrFail($id);
 
-        // Delete member's cover image.
-		if($member->profile_photo) {
-			Storage::disk('public')->delete($member->profile_photo);
-		}
-
         // Remove the specified member.
         $member->delete();
 
         return redirect()->route('anggota')->with('success', 'Anggota berhasil dihapus!');
     }
+
+    // Display soft deleted members.
+	public function trashed()
+	{
+		// Retrieve only soft deleted members.
+		$members = Member::onlyTrashed()->join('member_types', 'members.type_id', '=', 'member_types.id')
+        ->select('members.*', 'member_types.name as type_name')
+        ->orderBy('full_name')
+        ->get();
+
+		return view('pages.members.trashed', compact('members'));
+	}
+
+	// Retrieve the soft deleted member.
+	public function restore($id)
+	{
+		// Retrieve the soft deleted member by its ID.
+		$member = Member::withTrashed()->findOrFail($id);
+
+		$member->restore();
+		
+		return redirect()->route('anggota')->with('success', 'Anggota berhasil dipulihkan!');
+	}
+	
+	// Force delete the specified member.
+	public function forceDelete($id)
+	{
+		// Retrieve the soft deleted member by its ID.
+		$member = Member::withTrashed()->findOrFail($id);
+
+		// Delete the profile photo if it exists.
+		if ($member->cover_image) {
+			Storage::disk('public')->delete($member->cover_image);
+		}
+	
+		$member->forceDelete();
+
+		return redirect()->route('anggota.trashed')->with('success', 'Anggota berhasil dihapus secara permanen!');
+	}
 }

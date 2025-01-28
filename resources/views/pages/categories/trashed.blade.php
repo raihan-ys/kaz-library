@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Daftar Kategori - Kaz-Library')
+@section('title', 'Kategori Terhapus - Kaz-Library')
 @section('page-header')
 <div class="row m-0">
 	<div class="col-12">
@@ -7,13 +7,23 @@
 			<div class="container-fluid">
 				<div class="row mb-2">
 					<div class="col-sm-6">
-						<h1>Daftar Kategori Buku</h1>
+						<h1>Kategori Terhapus</h1>
 					</div>
+					{{-- breadcrumb --}}
 					<div class="col-sm-6">
 						<ol class="breadcrumb float-sm-right">
-							<li class="breadcrumb-item active"><i class="fas fa-book mr-1"></i> Kategori</li>
+							<li class="breadcrumb-item">
+								<a href="{{ route('kategori') }}">
+									<i class="fas fa-book"></i>
+									Kategori
+								</a>
+							</li>
+							<li class="breadcrumb-item active">
+								Kategori Terhapus
+							</li>
 						</ol>
 					</div>
+					{{-- /.breadcrumb --}}
 				</div>
 			</div>
 		</section>
@@ -25,39 +35,9 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-12">
-
 			<div class="card" style="border-top: #181C32 solid 5px">
-
-				{{-- header --}}
-				<div class="card-header">
-
-					{{-- soft deleted categories button --}}
-					<a href="{{ route('kategori.trashed') }}" class="btn btn-danger">
-						<i class="fas fa-trash-alt"></i>
-						Kategori Terhapus
-					</a>
-
-					{{-- error messages --}}
-					@if($errors->any())
-					<div class="alert mt-1" style="background-color: red">
-						<span class="float-right text-white" id="closeAlert" style="cursor: pointer">&times;</span>
-						<strong class="text-white">
-							<i class="fas fa-exclamation-triangle"></i> 
-							Terjadi Kesalahan!
-						</strong><hr>
-						<ul>
-							@foreach($errors->all() as $error)
-							<li class="text-white">{{ $error }}</li>
-							@endforeach
-						</ul>
-					</div>
-					@endif
-					{{-- /.error messages --}}
-				</div>
-
 				{{-- body --}}
 				<div class="card-body table-responsive">
-
 					<table class="table table-bordered table-hover table-striped dataTable dtr-inline" id="categoriesTable">
 						<thead class="text-white" style="background-color: #181C32">
 							<tr>
@@ -72,11 +52,18 @@
 								<td>{{ $loop->iteration }}</td>
 								<td class="font-weight-bold">{{ $ctg->name }}</td>
 								<td>
-									{{-- delete --}}
-									<button type="submit" class="btn btn-danger" data-ctg-id="{{ $ctg->id }}" title="Hapus" onclick="confirmDelete({{ $ctg->id }}, '{{ $ctg->name }}')">
+									{{-- restore --}}
+									<a href="{{ route('kategori.restore', $ctg->id) }}" class="btn btn-success" title="Pulihkan" onclick="event.preventDefault(); document.getElementById('restore-form-{{ $ctg->id }}').submit();">
+										<i class="fas fa-undo"></i>
+									</a>
+									<form method="POST" class="d-none" id="restore-form-{{ $ctg->id }}" action="{{ route('kategori.restore', $ctg->id) }}">
+										@csrf
+									</form>
+									{{-- force delete --}}
+									<button type="submit" class="btn btn-danger" data-ctg-id="{{ $ctg->id }}" title="Hapus Permanen" onclick="confirmForceDelete({{ $ctg->id }}, '{{ $ctg->name }}')">
 										<i class="fas fa-trash"></i>
 									</button>
-									<form id="delete-form-{{ $ctg->id }}" action="{{ route('kategori.destroy', $ctg->id) }}" method="post" style="display:inline">
+									<form class="d-none" id="force-delete-form-{{ $ctg->id }}" action="{{ route('kategori.force-delete', $ctg->id) }}" method="post">
 										@csrf
 										@method('DELETE')
 									</form>
@@ -84,42 +71,46 @@
 							</tr>
 							@empty
 							<tr>
-								<td colspan="9" class="text-center font-weight-bold text-danger py-5">Tidak ada kategori buku!</td>
+								<td colspan="9" class="text-center font-weight-bold text-danger py-5">Tidak ada kategori terhapus!</td>
 							</tr>
 							@endforelse
 						</tbody>
 					</table>
 				</div>
 				{{-- /.body --}}
+
+				{{-- footer --}}
+				<div class="card-footer">
+					<a href="{{ route('kategori') }}" class="btn btn-secondary"><i class="fas fa-arrow-left mr-1"></i>Kembali</a>
+				</div>
+				{{-- /.footer --}}
 			</div>
 			{{-- /.card --}}
 		</div>
 		{{-- /.col --}}
 	</div>
-	{{-- /.row --}}
+  {{-- /.row --}}
 </div>
 @endsection
 @section('js')
 <script>
-	// Category delete confirmation.
-	function confirmDelete(ctgId, ctgName) {
-		// Call SweetAlert2's function.
+	// Category force delete confirmation.
+	function confirmForceDelete(ctgId, ctgName) {
 		Swal.fire({
 			icon: 'warning',
 			title: 'Apakah Anda yakin?',
-			html: 'Kategori <b>"' + ctgName + '"</b> akan dihapus dari tabel ini! <span class="text-danger">Buku serta penyewaan dengan kategori ini juga akan dihapus!</span>',
+		html: '<span class="text-danger">Setelah dihapus, Anda tidak dapat memulihkan kategori <b>"' + ctgName + '"</b>!</span>',
 			confirmButtonColor: '#3085d6',
-			confirmButtonText: 'Ya, hapus!',
+			confirmButtonText: 'Ya, hapus permanen!',
 			showCancelButton: true,
 			cancelButtonColor: '#d33',
 			cancelButtonText: 'Batal'
 		}).then((result) => {
 			if(result.isConfirmed) {
-				// Submit category's delete form.
-				document.getElementById('delete-form-' + ctgId).submit();
+				document.getElementById('force-delete-form-' + ctgId).submit();
 			}
 		})
-	};
+  }
 
 	$(document).ready(function() {
 		// Initialize DataTables to categories table.
@@ -132,6 +123,6 @@
 				'print',
 			]
 		});
-	});
+  });
 </script>
 @endsection

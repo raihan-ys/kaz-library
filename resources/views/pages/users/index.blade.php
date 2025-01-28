@@ -26,7 +26,7 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-12">
-			<div class="card">
+			<div class="card" style="border-top: #181C32 solid 5px">
 				<div class="card-body">
 					<table class="table table-bordered table-hover table-striped dataTable dtr-inline" id="usersTable">
 						<thead class="text-white" style="background-color: #181C32">
@@ -64,7 +64,7 @@
 	$(document).ready(function() {
 		// Initialize DataTables to users table.
 		$('#usersTable').DataTable({
-			dom: 'Bfrtip',
+			dom: '<"container-fluid"<"row"<"col"B><"col"l><"col"f>>>rtip',
 			buttons: [
 				'copy',
 				'csv',

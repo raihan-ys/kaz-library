@@ -23,7 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('borrowings', function (Blueprint $table) {
-            //
+            // Dropping 'deleted_at' column for soft deletes.
+            $table->dropSoftDeletes();
         });
     }
 };

@@ -11,7 +11,7 @@
 					</div>
 					<div class="col-sm-6">
 						<ol class="breadcrumb float-sm-right">
-							<li class="breadcrumb-item active"><i class="fas fa-users mr-1"></i> Anggota</li>
+							<li class="breadcrumb-item active"><i class="fas fa-users"></i> Anggota</li>
 						</ol>
 					</div>
 				</div>
@@ -28,9 +28,16 @@
 			<div class="card" style="border-top: #181C32 solid 5px">
 				{{-- header --}}
 				<div class="card-header">
+
+					{{-- create member button --}}
 					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createMemberModal">
-						<i class="fas fa-plus mr-1"></i>Tambah Anggota
+						<i class="fas fa-plus"></i> Tambah Anggota
 					</button>
+
+					{{-- soft deleted members button --}}
+					<a href="{{ route('anggota.trashed') }}" class="btn btn-danger">
+						<i class="fas fa-trash-alt"></i> Anggota Terhapus
+					</a>
 
 					{{-- create member modal --}}
 					<div class="modal fade" id="createMemberModal">
@@ -188,30 +195,6 @@
 					</div>
 					{{-- /.create member modal --}}
 
-					{{-- success message --}}
-					@if(session('success'))
-					<div class="toast bg-success" role="alert" aria-live="assertive" aria-atomic="true" style="position: absolute; top: 20px; right: 20px;">
-						{{-- toast header --}}
-						<div class="toast-header" style="font-size: 20px;">
-							<i class="fas fa-check mr-1"></i>
-							<strong class="mr-auto">Sukses!</strong>
-							<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						{{-- toast body --}}
-						<div class="toast-body" style="font-size: 15px">
-							{{ session('success') }}
-						</div>
-					</div>
-					<script>
-						$(document).ready(function(){
-							$('.toast').toast({ delay: 5000 });
-							$('.toast').toast('show');
-						});
-					</script>
-					@endif
-
 					{{-- error messages --}}
 					@if($errors->any())
 					<div class="alert mt-1" style="background-color: red">
@@ -304,7 +287,7 @@
 			imageUrl: memberPhoto,
 			imageWidth: 200,
 			imageHeight: 200,
-			html: 'Setelah dihapus, Anda tidak dapat memulihkan data <b>"' + memberName + '"</b>! <span class="text-danger">Data penyewaan buku oleh anggota ini juga akan dihapus!</span>',
+			html: 'Anggota <b>"' + memberName + '"</b> akan dihapus dari tabel ini! <span class="text-danger">Penyewaan buku oleh anggota ini juga akan dihapus!</span>',
 			confirmButtonColor: '#3085d6',
 			confirmButtonText: 'Ya, hapus!',
 			showCancelButton: true,
@@ -528,7 +511,7 @@
 
 		// Initialize DataTables to members table.
 		$('#membersTable').DataTable({
-			dom: 'Bfrtip',
+			dom: '<"container-fluid"<"row"<"col"B><"col"l><"col"f>>>rtip',
 			buttons: [
 				'copy',
 				'csv',

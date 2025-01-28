@@ -17,7 +17,7 @@
 					</div>
 					<div class="col-sm-6">
 						<ol class="breadcrumb float-sm-right">
-							<li class="breadcrumb-item active"><i class="fas fa-book mr-1"></i> Penyewaan</li>
+							<li class="breadcrumb-item active"><i class="fas fa-book"></i> Penyewaan</li>
 						</ol>
 					</div>
 				</div>
@@ -34,11 +34,13 @@
 			<div class="card" style="border-top: #181C32 solid 5px">
 				{{-- header --}}
 				<div class="card-header">
+
+					{{-- check if there are books and members --}}
 					@if(count($books) > 0 && count($members) > 0)
+					{{-- create borrowing button --}}
 					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createBorrowingModal">
-						<i class="fas fa-plus mr-1"></i>Tambah Penyewaan
+						<i class="fas fa-plus"></i> Tambah Penyewaan
 					</button>
-					
 
 					{{-- create borrowing modal --}}
 					<div class="modal fade" id="createBorrowingModal">
@@ -139,30 +141,12 @@
 						{{-- /.modal-dialog --}}
 					</div>
 					{{-- /.create borrowing modal --}}
-
-					{{-- success message --}}
-					@if(session('success'))
-					<div class="toast bg-success" role="alert" aria-live="assertive" aria-atomic="true" style="position: absolute; top: 20px; right: 20px;">
-						{{-- toast header --}}
-						<div class="toast-header" style="font-size: 20px;">
-							<i class="fas fa-check mr-1"></i>
-							<strong class="mr-auto">Sukses!</strong>
-							<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						{{-- toast body --}}
-						<div class="toast-body" style="font-size: 15px">
-							{{ session('success') }}
-						</div>
-					</div>
-					<script>
-						$(document).ready(function(){
-							$('.toast').toast({ delay: 5000 });
-							$('.toast').toast('show');
-						});
-					</script>
 					@endif
+
+					{{-- soft deleted borrowings button --}}
+					<a href="{{ route('penyewaan.trashed') }}" class="btn btn-danger">
+						<i class="fas fa-trash-alt"></i> Penyewaan Terhapus
+					</a>
 
 					{{-- error messages --}}
 					@if($errors->any())
@@ -181,7 +165,6 @@
 					@endif
 					{{-- /.error messages --}}
 				</div>
-				@endif
 				{{-- /.header --}}
 
 				{{-- body --}}
@@ -298,7 +281,7 @@
 			imageUrl: bookCover,
 			imageWidth: 200,
 			imageHeight: 300,
-			html: 'Setelah dihapus, Anda tidak dapat memulihkan peminjaman buku <b>"' + bookTitle + '"</b> oleh <b>"' + memberName + '"</b>! <span class="text-danger">',
+			html: 'Peminjaman buku <b>"' + bookTitle + '"</b> oleh <b>"' + memberName + '"</b> akan dihapus dari tabel ini!',
 			confirmButtonColor: '#3085d6',
 			confirmButtonText: 'Ya, hapus!',
 			showCancelButton: true,
@@ -373,7 +356,7 @@
 
 		// Initialize DataTables to borrowings table.
 		$('#borrowingsTable').DataTable({
-			dom: 'Bfrtip',
+			dom: '<"container-fluid"<"row"<"col"B><"col"l><"col"f>>>rtip',
 			buttons: [
 				'copy',
 				'csv',

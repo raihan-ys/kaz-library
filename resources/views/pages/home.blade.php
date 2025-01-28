@@ -4,7 +4,7 @@
 	{{-- meta --}}
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="E-Library Institut Az Zuhra">
+	<meta name="description" content="E-Library Kazee Digital">
 	<title>Home - Kaz-Library</title>
 	{{-- Favicon --}}	
 	<link type="image/png" href="{{ asset('images/logo.jpg') }}" rel="icon">
@@ -174,6 +174,9 @@
                             Fitur
                         </a>
                     </li>
+
+                    {{-- If books is not empty --}}
+                    @if(count($books) > 0)
                     {{-- newest books --}}
                     <li class="nav-item">
                         <a href="#newestBooks">
@@ -188,6 +191,7 @@
                             Buku Terlaris
                         </a>
                     </li>
+                    @endif
 			    </ul>
                 {{-- /.content --}}
 	        </div>
@@ -372,7 +376,7 @@
                 @foreach ($mostBorrowedBooks as $borrowing)
                 <div class="col-md-3 mb-4">
                     <div class="card h-100">
-                        <img src="{{ $borrowing->book_cover ? asset('storage/'.$borrowing->book_cover) : asset('images/sample-book-cover.png') }}" alt="Book's Cover Image Preview" class="card-img-top">
+                        <img src="{{ $borrowing->book_cover ? asset('storage/'.$borrowing->book_cover) : asset('images/sample-book-cover.jpeg') }}" alt="Book's Cover Image Preview" class="card-img-top">
                         <div class="card-body">
                             <h5 class="card-title mb-1">Judul Buku: <b>{{ $borrowing->book_title }}</b></h5>
                             <p class="card-text">Penulis: <b>{{ $borrowing->book_author }}</b></p>
@@ -397,20 +401,20 @@
             <ul class="d-flex justify-content-center list-unstyled m-0">	
                 <!-- facebook -->
                 <li>
-                    <a href="https://www.facebook.com/amik.atd.16" target="_blank">
+                    <a href="https://www.facebook.com/kazeeid" target="_blank">
                         <img src="{{ asset('images/facebook-logo.png') }}" alt="facebook link">
                     </a>
                 </li>
                 <!-- instagram -->
                 <li>
-                    <a href="https://www.instagram.com/institut.azzuhra/" target="_blank">
+                    <a href="https://www.instagram.com/kazeeid" target="_blank">
                         <img src="{{ asset('images/instagram-logo.png') }}" alt="instagram link">
                     </a>
                 </li>
-                <!-- twitter -->
+                <!-- x -->
                 <li>
-                    <a href="https://x.com/" target="_blank">
-                        <img src="{{ asset('images/twitter-logo.png') }}" alt="twitter link">
+                    <a href="https://x.com" target="_blank">
+                        <img src="{{ asset('images/x-logo.png') }}" alt="x link">
                     </a>
                 </li>
                 <!-- whatsapp -->
