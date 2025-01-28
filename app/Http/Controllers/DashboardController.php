@@ -31,7 +31,7 @@ class DashboardController extends Controller
 
 		// Get the total number of books returned late.
 		$booksReturnedLateCount = Borrowing::where('return_date', '>', DB::raw('DATE_ADD(borrow_date, INTERVAL 7 DAY)'))
-		->get();
+			->count();
 
 		return response()->json([
 			'booksCount' => $booksCount,
@@ -191,16 +191,24 @@ class DashboardController extends Controller
 		]);
 	}
 
-	public function getReturnedLateBooks()
+	public function getBooksReturnedLate()
 	{
 		// Get the books returned late.
-		$returnedLateBooks = Borrowing::with('book', 'member')
+		$booksReturnedLate = Borrowing::with('book', 'member')
 			->where('return_date', '>', DB::raw('DATE_ADD(borrow_date, INTERVAL 7 DAY)'))
-			->limit(4)
-			->get();
+			->get()
+			->map(function ($borrowing) {
+					$borrowDate = Carbon::parse($borrowing->borrow_date);
+					$returnDate = Carbon::parse($borrowing->return_date);
+					$lateDays = (int) abs($returnDate->diffInDays($borrowDate->copy()->addDays(7)));
+
+					$borrowing->late_days = $lateDays;
+					$borrowing->late_fee = ($lateDays * 1000);
+					return $borrowing;
+				});
 
 		return response()->json([
-			'returnedLateBooks' => $returnedLateBooks
+			'booksReturnedLate' => $booksReturnedLate
 		]);
 	}
 }

@@ -49,7 +49,7 @@ Route::middleware('auth')->group(function () {
 		Route::get('/data/borrowings-by-category', [DashboardController::class, 'getBorrowingsByCategory'])->name('dashboard.data.borrowings_by_category');
 		Route::get('/data/members-by-type', [DashboardController::class, 'getMembersByType'])->name('dashboard.data.members_by_type');
 		Route::get('/data/latest-borrowings', [DashboardController::class, 'getLatestBorrowings'])->name('dashboard.data.latest_borrowings');
-		Route::get('/data/returned-late-books', [DashboardController::class, 'getReturnedLateBooks'])->name('dashboard.data.returned_late_books');
+		Route::get('/data/books-returned-late', [DashboardController::class, 'getBooksReturnedLate'])->name('dashboard.data.books_returned_late');
 	});
 
 	// Users.

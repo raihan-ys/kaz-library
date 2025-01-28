@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 
+// Format the number to Indonesian currency.
 if(!function_exists('formatRp')) {
 	function formatRp($number, $decimal = 2)
 	{
@@ -13,6 +14,7 @@ if(!function_exists('formatRp')) {
 	}
 }
 
+// Format the date to Indonesian date.
 if(!function_exists('formatDate')) {
 	function formatDate($date, $format = 'd F Y')
 	{

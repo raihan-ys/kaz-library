@@ -437,7 +437,7 @@
 					<b style="text-align: left; font-size: 20px">Penyewaan Terbaru</b>
 					<a href="{{ route('penyewaan') }}" class="text-bold ml-auto" style="font-size: 20px">Lihat Semua</a>
 				</div>
-				<div id="latestBorrowingTable" class="card-body">
+				<div id="latestBorrowingContainer" class="card-body w-100">
 					{{-- loader --}}
 					<div class="text-center my-5" id="latestBorrowingLoader" style="color: orangered;">
 						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
@@ -445,18 +445,16 @@
 					{{-- empty data message --}}
 					<p class="text-center font-weight-bold text-danger d-none" id="latestBorrowingEmptyMessage">Tidak ada data buku atau penyewaan!</p>
 					{{-- table --}}
-					<table class="table table-striped d-none" id="latestBorrowingTableContent">
-						<thead>
+					<table class="table table-bordered table-striped table-responsive w-100" id="latestBorrowingTableContent">
+						<thead style="background-color: #181C32; color: white">
 							<tr>
-								<th>Buku</th>
-								<th>Penyewa</th>
-								<th>Tgl. Pinjam</th>
-								<th>Aksi</th>
+								<th class="w-100">Buku</th>
+								<th class="w-100">Penyewa</th>
+								<th class="w-100">Tgl. Pinjam</th>
+								<th class="w-100">Aksi</th>
 							</tr>
 						</thead>
-						<tbody id="latestBorrowingTableBody">
-
-						</tbody>
+						<tbody id="latestBorrowingTableBody"></tbody>
 					</table>
 				</div>
 				{{-- /.card-body --}}
@@ -471,27 +469,25 @@
 				<div class="card-header d-flex justify-content-between align-items-center">
 					<b style="text-align: left; font-size: 20px">Pengembalian Terlambat</b>
 				</div>
-				<div id="returnedLateBooksTable" class="card-body">
+				<div id="booksReturnedLateContainer" class="card-body">
 					{{-- loader --}}
-					<div class="text-center my-5" id="returnedLateBooksLoader" style="color: orangered;">
+					<div class="text-center my-5" id="booksReturnedLateLoader" style="color: orangered;">
 						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
 					</div>
 					{{-- empty data message --}}
-					<p class="text-center font-weight-bold text-danger d-none" id="returnedLateBooksEmptyMessage">Tidak ada data buku atau penyewaan!</p>
+					<p class="text-center font-weight-bold text-success d-none" id="booksReturnedLateEmptyMessage">Tidak ada pengembalian terlambat!</p>
 					{{-- table --}}
-					<table class="table table-striped d-none" id="returnedLateBooksTableContent">
-						<thead>
+					<table class="table table-bordered table-striped d-none table-responsive" id="booksReturnedLateTableContent" style="width">
+						<thead style="background-color: #181C32; color: white">
 							<tr>
-								<th>Buku</th>
-								<th>Penyewa</th>
-								<th>Telat</th>
-								<th>Denda</th>
-								<th>Aksi</th>
+								<th class="w-100">Buku</th>
+								<th class="w-100">Penyewa</th>
+								<th class="w-100">Telat</th>
+								<th class="w-100">Denda</th>
+								<th class="w-100">Aksi</th>
 							</tr>
 						</thead>
-						<tbody id="returnedLateBooksTableBody">
-
-						</tbody>
+						<tbody id="booksReturnedLateTableBody"></tbody>
 					</table>
 				</div>
 				{{-- /.card-body --}}
@@ -1278,46 +1274,55 @@
 
 	// Fetch data for returned late books table.
 	$.ajax({
-		url: "{{ route('dashboard.data.returned_late_books') }}",
+		url: "{{ route('dashboard.data.books_returned_late') }}",
 		method: "GET",
 		success: function(response) {
-			const returnedLateBooks = response.returnedLateBooks;
+			const booksReturnedLate = response.booksReturnedLate;
 
 			// Check if there's returned late books data.
-			if(returnedLateBooks.length < 1) {
+			if(booksReturnedLate.length < 1) {
 				// Hide loader.
-				$("#returnedLateBooksLoader").hide();
+				$("#booksReturnedLateLoader").hide();
 
 				// Show empty data message.
-				$("#returnedLateEmptyMessage").removeClass('d-none');
+				$("#booksReturnedLateEmptyMessage").removeClass('d-none');
 			} else {
 				// Populate table.
 				let tableBody = '';
 
-				returnedLateBooks.forEach(borrowing => {
+				booksReturnedLate.forEach(borrowing => {
+					const lateFee = borrowing.late_fee;
+					let formattedLateFee = '';
+
+					// Format late fee to Indonesian currency.
+					formattedLateFee = new Intl.NumberFormat('id-ID', {
+						style: 'currency',
+						currency: 'IDR'
+						}).format(lateFee);
+
 					tableBody += `
 						<tr>
 							<td>${borrowing.book.title}</td>
 							<td>${borrowing.member.full_name}</td>
-							<td>${borrowing.borrow_date}</td>
-							<td>${borrowing.return_date}</td>
+							<td><span class="badge badge-danger" style="font-size:15px">${borrowing.late_days} hari</span></td>
+							<td>${formattedLateFee}</td>
 							<td><a class="btn btn-info" href="{{ route('penyewaan') }}/${borrowing.id}" title="Detail"><i class="fas fa-eye"</i></a></td>
 						</tr>
 					`;
 				});
-				$("#returnedLateBooksTableBody").html(tableBody);
+				$("#booksReturnedLateTableBody").html(tableBody);
 
 				// Show table.
-				$("#returnedLateBooksTableContent").removeClass('d-none');
+				$("#booksReturnedLateTableContent").removeClass('d-none');
 
 				// Hide loader.
-				$("#returnedLateBooksLoader").hide();
+				$("#booksReturnedLateLoader").hide();
 			}
 		},
 		error: function(xhr, status, error) {
 			console.error('AJAX Error ', error);
 			// Hide loader in case of error.
-			$("#returnedLateBooksLoader").hide();
+			$("#booksReturnedLateLoader").hide();
 		}
 	});
 </script>
