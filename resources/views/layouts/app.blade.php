@@ -5,12 +5,12 @@
 	{{-- meta --}}
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="E-Library Kazee Digital">
+	<meta name="description" content="E-Library">
 
-	<title>@yield('title', 'Kaz-Library')</title>
+	<title>@yield('title') - {{ config('app.name', 'Kaz-Library') }}</title>
 
 	{{-- Favicon --}}
-	<link rel="shortcut icon" href="{{ asset('images/logo.jpg') }}">
+	<link rel="shortcut icon" href="{{ asset('images/logo.png') }}">
 	{{-- AdminLTE CSS --}}
 	<link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
 	{{-- Font Awesome CSS --}}

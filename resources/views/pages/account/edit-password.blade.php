@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Akun - Kaz-Library')
+@section('title', 'Ubah Password')
 
 @section('page-header')
 <div class="row m-0">
@@ -23,7 +23,7 @@
 								</a>
 							</li>
 							<li class="breadcrumb-item active">
-								Edit Password
+								Ubah Password
 							</li>
 						</ol>
 					</div>
@@ -43,7 +43,7 @@
 			<div class="card">
 				{{-- header --}}
 				<div class="card-header" style="border-top: #181C32 solid 5px">
-					<h5 class="font-weight-bold">Form Edit Password</h5>
+					<h5 class="font-weight-bold">Form Ubah Password</h5>
 				</div>
 
 				<form action="{{ route('akun.update-password', Auth::user()->id) }}" method="post">

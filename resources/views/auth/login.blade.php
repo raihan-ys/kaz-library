@@ -3,8 +3,7 @@
 @section('content')
 
 <div class="card">
-    <div class="card-body login-card-body">
-        
+    <div class="card-body login-card-body rounded-lg">
         <p class="login-box-msg">Masuk untuk memulai sesi Anda</p>
 
         <form action="{{ route('login') }}" method="post">
@@ -54,7 +53,7 @@
 
                 {{-- submit --}}
                 <div class="col-4">
-                    <button type="submit" class="btn btn-primary btn-block">Masuk</button>
+                    <button type="submit" class="btn btn-danger" style="font-size: 1rem;">Masuk</button>
                 </div>
             </div>
         </form>

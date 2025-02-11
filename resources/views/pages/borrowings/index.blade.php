@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Daftar Penyewaan - Kaz-Library')
+@section('title', 'Daftar Penyewaan')
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('adminlte/plugins/daterangepicker/daterangepicker.css') }}">

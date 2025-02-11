@@ -4,8 +4,8 @@
 	{{-- meta --}}
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="E-Library Kazee Digital">
-	<title>404 - Kaz-Library</title>
+	<meta name="description" content="E-Library">
+	<title>404 - {{ config('app.name', 'Kaz-Library') }}</title>
 	{{-- Favicon --}}	
 	<link type="image/png" href="{{ asset('images/logo.jpg') }}" rel="icon">
 	{{-- AdminLTE CSS --}}
@@ -133,7 +133,7 @@
 
 			{{-- brand logo --}}
 			<a class="navbar-brand" href="{{ route('home') }}">
-				<img class="rounded img-fluid" style="max-width: 100%; height: 100px;" src="{{ asset('images/logo.jpg') }}" alt="Logo Kaz-library">
+				<img class="rounded img-fluid" style="max-width: 100%; height: 100px;" src="{{ asset('images/logo.jpg') }}" alt="Logo {{ config('app.name', 'Kaz-Library') }}">
             </a>
 
 			{{-- navbar toggler --}}
@@ -146,7 +146,7 @@
 				<ul class="navbar-nav">
 					<li class="nav-item">
 						<span>
-							Kaz-Library
+							{{ config('app.name', 'Kaz-Library') }}
 						</span>
 					</li> 
 				</ul>
@@ -166,7 +166,7 @@
     
 	<footer class="footer p-3">
         <div class="container">
-            <p class="text-white text-center mb-1">&copy; {{ date('Y') }} Kaz-Library. All rights reserved.</p>
+            <p class="text-white text-center mb-1">&copy; {{ date('Y') }} {{ config('app.name', 'Kaz-Library') }}. All rights reserved.</p>
             <!-- links -->
             <ul class="d-flex justify-content-center list-unstyled m-0">	
                 <!-- facebook -->

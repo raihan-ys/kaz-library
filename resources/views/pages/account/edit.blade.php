@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Akun - Kaz-Library')
+@section('title', 'Edit Profil')
 
 @section('page-header')
 <div class="row m-0">

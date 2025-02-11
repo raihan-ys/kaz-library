@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Edit Penyewaan - Kaz-Library')
+@section('title', 'Edit Penyewaan')
 @section('page-header')
 
 @section('css')

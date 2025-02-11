@@ -5,9 +5,9 @@
 	{{-- meta --}}
 	<meta charset="UTF-8">
  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="E-Library Scarlet Devil Mansion">
+	<meta name="description" content="E-Library">
 
- 	<title>@yield('title') - {{ config('app.name', 'Laravel') }}</title>
+ 	<title>@yield('title') - {{ config('app.name', 'Kaz-Library') }}</title>
 
 	{{-- Favicon --}}
 	<link rel="shortcut icon" href="{{ asset('images/logo.jpg') }}">
@@ -19,7 +19,7 @@
  	<style>
 		/* fonts */
 		@font-face {
-			font-family: "Poppins", sans-serif;
+			font-family: "Poppins";
 			src: url("{{ asset('fonts/poppins/poppins.woff2') }}") format("truetype");
 			font-weight: normal;
 			font-style: normal;
@@ -31,24 +31,33 @@
 			font-style: normal;
 		}
 		/* /.fonts */
+
 		body {
 			color: rgba(33, 37, 41, 1);
 			font-family: "Poppins", sans-serif;
 			background-repeat: no-repeat;
 			background-size: cover;
-			background-image: url({{ asset('images/library.jpeg') }});
+			background-image: url({{ asset('images/login-wallpaper.jpg') }});
 		}
 
-		.login-box {
-			margin-top: 3%;
+		/* brand-text */
+		.brand-text {
+			display: flex;
+			flex-direction: row
 		}
+		.brand-text img {
+			margin-right: 10px;
+		}
+		/* /.brand-text */
 
-		.login-logo {
-			background-color: orangered;
-		}
-		.login-logo a {
-			font-family: "Press Start 2P", sans-serif;
-			font-size: 1.5rem;
+		@media (max-width: 992px) {
+			.brand-text {
+				flex-direction: column;
+			}
+			.brand-text img {
+				margin-right: 0px;
+				margin-bottom: 10px;
+			}
 		}
  	</style>
 
@@ -83,16 +92,19 @@
 	@endif
 	{{-- /.success message --}}
 
-	{{-- login box --}}
-	<div class="login-box">
-		{{-- logo --}}
- 		<div class="login-logo rounded">
- 			<a href="{{ url('/') }}" class="text-white">
-				<b>{{ config('app.name', 'SDM-Library') }}</b>
+	{{-- login box --}}	
+	<div class="row d-flex flex-row align-items-center">
+		{{-- brand text --}}
+		<div class="col-12 col-lg-6">
+			<a href="{{ url('/') }}" class="brand-text align-items-center text-danger mb-3">
+				<img src="{{ asset('images/logo.png') }}" alt="logo " class="img-fluid img-rounded" style="width: 100px; height: 100px;">
+				<b style="font-size: 1rem; font-family: 'Press Start 2P', sans-serif;">{{ config('app.name', 'Kaz-Library') }}</b>
 			</a>
- 		</div>
- 		<!-- /.logo -->
- 		@yield('content')
+		</div>
+		{{-- /.brand text --}}
+		<div class="col-12 col-lg-6">
+ 			@yield('content')
+		</div>
  	</div>
  	<!-- /.login-box -->
 

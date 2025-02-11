@@ -196,6 +196,7 @@ class DashboardController extends Controller
 		// Get the books returned late.
 		$booksReturnedLate = Borrowing::with('book', 'member')
 			->where('return_date', '>', DB::raw('DATE_ADD(borrow_date, INTERVAL 7 DAY)'))
+			->limit(4)
 			->get()
 			->map(function ($borrowing) {
 					$borrowDate = Carbon::parse($borrowing->borrow_date);

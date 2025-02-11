@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Daftar Penyewaan Terhapus - SDM-Library')
+@section('title', 'Penyewaan Terhapus')
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('adminlte/plugins/daterangepicker/daterangepicker.css') }}">
@@ -25,7 +25,7 @@
 								</a>
 							</li>
 							<li class="breadcrumb-item active">
-								Daftar Penyewaan Terhapus
+								Penyewaan Terhapus
 							</li>
 						</ol>
 					</div>

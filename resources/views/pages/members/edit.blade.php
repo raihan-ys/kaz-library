@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Edit Anggota - Kaz-Library')
+@section('title', 'Edit Anggota')
 @section('page-header')
 <div class="row m-0">
 	<div class="col-12">
@@ -193,7 +193,7 @@
 					</div>
 					{{-- /.image preview --}}
 				</div>
-				{{-- /.profile_photo --}}
+				{{-- /.profile photo --}}
 			</div>
 			
 			{{-- footer --}}

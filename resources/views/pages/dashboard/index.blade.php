@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Dashboard - Kaz-Library')
+@section('title', 'Dashboard')
 
 @section('page-header')
 <div class="row m-0">
@@ -12,7 +12,7 @@
 					</div>
 					<div class="col-sm-6">
 						<ol class="breadcrumb float-sm-right">
-							<li class="breadcrumb-item active"><i class="fas fa-tachometer-alt mr-1"></i> Dashboard</li>
+							<li class="breadcrumb-item active"><i class="fas fa-tachometer-alt"></i> Dashboard</li>
 						</ol>
 					</div>
 				</div>
@@ -23,7 +23,7 @@
 @endsection
 
 @section('content')
-<div class="container-fluid"></div>
+<div class="container-fluid">
 
 	<div class="row">
 
@@ -330,7 +330,7 @@
 						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
 					</div>
 					{{-- empty data message --}}
-					<p class="text-center font-weight-bold text-danger d-none" id="borrowingsPerMonthMessage">Tidak ada data buku atau penyewaan!</p>
+					<p class="text-center font-weight-bold text-danger d-none" id="borrowingsPerMonthEmptyMessage">Tidak ada data buku atau penyewaan!</p>
 				</div>
 				{{-- /.card-body --}}
 			</div>
@@ -437,7 +437,7 @@
 					<b style="text-align: left; font-size: 20px">Penyewaan Terbaru</b>
 					<a href="{{ route('penyewaan') }}" class="text-bold ml-auto" style="font-size: 20px">Lihat Semua</a>
 				</div>
-				<div id="latestBorrowingContainer" class="card-body w-100">
+				<div id="latestBorrowingContainer" class="card-body">
 					{{-- loader --}}
 					<div class="text-center my-5" id="latestBorrowingLoader" style="color: orangered;">
 						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
@@ -445,7 +445,7 @@
 					{{-- empty data message --}}
 					<p class="text-center font-weight-bold text-danger d-none" id="latestBorrowingEmptyMessage">Tidak ada data buku atau penyewaan!</p>
 					{{-- table --}}
-					<table class="table table-bordered table-striped table-responsive w-100" id="latestBorrowingTableContent">
+					<table class="table table-bordered table-striped table-responsive d-none" id="latestBorrowingTableContent">
 						<thead style="background-color: #181C32; color: white">
 							<tr>
 								<th class="w-100">Buku</th>
@@ -477,7 +477,7 @@
 					{{-- empty data message --}}
 					<p class="text-center font-weight-bold text-success d-none" id="booksReturnedLateEmptyMessage">Tidak ada pengembalian terlambat!</p>
 					{{-- table --}}
-					<table class="table table-bordered table-striped d-none table-responsive" id="booksReturnedLateTableContent" style="width">
+					<table class="table table-bordered table-hover table-striped table-responsive d-none" id="booksReturnedLateTableContent" style="width">
 						<thead style="background-color: #181C32; color: white">
 							<tr>
 								<th class="w-100">Buku</th>
@@ -496,6 +496,98 @@
 		</div>
 		{{-- /.latest borrowing table --}}
 
+	</div>
+	{{-- /.row --}}
+
+	<div class="row">
+
+		{{-- total borrowers chart --}}
+		<div class="col-12 col-lg-6">
+
+			{{-- point modal --}}
+			<div class="modal fade" id="totalBorrowersPointModal" tabindex="-1" role="dialog" aria-labelledby="dataPointModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-md" role="document">
+					<div class="modal-content">
+
+						{{-- header --}}
+						<div class="modal-header">
+							<h5 class="modal-title" id="dataPointModalLabel">Detail Pendapatan</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+
+						{{-- body --}}
+						<div class="modal-body">
+							<p id="totalBorrowersModalContent"></p>
+						</div>
+						
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			{{-- /.point modal --}}
+
+			<div class="card" style="border-top: 5px solid #181C32">
+				<div class="card-body" id="totalBorrowersContainer">
+					{{-- loader --}}
+					<div class="text-center my-5" id="totalBorrowersLoader" style="color: orangered;">
+						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+					</div>
+					{{-- empty data message --}}
+					<p class="text-center font-weight-bold text-danger d-none" id="totalBorrowersMessage">Tidak ada data pendapatan!</p>
+				</div>
+				{{-- /.card-body --}}
+			</div>
+			{{-- /.card --}}
+		</div>
+		{{-- /.total borrowers chart --}}
+
+		{{-- total income chart --}}
+		<div class="col-12 col-lg-6">
+
+			{{-- point modal --}}
+			<div class="modal fade" id="totalIncomePointModal" tabindex="-1" role="dialog" aria-labelledby="dataPointModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-md" role="document">
+					<div class="modal-content">
+
+						{{-- header --}}
+						<div class="modal-header">
+							<h5 class="modal-title" id="dataPointModalLabel">Detail Pendapatan</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+
+						{{-- body --}}
+						<div class="modal-body">
+							<p id="totalIncomeModalContent"></p>
+						</div>
+						
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			{{-- /.point modal --}}
+
+			<div class="card" style="border-top: 5px solid #181C32">
+				<div class="card-body" id="totalIncomeContainer">
+					{{-- loader --}}
+					<div class="text-center my-5" id="totalIncomeLoader" style="color: orangered;">
+						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+					</div>
+					{{-- empty data message --}}
+					<p class="text-center font-weight-bold text-danger d-none" id="totalIncomeMessage">Tidak ada data pendapatan!</p>
+				</div>
+				{{-- /.card-body --}}
+			</div>
+			{{-- /.card --}}
+		</div>
+		{{-- /.total income chart --}}
 	</div>
 	{{-- /.row --}}
 </div>
@@ -748,12 +840,13 @@
 			];
 
 			// Check if there's books data.
-			if(booksStatus < 1) {
+			const totalBooks = booksStatus.reduce((acc, point) => acc + point.y, 0);
+			if(totalBooks < 1) {
 				// Hide loader.
-				$("#booksStatusLoader").hide();
+				$("#bookStatusLoader").hide();
 
 				// Show empty data message.
-				$("#booksStatusEmptyMessage").removeClass('d-none');
+				$("#bookStatusEmptyMessage").removeClass('d-none');
 			} else {
 				// Calculate the percentage of available books.
 				const totalBooks = booksStatus.reduce((acc, point) => acc + point.y, 0);

@@ -52,7 +52,7 @@ Route::middleware('auth')->group(function () {
 		Route::get('/data/books-returned-late', [DashboardController::class, 'getBooksReturnedLate'])->name('dashboard.data.books_returned_late');
 	});
 
-	// Users.
+	// Users routes.
 	Route::resource('user', UserController::class)->name('index', 'user')->middleware(['auth', 'role:admin']);
 
 	// Books routes including soft deletes.
@@ -95,13 +95,17 @@ Route::middleware('auth')->group(function () {
 	});
 	Route::resource('penyewaan', BorrowingController::class)->name('index', 'penyewaan')->middleware('auth');
 
-	// Account.
-	Route::get('akun/{id}', [AccountController::class, 'index'])->name('akun')->middleware('auth');
-	Route::get('akun/{id}/edit', [AccountController::class, 'edit'])->name('akun.edit')->middleware('auth');
-	Route::put('akun/{id}/update', [AccountController::class, 'update'])->name('akun.update')->middleware('auth');
-	Route::get('akun/{id}/edit-password', [AccountController::class, 'editPassword'])->name('akun.edit-password')->middleware('auth');
-	Route::put('akun/{id}/update-password', [AccountController::class, 'updatePassword'])->name('akun.update-password')->middleware('auth');
+	// Account routes.
+	Route::prefix('akun')->group(function() {
+		Route::get('{id}', [AccountController::class, 'index'])->name('akun')->middleware('auth');
+		Route::get('{id}/edit', [AccountController::class, 'edit'])->name('akun.edit')->middleware('auth');
+		Route::put('{id}/update', [AccountController::class, 'update'])->name('akun.update')->middleware('auth');
+		Route::get('{id}/edit-password', [AccountController::class, 'editPassword'])->name('akun.edit-password')->middleware('auth');
+		Route::put('{id}/update-password', [AccountController::class, 'updatePassword'])->name('akun.update-password')->middleware('auth');
+	});
 
-	// Settings.
+	// Settings routes.
 	Route::resource('aplikasi', SettingController::class)->name('index', 'aplikasi')->middleware(['auth', 'role:admin']);
+	Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+	Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
 });

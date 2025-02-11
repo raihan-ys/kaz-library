@@ -2,8 +2,8 @@
 
 	<!-- Brand Logo -->
 	<a href="/" class="brand-link" style="background-color: #181C32;">
-		<img src="{{ asset('images/logo.jpg') }}" alt="Kaz-Library Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-		<span class="brand-text font-weight-bold">Kaz-Library</span>
+		<img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name', 'E-Library') }} Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+		<span class="brand-text font-weight-bold">{{ config('app.name', 'E-Library') }}</span>
 	</a>
 
 	<div class="sidebar">
@@ -28,7 +28,7 @@
 
 				{{-- dashboard --}}
 				<li class="nav-item">
-					<a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+					<a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'bg-danger' : '' }}">
 						<i class="nav-icon fas fa-tachometer-alt"></i>
 						<p>Dashboard</p>
 					</a>
@@ -39,7 +39,7 @@
 				{{-- users --}}
 				@if(Auth::user()->role === 'admin')
 				<li class="nav-item">
-					<a href="{{ route('user') }}" class="nav-link {{ request()->routeIs('user') || request()->routeIs('user.*') ? 'active' : '' }}">
+					<a href="{{ route('user') }}" class="nav-link {{ request()->routeIs('user') || request()->routeIs('user.*') ? 'bg-danger' : '' }}">
 						<i class="nav-icon fas fa-user-friends"></i>
 						<p>Pengguna</p>
 					</a>
@@ -47,7 +47,7 @@
 				@endif
 				{{-- members --}}
 				<li class="nav-item">
-					<a href="{{ route('anggota') }}" class="nav-link {{ request()->routeIs('anggota') || request()->routeIs('anggota.*') ? 'active' : '' }}">
+					<a href="{{ route('anggota') }}" class="nav-link {{ request()->routeIs('anggota') || request()->routeIs('anggota.*') ? 'bg-danger' : '' }}">
 						<i class="nav-icon fas fa-users"></i>
 						<p>Anggota</p>
 					</a>
@@ -58,28 +58,28 @@
 				<li class="nav-header font-weight-bold">Manajemen</li>
 				{{-- books --}}
 				<li class="nav-item">
-					<a href="{{ route('buku') }}" class="nav-link {{ request()->routeIs('buku') || request()->routeIs('buku.*') ? 'active' : '' }}">
+					<a href="{{ route('buku') }}" class="nav-link {{ request()->routeIs('buku') || request()->routeIs('buku.*') ? 'bg-danger' : '' }}">
 						<i class="nav-icon fas fa-book"></i>
 						<p>Buku</p>
 					</a>
 				</li>
 				{{-- category --}}
 				<li class="nav-item">
-					<a href="{{ route('kategori') }}" class="nav-link {{ request()->routeIs('kategori') || request()->routeIs('kategori.*') ? 'active' : '' }}">
+					<a href="{{ route('kategori') }}" class="nav-link {{ request()->routeIs('kategori') || request()->routeIs('kategori.*') ? 'bg-danger' : '' }}">
 						<i class="nav-icon fas fa-list"></i>
 						<p>Kategori</p>
 					</a>
 				</li>
 				{{-- publisher --}}
 				<li class="nav-item">
-					<a href="{{ route('penerbit') }}" class="nav-link {{ request()->routeIs('penerbit') || request()->routeIs('penerbit.*') ? 'active' : '' }}">
+					<a href="{{ route('penerbit') }}" class="nav-link {{ request()->routeIs('penerbit') || request()->routeIs('penerbit.*') ? 'bg-danger' : '' }}">
 						<i class="nav-icon fas fa-print"></i>
 						<p>Penerbit</p>
 					</a>
 				</li>
 				{{-- rental --}}
 				<li class="nav-item">
-					<a href="{{ route('penyewaan') }}" class="nav-link {{ request()->routeIs('penyewaan') || request()->routeIs('penyewaan.*') ? 'active' : '' }}">
+					<a href="{{ route('penyewaan') }}" class="nav-link {{ request()->routeIs('penyewaan') || request()->routeIs('penyewaan.*') ? 'bg-danger' : '' }}">
 						<i class="nav-icon fas fa-file"></i>
 						<p>Penyewaan</p>
 					</a>
@@ -93,7 +93,7 @@
 					@php
 					$userId = Auth::user()->id;
 					@endphp
-					<a href="{{ route('akun', $userId) }}" class="nav-link {{ request()->routeIs('akun') || request()->routeIs('akun.*') ? 'active' : '' }}">
+					<a href="{{ route('akun', $userId) }}" class="nav-link {{ request()->routeIs('akun') || request()->routeIs('akun.*') ? 'bg-danger' : '' }}">
 						<i class="nav-icon fas fa-users-cog"></i>
 						<p>Akun</p>
 					</a>
@@ -101,7 +101,7 @@
 				{{-- app setting --}}
 				@if(Auth::user()->role === 'admin')
 				<li class="nav-item">
-					<a href="{{ route('aplikasi') }}" class="nav-link">
+					<a href="{{ route('aplikasi') }}" class="nav-link {{ request()->routeIs('aplikasi') || request()->routeIs('aplikasi.*') ? 'bg-danger' : '' }}">
 						<i class="nav-icon fas fa-cog"></i>
 						<p>Aplikasi</p>
 					</a>

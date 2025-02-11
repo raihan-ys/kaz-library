@@ -4,10 +4,10 @@
 	{{-- meta --}}
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="E-Library Kazee Digital">
-	<title>Home - Kaz-Library</title>
+	<meta name="description" content="E-Library">
+	<title>Home - {{ config('app.name', 'E-Library') }}</title>
 	{{-- Favicon --}}	
-	<link type="image/png" href="{{ asset('images/logo.jpg') }}" rel="icon">
+	<link type="image/png" href="{{ asset('images/logo.png') }}" rel="icon">
 	{{-- AdminLTE CSS --}}
 	<link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
     {{-- Font --}}
@@ -133,7 +133,7 @@
 
 			{{-- brand logo --}}
 			<a class="navbar-brand" href="#">
-				<img class="rounded img-fluid" style="max-width: 100%; height: 100px;" src="{{ asset('images/logo.jpg') }}" alt="Logo Kaz-library">
+				<img class="rounded img-fluid" style="max-width: 100%; height: 100px;" src="{{ asset('images/logo.png') }}" alt="Logo {{ config('app.name', 'E-Library') }}">
             </a>
 
 			{{-- navbar toggler --}}
@@ -146,7 +146,7 @@
 				<ul class="navbar-nav">
 					<li class="nav-item">
 						<span>
-							Kaz-Library
+						    {{ config('app.name', 'E-Library') }}
 						</span>
 					</li> 
 				</ul>
@@ -234,18 +234,18 @@
         <div class="col-md-6 p-3 text-white d-flex flex-column justify-content-center">
             <h3 class="font-weight-bold">
                 Selamat Datang di
-                <span class="font-weight-bolder h3" style="color: orangered">Kaz-Library</span>!
+                <span class="font-weight-bolder h3" style="color: orangered">{{ config('app.name', 'E-Library') }}</span>!
             </h3>
             <p style="text-align: justify;">
-                Selamat datang di <i>e-Library</i> Kazee, pusat sumber informasi yang dirancang untuk mendukung kebutuhan akademik dan penelitian Anda. Kami bangga menyediakan koleksi buku, jurnal ilmiah, makalah penelitian, dan berbagai sumber daya lainnya yang dapat diakses dengan mudah dan cepat.
+                Selamat datang di {{ config('app.name', 'E-Library') }}, pusat sumber informasi yang dirancang untuk mendukung kebutuhan akademik dan penelitian Anda. Kami bangga menyediakan koleksi buku, jurnal ilmiah, makalah penelitian, dan berbagai sumber daya lainnya yang dapat diakses dengan mudah dan cepat.
             </p>
             @guest
-            <a class="btn btn-outline-light" href="{{ route('login') }}">
+            <a class="btn btn-outline-danger" href="{{ route('login') }}">
                 <i class="fas fa-key"></i>
                 Login
             </a>
             @else
-            <a class="btn btn-outline-light" href="{{ route('dashboard') }}">
+            <a class="btn btn-outline-danger" href="{{ route('dashboard') }}">
                 <i class="fas fa-tachometer-alt"></i>
                 Masuk ke Dashboard
             </a>
@@ -361,7 +361,7 @@
                             <h5 class="card-title mb-1">Judul Buku: <b>{{ $book->title }}</b></h5>
                             <p class="card-text">Penulis: <b>{{ $book->author }}</b></p>
                         </div>
-                        <div class="card-footer"><a href="#" class="btn btn-primary btn-block">Lihat Detail</a></div>
+                        <div class="card-footer"><a href="#" class="btn btn-danger btn-block">Lihat Detail</a></div>
                     </div>
                 </div>
                 @endforeach
@@ -383,7 +383,7 @@
                             <p class="card-text"><small class="text-muted">Dipinjam: <b>{{ $borrowing->total_borrowed }} kali</b></small></p>
                         </div>
                         <div class="card-footer">
-                            <a href="#" class="btn btn-primary btn-block">Lihat Detail</a>
+                            <a href="#" class="btn btn-danger btn-block">Lihat Detail</a>
                         </div>
                     </div>
                 </div>
@@ -396,7 +396,7 @@
 	</div>
 	<footer class="footer p-3">
         <div class="container">
-            <p class="text-white text-center mb-1">&copy; {{ date('Y') }} Kaz-Library. All rights reserved.</p>
+            <p class="text-white text-center mb-1">&copy; {{ date('Y') }} {{ config('app.name', 'E-Library') }}. All rights reserved.</p>
             <!-- links -->
             <ul class="d-flex justify-content-center list-unstyled m-0">	
                 <!-- facebook -->

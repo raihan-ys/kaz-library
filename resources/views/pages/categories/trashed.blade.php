@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Kategori Terhapus - Kaz-Library')
+@section('title', 'Kategori Terhapus')
 @section('page-header')
 <div class="row m-0">
 	<div class="col-12">
