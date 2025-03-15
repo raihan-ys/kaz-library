@@ -10,7 +10,7 @@
 	<link type="image/png" href="{{ asset('images/logo.png') }}" rel="icon">
 	{{-- AdminLTE CSS --}}
 	<link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
-    {{-- Font --}}
+    {{-- Font Awesome --}}
 	<link rel="stylesheet" href="{{ asset('adminlte/plugins/fontawesome-free/css/all.min.css') }}">
     {{-- Custom CSS --}}
     <style>
@@ -132,7 +132,7 @@
 		<div class="container">
 
 			{{-- brand logo --}}
-			<a class="navbar-brand" href="#">
+			<a class="navbar-brand" href="{{ route('home') }}">
 				<img class="rounded img-fluid" style="max-width: 100%; height: 100px;" src="{{ asset('images/logo.png') }}" alt="Logo {{ config('app.name', 'E-Library') }}">
             </a>
 
@@ -153,13 +153,6 @@
 
                 {{-- content --}}
 				<ul class="navbar-nav ml-auto">
-                    {{-- home --}}
-					<li class="nav-item">
-                        <a href="{{ route('home') }}">
-                            <i class="fas fa-home"></i>
-                            Home
-                        </a>
-                    </li>
                     {{-- visi misi --}}
                     <li class="nav-item">
                         <a href="#visiMisi">
@@ -337,7 +330,7 @@
                     <div class="card-body" text-light>
                         <h5 class="font-weight-bold">Ruang Baca</h5>
                         <small>Ruang Baca yang Nyaman</small>
-                        <p class="mt-2" style="text-align: justify;" 267>Perpustakaan ini menyediakan ruang baca yang nyaman dan tenang, dirancang khusus untuk mendukung suasana belajar dan penelitian yang kondusif.</p>
+                        <p class="mt-2" style="text-align: justify;">Perpustakaan ini menyediakan ruang baca yang nyaman dan tenang, dirancang khusus untuk mendukung suasana belajar dan penelitian yang kondusif.</p>
                     </div>
                 </div>
             </div>
@@ -356,7 +349,7 @@
                 @foreach ($books as $book)
                 <div class="col-md-3 mb-4">
                     <div class="card h-100">
-                        <img src="{{ $book->cover_image ? asset('storage/'.$book->cover_image) : asset('images/sample-book-cover.png') }}" alt="Book's Cover Image Preview" class="card-img-top">
+                        <img src="{{ $book->cover_image ? asset('storage/'.$book->cover_image) : asset('images/sample-book-cover.jpeg') }}" alt="Book's Cover Image Preview" class="card-img-top">
                         <div class="card-body">
                             <h5 class="card-title mb-1">Judul Buku: <b>{{ $book->title }}</b></h5>
                             <p class="card-text">Penulis: <b>{{ $book->author }}</b></p>

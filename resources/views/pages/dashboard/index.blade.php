@@ -468,6 +468,10 @@
 			<div class="card" style="border-top: 5px solid #181C32">
 				<div class="card-header d-flex justify-content-between align-items-center">
 					<b style="text-align: left; font-size: 20px">Pengembalian Terlambat</b>
+					<select id="orderSelect" class="form-control w-auto ml-auto">
+						<option value="latest">Terbaru</option>
+						<option value="oldest">Terlama</option>
+					</select>
 				</div>
 				<div id="booksReturnedLateContainer" class="card-body">
 					{{-- loader --}}
@@ -494,7 +498,7 @@
 			</div>
 			{{-- /.card --}}
 		</div>
-		{{-- /.latest borrowing table --}}
+		{{-- /.returned late books table --}}
 
 	</div>
 	{{-- /.row --}}
