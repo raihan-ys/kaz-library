@@ -28,6 +28,18 @@ use Illuminate\Support\Facades\Route;
 // Unused routes.
 Auth::routes(['register' => false, 'reset' => false]);
 
+// Testing helper routes.
+Route::get('/helper', function () {
+	$number = 1000000;
+	$decimal = 2;
+	$format = 'd F Y';
+
+	return response()->json([
+		'formatRp' => formatRp($number, $decimal),
+		'formatDate' => formatDate(now(), $format)
+	]);
+});
+
 // Home routes.
 Route::resource('/', HomeController::class)->name('index', 'home');
 Route::resource('home', HomeController::class)->name('index', 'home');

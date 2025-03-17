@@ -3,14 +3,12 @@
 use Carbon\Carbon;
 
 // Format the number to Indonesian currency.
-if(!function_exists('formatRp')) {
-	function formatRp($number, $decimal = 2)
-	{
-		try {
-			return 'Rp ' . number_format($number, $decimal, ',', '.');
-		} catch (\Exception $e) {
-			return 'Rp 0, 00';
-		}
+function formatRp($number, $decimal = 2)
+{ 
+	try {
+		return 'Rp ' . number_format($number, $decimal, ',', '.');
+	} catch (\Exception $e) {
+		return 'Rp 0, 00';
 	}
 }
 

@@ -193,20 +193,28 @@ class DashboardController extends Controller
 
 	public function getBooksReturnedLate()
 	{
-		// Get the books returned late.
-		$booksReturnedLate = Borrowing::with('book', 'member')
-			->where('return_date', '>', DB::raw('DATE_ADD(borrow_date, INTERVAL 7 DAY)'))
-			->limit(4)
-			->get()
-			->map(function ($borrowing) {
-					$borrowDate = Carbon::parse($borrowing->borrow_date);
-					$returnDate = Carbon::parse($borrowing->return_date);
-					$lateDays = (int) abs($returnDate->diffInDays($borrowDate->copy()->addDays(7)));
+		// Get order input.
+		$order = request('order', 'oldest');
 
-					$borrowing->late_days = $lateDays;
-					$borrowing->late_fee = ($lateDays * 1000);
-					return $borrowing;
-				});
+		// Get the books returned late.
+		$query = Borrowing::with('book', 'member')
+			->where('return_date', '>', DB::raw('DATE_ADD(borrow_date, INTERVAL 7 DAY)'));
+
+		if ($order === 'oldest') {
+			$query->orderBy('return_date', 'asc');
+    } else {
+			$query->orderBy('return_date', 'desc');
+    }
+
+		$booksReturnedLate = $query->limit(4)->get()->map(function ($borrowing) {
+			$borrowDate = Carbon::parse($borrowing->borrow_date);
+			$returnDate = Carbon::parse($borrowing->return_date);
+			$lateDays = (int) abs($returnDate->diffInDays($borrowDate->copy()->addDays(7)));
+
+			$borrowing->late_days = $lateDays;
+			$borrowing->late_fee = ($lateDays * 1000);
+			return $borrowing;
+		});
 
 		return response()->json([
 			'booksReturnedLate' => $booksReturnedLate
