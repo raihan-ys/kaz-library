@@ -61,6 +61,32 @@
         }
         /* /.body */
 
+        /* raindrop effect */
+        #raindropContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        .raindrop {
+            position: absolute;
+            bottom: 100%;
+            width: 5px;
+            height: 5px;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+        /* /.raindrop effect */
+
         /* navbar */
         .navbar, .footer {
             background-color: #181C32;
@@ -127,7 +153,11 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
+
+    <!-- raindrop container -->
+	<div id="raindropContainer"></div>
     
+    {{-- navbar --}}
 	<nav class="navbar navbar-expand-lg navbar-dark">
 		<div class="container">
 
@@ -190,6 +220,7 @@
 	        </div>
         </div>
     </nav>
+    {{-- /.navbar --}}
     
     {{-- hero --}}
     <div class="jumbotron-fluid row p-0 m-0" style="background-color: #181C32; height: 70vh">
@@ -422,3 +453,20 @@
     </footer>   
 </body>
 </html>
+
+<script>
+    // Generate raindrops.
+    const raindropContainer = $("#raindropContainer");
+    const numberOfRaindrops = 50;
+
+    for (let i = 0; i < numberOfRaindrops; i++) {
+        const raindrop = $("<span class='raindrop bg-light'></span>");
+        raindrop.css({
+            left: Math.random() * 100 + "vw",
+            animationDuration: Math.random() * 2 + 1 + "s",
+            animationDelay: Math.random() * 5 + "s"
+        });
+
+        raindropContainer.append(raindrop);
+    }
+</script>

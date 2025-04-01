@@ -537,6 +537,7 @@
 			<div class="card" style="border-top: 5px solid #181C32">
 				<div class="card-body" id="totalBorrowersContainer">
 					{{-- loader --}}
+					<h5 class="text-center">Coming Soon!</h5>
 					<div class="text-center my-5" id="totalBorrowersLoader" style="color: orangered;">
 						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
 					</div>
@@ -580,6 +581,7 @@
 
 			<div class="card" style="border-top: 5px solid #181C32">
 				<div class="card-body" id="totalIncomeContainer">
+					<h5 class="text-center">Coming Soon!</h5>
 					{{-- loader --}}
 					<div class="text-center my-5" id="totalIncomeLoader" style="color: orangered;">
 						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
@@ -613,11 +615,6 @@
 			url: "{{ route('dashboard.data.books_count') }}",
 			method: "GET",
 			success: function(response) {
-				// Show containers.
-				$("#booksCountContainer").removeClass('d-none');
-				$("#borrowedBooksCountContainer").removeClass('d-none');
-				$("#booksReturnedLateCountContainer").removeClass('d-none');
-
 				// Set books count.
 				$("#booksCount").text(response.booksCount);
 				$("#borrowedBooksCount").text(response.borrowedBooksCount);
@@ -627,6 +624,11 @@
 				$("#booksCountLoader").hide();
 				$("#borrowedBooksCountLoader").hide();
 				$("#booksReturnedLateCountLoader").hide();
+
+				// Show containers.
+				$("#booksCountContainer").removeClass('d-none');
+				$("#borrowedBooksCountContainer").removeClass('d-none');
+				$("#booksReturnedLateCountContainer").removeClass('d-none');
 			},
 			error: function(xhr, status, error) {
 				console.error('AJAX Error ', error);
@@ -642,14 +644,14 @@
 			url: "{{ route('dashboard.data.members_count') }}",
 			method: "GET",
 			success: function(response) {
-				// Show container.
-				$("#membersCountContainer").removeClass('d-none');
-
 				// Set members count.
 				$("#membersCount").text(response.membersCount);
 
 				// Hide loader.
 				$("#membersCountLoader").hide();
+
+				// Show container.
+				$("#membersCountContainer").removeClass('d-none');
 			},
 			error: function(xhr, status, error) {
 				console.error('AJAX Error ', error);
@@ -692,10 +694,9 @@
 							pie: {
 								innerSize: '50%',
 								cursor: 'pointer',
+								allowPointSelect: true,
 								dataLabels: { enabled: false },
-								showInLegend: true
-							},
-							series:{
+								showInLegend: true,
 								point: {
 									events: {
 										click: function() {
@@ -705,11 +706,11 @@
 										}
 									}
 								}
-							}
+							},
 						},
 						series: [{
 							name: 'Jumlah Buku',
-							data: booksByCategory
+							data: booksByCategory,
 						}],
 						credits: {
 							enabled: false
@@ -888,9 +889,7 @@
 								cursor: 'pointer',
 								dataLabels: { enabled: false },
 								showInLegend: true,
-								size: 150
-							},
-							series:{
+								size: 150,
 								point: {
 									events: {
 										click: function() {
@@ -900,7 +899,7 @@
 										}
 									}
 								}
-							}
+							},
 						},
 						series: [{
 							name: 'Jumlah Buku',
@@ -1277,8 +1276,25 @@
 							enabled: false
 						},
 						plotOptions: {
-							series: {
+							pie: {
 								cursor: 'pointer',
+								dataLabels: {
+									enabled: true,
+									distance: -40,
+									// Data labels format.
+									format: '{point.percentage:.0f} %',
+									style: {
+										fontSize: '1em',
+										fontFamily: 'Poppins, sans-serif',
+										textOutline: 'none',
+										opacity: 0.7
+									},
+									filter: {
+										operator: '>',
+										property: 'percentage',
+										value: 10
+									}
+								},
 								point: {
 									events: {
 										click: function() {
@@ -1287,31 +1303,8 @@
 											$('#membersPerTypePointModal').modal('show');
 										}
 									}
-								},
-								dataLabels: [
-									{
-										enabled: true,
-										distance: 20	
-									}, 
-									{
-										enabled: true,
-										distance: -40,
-										// Data labels format.
-										format: '{point.percentage:.0f} %',
-										style: {
-											fontSize: '1em',
-											fontFamily: 'Poppins, sans-serif',
-											textOutline: 'none',
-											opacity: 0.7
-										},
-										filter: {
-											operator: '>',
-											property: 'percentage',
-											value: 10
-										}
-									}
-								]
-							}
+								}
+							},
 						},
 						series: [
 							{

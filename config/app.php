@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Kaz-Library'),
+    'name' => env('APP_NAME', 'Rain-Library'),
 
     /*
     |--------------------------------------------------------------------------
