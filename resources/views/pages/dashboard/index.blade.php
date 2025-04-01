@@ -610,817 +610,825 @@
 		// Format number to Indonesian Rupiah.
 		const formatRp = number => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(number);
 
-		// Fetch data for books count.
-		$.ajax({
-			url: "{{ route('dashboard.data.books_count') }}",
-			method: "GET",
-			success: function(response) {
-				// Set books count.
-				$("#booksCount").text(response.booksCount);
-				$("#borrowedBooksCount").text(response.borrowedBooksCount);
-				$("#booksReturnedLateCount").text(response.booksReturnedLateCount);
-
-				// Hide loader.
-				$("#booksCountLoader").hide();
-				$("#borrowedBooksCountLoader").hide();
-				$("#booksReturnedLateCountLoader").hide();
-
-				// Show containers.
-				$("#booksCountContainer").removeClass('d-none');
-				$("#borrowedBooksCountContainer").removeClass('d-none');
-				$("#booksReturnedLateCountContainer").removeClass('d-none');
-			},
-			error: function(xhr, status, error) {
-				console.error('AJAX Error ', error);
-				// Hide loader in case of error.
-				$("#booksCountLoader").hide();
-				$("#borrowedBooksCountLoader").hide();
-				$("#booksReturnedLateCountLoader").hide();
-			}
-		});
-
-		// Fetch data for members count.
-		$.ajax({
-			url: "{{ route('dashboard.data.members_count') }}",
-			method: "GET",
-			success: function(response) {
-				// Set members count.
-				$("#membersCount").text(response.membersCount);
-
-				// Hide loader.
-				$("#membersCountLoader").hide();
-
-				// Show container.
-				$("#membersCountContainer").removeClass('d-none');
-			},
-			error: function(xhr, status, error) {
-				console.error('AJAX Error ', error);
-				// Hide loader in case of error.
-				$("#membersCountLoader").hide();
-			}
-		});
-
-		// Fetch data for book categories chart.
-		$.ajax({
-			url: "{{ route('dashboard.data.books_by_category') }}",
-			method: "GET",
-			success: function(response) {
-				const booksByCategory = response.booksByCategory.map(item => ({
-					name: item.ctg_name,
-					y: item.count
-				}));
-
-				// Check if there's categories data.
-				if(booksByCategory < 1) {
-					// Hide loader.
-					$("#bookCategoriesLoader").hide();
-
-					// Show empty data message.
-					$("#bookCategoriesEmptyMessage").removeClass('d-none');
-				} else {
-					// Create donut chart.
-					Highcharts.chart('bookCategoriesContainer', {
-						chart: {
-							type: 'pie',
-							height: 561
-						},
-						title: {
-							text: 'Kategori Buku',
-							style: {
-								fontFamily: 'Poppins, sans-serif',
-							}
-						},
-						plotOptions: {
-							pie: {
-								innerSize: '50%',
-								cursor: 'pointer',
-								allowPointSelect: true,
-								dataLabels: { enabled: false },
-								showInLegend: true,
-								point: {
-									events: {
-										click: function() {
-											// Set modal content.
-											$('#bookCategoriesModalContent').html('Kategori: <b>' + this.name + '</b> <br> Jumlah: <b>' + this.y + '</b>');
-											$('#bookCategoriesModal').modal('show');
-										}
-									}
-								}
-							},
-						},
-						series: [{
-							name: 'Jumlah Buku',
-							data: booksByCategory,
-						}],
-						credits: {
-							enabled: false
-						},
-						tooltip: {
-							formatter: function() {
-								return 'Kategori: <b>' + this.point.name + '</b><br>Jumlah: <b>' + this.point.y + '</b>';
-							},
-							style: {
-								fontFamily: 'Poppins, sans-serif'
-							}
-						},
-						legend: {
-							itemStyle: {
-								fontFamily: 'Poppins, sans-serif',
-								fontSize: '15px',
-								color: '#000000'
-							}
-						}
-					});
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error('AJAX Error ', error);
-				// Hide loader in case of error.
-				$('#bookCategoriesLoader').hide();
-			}
-		});
-
-		// Fetch data for popular categories chart.
-		$.ajax({
-			url: "{{ route('dashboard.data.popular_categories') }}",
-			method: "GET",
-			success: function(response) {
-				const popularCategoriesKeys = response.popularCategoriesKeys;
-				const popularCategoriesValues = response.popularCategoriesValues;
-
-				// Check if there's popular categories data.
-				if(popularCategoriesKeys < 1) {
-					// Hide loader.
-					$("#popularCatagoriesLoader").hide();
-
-					// Show empty data message.
-					$("#popularCatagoriesEmptyMessage").removeClass('d-none');
-				} else {
-					// Create bar chart.
-					Highcharts.chart('popularCategoriesContainer', {
-						chart: {
-							type: 'bar',
-							height: 250
-						},
-						title: {
-							text: 'Kategori Terpopuler',
-							style: {
-								fontFamily: 'Poppins, sans-serif'
-							}
-						},
-						xAxis: {
-							// X Axis categories.
-							categories: popularCategoriesKeys,
-							labels: {
-								style: {
-									fontFamily: 'Poppins, sans-serif'
-								}
-							}
-						},
-						yAxis: {
-							// Y Axis title.
-							title: {
-								text: 'Jumlah Peminjaman',
-								style: {
-									fontFamily: 'Poppins, sans-serif'
-								}
-							}
-						},
-						plotOptions: {
-							series: {
-								cursor: 'pointer'
-							}
-						},
-						credits: {
-							enabled: false
-						},
-						tooltip: {
-							formatter: function() {
-								return 'Kategori: <b>' + this.x + '</b> <br> Dipinjam: <b>' + this.y + ' kali</b>';
-							},
-							style: {
-								fontFamily: 'Poppins, sans-serif'
-							}
-						},
-						legend: {
-							itemStyle: {
-								fontFamily: 'Poppins, sans-serif',
-								fontSize: '12px',
-								color: '#000000'
-							}
-						},
-						series: [{
-							// Data series.
-							name: 'Kategori',
-							data: popularCategoriesValues,
-							color: '#90EE90',
-							point: {
-								events: {
-									click: function() {
-										// Set modal content.
-										$('#borrowingsPerCategoryModalContent').html('Kategori: <b>' + this.category + '</b> <br> Dipinjam: <b>' + this.y + ' kali</b>');
-										$('#borrowingsPerCategoryPointModal').modal('show');
-									}
-								}
-							},
-							dataLabels: {
-								style: {
-									fontFamily: 'Poppins, sans-serif'
-								}
-							}
-						}],
-					});
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error('AJAX Error ', error);
-				// Hide loader in case of error.
-				$('#popularCatagoriesLoader').hide();
-			}
-		});
-
-		// Fetch data for books status chart.
-		$.ajax({
-			url: "{{ route('dashboard.data.books_status') }}",
-			method: "GET",
-			success: function(response) {
-				const booksStatus = [
-					{ name: 'Tersedia', y: response.availableBooksCount },
-					{ name: 'Dipinjam', y: response.borrowedBooksCount }
-				];
-
-				// Check if there's books data.
-				const totalBooks = booksStatus.reduce((acc, point) => acc + point.y, 0);
-				if(totalBooks < 1) {
-					// Hide loader.
-					$("#bookStatusLoader").hide();
-
-					// Show empty data message.
-					$("#bookStatusEmptyMessage").removeClass('d-none');
-				} else {
-					// Calculate the percentage of available books.
-					const totalBooks = booksStatus.reduce((acc, point) => acc + point.y, 0);
-					const availableBooks = booksStatus.find(point => point.name === 'Tersedia').y;
-					const percentageAvailable = ((availableBooks / totalBooks) * 100).toFixed(2);
-
-					// Create donut chart.
-					Highcharts.chart('booksStatusContainer', {
-						chart: {
-							type: 'pie',
-							height: 250
-						},
-						title: {
-							text: 'Status Buku',
-							style: {
-								fontFamily: 'Poppins, sans-serif'
-							}
-						},
-						subtitle: {
-							text: '<b>' + percentageAvailable + '%</b><br> Tersedia',
-							verticalAlign: 'middle',
-							style: {
-								fontFamily: 'Poppins, sans-serif',
-								color: '#000000'
-							}
-						},
-						plotOptions: {
-							pie: {
-								innerSize: '70%',
-								cursor: 'pointer',
-								dataLabels: { enabled: false },
-								showInLegend: true,
-								size: 150,
-								point: {
-									events: {
-										click: function() {
-											// Set modal content.
-											$('#bookStatusModalContent').html('Status: <b>' + this.name + '</b> <br> Jumlah: <b>' + this.y + '</b>');
-											$('#bookStatusModal').modal('show');
-										}
-									}
-								}
-							},
-						},
-						series: [{
-							name: 'Jumlah Buku',
-							data: booksStatus
-						}],
-						credits: {
-							enabled: false
-						},
-						tooltip: {
-							formatter: function() {
-								return 'Status: <b>' + this.point.name + '</b><br>Jumlah: <b>' + this.point.y + '</b>';
-							},
-							style: {
-								fontFamily: 'Poppins, sans-serif'
-							}
-						},
-						legend: {
-							itemStyle: {
-								fontFamily: 'Poppins, sans-serif',
-								fontSize: '15px',
-								color: '#000000'
-							}
-						}
-					});
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error('AJAX Error ', error);
-				// Hide loader in case of error.
-				$('#booksStatusLoader').hide();
-			}
-		});
-
-		// Fetch data for popular books chart.
-		$.ajax({
-			url: "{{ route('dashboard.data.get_popular_books') }}",
-			method: "GET",
-			success: function(response) {
-				const popularBooksKeys = response.popularBooksKeys;
-				const popularBooksValues = response.popularBooksValues;
-
-				// Check if there's popular books data.
-				if(popularBooksKeys < 1) {
-					// Hide loader.
-					$("#popularBooksLoader").hide();
-
-					// Show empty data message.
-					$("#popularBooksEmptyMessage").removeClass('d-none');
-				} else {
-					// Create bar chart.
-					Highcharts.chart('popularBooksContainer', {
-						chart: {
-							type: 'column',
-							height: 561
-						},
-						title: {
-							text: 'Buku Terpopuler',
-							style: {
-								fontFamily: 'Poppins, sans-serif'
-							}
-						},
-						xAxis: {
-							// X Axis categories.
-							categories: popularBooksKeys,
-							labels: {
-								style: {
-									fontFamily: 'Poppins, sans-serif'
-								}
-							}
-						},
-						yAxis: {
-							// Y Axis title.
-							title: {
-								text: 'Jumlah Peminjaman',
-								style: {
-									fontFamily: 'Poppins, sans-serif'
-								}
-							}
-						},
-						plotOptions: {
-							series: {
-								cursor: 'pointer',
-								color: '#4B0082'
-							}
-						},
-						credits: {
-							enabled: false
-						},
-						tooltip: {
-							formatter: function() {
-								return 'Buku: <b>' + this.x + '</b> <br> Dipinjam: <b>' + this.y + ' kali</b>';
-							},
-							style: {
-								fontFamily: 'Poppins, sans-serif'
-							}
-						},
-						legend: {
-							itemStyle: {
-								fontFamily: 'Poppins, sans-serif',
-								fontSize: '12px',
-								color: '#000000'
-							}
-						},
-						series: [{
-							// Data series.
-							name: 'Buku',
-							data: popularBooksValues,
-							point: {
-								events: {
-									click: function() {
-										// Set modal content.
-										$('#popularBooksModalContent').html('Buku: <b>' + this.category + '</b> <br> Dipinjam: <b>' + this.y + ' kali</b>');
-										$('#popularBooksModal').modal('show');
-									}
-								}
-							},
-							dataLabels: {
-								style: {
-									fontFamily: 'Poppins, sans-serif'
-								}
-							}
-						}],
-					});
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error('AJAX Error ', error);
-				// Hide loader in case of error.
-				$('#popularBooksLoader').hide();
-			}
-		})
-
-		// Fetch data for borrowings per month chart.
-		$.ajax({
-			url: "{{ route('dashboard.data.books_by_month') }}",
-			method: "GET",
-			success: function(response) {
-				const borrowings = response.borrowings;
-				const borrowMonths = response.months;
-
-				// Check if there's borrowings data.
-				if(borrowings < 1) {
-					// Hide loader.
-					$("#borrowingsPerMonthLoader").hide();
-
-					// Show empty data message.
-					$("#borrowingsPerMonthEmptyMessage").removeClass('d-none');
-				} else {
-					// Create line chart.
-					Highcharts.chart('borrowingsPerMonthContainer', {
-						chart: {
-							type: 'line' 
-						},
-						title: {
-							text: 'Jumlah Peminjaman Buku Per Bulan',
-							style: {
-								fontFamily: 'Poppins, sans-serif'
-							}
-						},
-						xAxis: {
-							// X-axis categories.
-							categories: borrowMonths
-						},
-						yAxis: {
-							title: {
-								// Y-axis title.
-								text: 'Jumlah Peminjaman',
-								style: {
-									fontFamily: 'Poppins, sans-serif'
-								}
-							}
-						},
-						credits: {
-							enabled: false
-						},
-						legend: {
-							itemStyle: {
-								fontFamily: 'Poppins, sans-serif',
-								fontSize: '12px',
-								color: '#000000'
-							}
-						},
-						series: [
-							{
-								// Data series.
-								name: 'Peminjaman',
-								color: '#ff4400',
-								data: borrowings,
-								point: {
-									events: {
-										click: function() {
-											// Set modal content.
-											$('#borrowingsPerMonthModalContent').html('Bulan: <b>' + this.category + '</b> <br> Jumlah: <b>' + this.y + '</b>');
-											$('#borrowingsPerMonthPointModal').modal('show');
-										}
-									}
-								},
-								dataLabels: {
-									enabled: true,
-									style: {
-										fontFamily: 'Poppins, sans-serif',
-										fontSize: '12px',
-										color: '#000000'
-									}
-								}
-							},
-						],
-						exporting: {
-							enabled: true
-						},
-						tooltip: {
-							formatter: function() {
-								return 'Bulan: <b>' + this.x + '</b><br>Jumlah: <b>' + this.y + '</b>';
-							},
-							style: {
-								fontFamily: 'Poppins, sans-serif'
-							}
-						},
-					});	
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error('AJAX Error ', error);
-				// Hide loader in case of error.
-				$('#borrowingsPerMonthLoader').hide();
-			}
-		});
-
-		// Fetch data for borrowings per category chart.
-		$.ajax({
-			url: "{{ route('dashboard.data.borrowings_by_category') }}",
-			method: "GET",
-			success: function(response) {
-				const borrowingsKeys = response.borrowingsKeys;
-				const borrowingsValues = response.borrowingsValues;
-
-				// Check if there's borrowings data.
-				if(borrowingsKeys < 1) {
-					// Hide loader.
-					$("#borrowingsPerCategoryLoader").hide();
-
-					// Show empty data message.
-					$("#borrowingsPerCategoryEmptyMessage").removeClass('d-none');
-				} else {
-					// Create bar chart.
-					Highcharts.chart('borrowingsPerCategoryContainer', {
-						chart: {
-							type: 'bar'
-						},
-						title: {
-							text: 'Jumlah Buku yang Dipinjam per Kategori',
-							style: {
-								fontFamily: 'Poppins, sans-serif'
-							}
-						},
-						xAxis: {
-							// X Axis categories.
-							categories: borrowingsKeys,
-							labels: {
-								style: {
-									fontFamily: 'Poppins, sans-serif'
-								}
-							}
-						},
-						yAxis: {
-							// Y Axis title.
-							title: {
-								text: 'Jumlah Buku',
-								style: {
-									fontFamily: 'Poppins, sans-serif'
-								}
-							}
-						},
-						credits: {
-							enabled: false
-						},
-						tooltip: {
-							formatter: function() {
-								return 'Kategori: <b>' + this.x + '</b> <br> Jumlah: <b>' + this.y + '</b>';
-							},
-							style: {
-								fontFamily: 'Poppins, sans-serif'
-							}
-						},
-						legend: {
-							itemStyle: {
-								fontFamily: 'Poppins, sans-serif',
-								fontSize: '12px',
-								color: '#000000'
-							}
-						},
-						series: [{
-							// Data series.
-							name: 'Kategori',
-							data: borrowingsValues,
-							color: '#ff4400',
-							point: {
-								events: {
-									click: function() {
-										// Set modal content.
-										$('#borrowingsPerCategoryModalContent').html('Kategori: <b>' + this.category + '</b> <br> Jumlah: <b>' + this.y + '</b>');
-										$('#borrowingsPerCategoryPointModal').modal('show');
-									}
-								}
-							},
-							dataLabels: {
-								style: {
-									fontFamily: 'Poppins, sans-serif'
-								}
-							}
-						}],
-					});
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error('AJAX Error ', error);
-				// Hide loader in case of error.
-				$('borrowingsPerCategoryLoader').hide();
-			}
-		});
-
-		// Fetch data for members per type chart.
-		$.ajax({
-			url: "{{ route('dashboard.data.members_by_type') }}",
-			method: "GET",
-			success: function(response) {
-				const members = response.members;
-
-				// Check if there's members data.
-				if(members < 1) {
-					// Hide loader.
-					$("#membersPerTypeLoader").hide();
-
-					// Show empty data message.
-					$("#membersPerTypeEmptyMessage").removeClass('d-none');
-				} else {
-					// Calculate total members.
-					const totalMembers = members.reduce((sum, item) => sum + item.count, 0);
-					
-					const data = members.map(function(item) {
-						return {
-							name: item.type_name,
-							x: (item.count / totalMembers) * 100,
-							y: item.count,
-							dataLabels: {
-								style: {
-									fontFamily: 'Poppins, sans-serif',
-									fontSize: '14p',
-								}
-							}	
-						};
-					});
-
-					// Create pie chart.
-					Highcharts.chart('membersPerTypeContainer', {
-						chart: {
-							type: 'pie',
-						},
-						title: {
-							text: 'Distribusi Anggota Berdasarkan Tipe Keanggotaan',
-							style: {
-								fontFamily: 'Poppins, sans-serif'
-							} 
-						},
-						tooltip: {
-							formatter: function () {
-								return 'Tipe: <b>' + this.key + '</b> <br> Persentase: <b>' + Math.round(this.percentage) + ' %</b> <br> Jumlah: <b>' + this.y + '</b>';
-							},
-							style: {
-								fontFamily: 'Poppins, sans-serif'
-							}
-						},
-						credits: {
-							enabled: false
-						},
-						plotOptions: {
-							pie: {
-								cursor: 'pointer',
-								dataLabels: {
-									enabled: true,
-									distance: -40,
-									// Data labels format.
-									format: '{point.percentage:.0f} %',
-									style: {
-										fontSize: '1em',
-										fontFamily: 'Poppins, sans-serif',
-										textOutline: 'none',
-										opacity: 0.7
-									},
-									filter: {
-										operator: '>',
-										property: 'percentage',
-										value: 10
-									}
-								},
-								point: {
-									events: {
-										click: function() {
-											// Set modal content.
-											$('#membersPerTypeModalContent').html('Tipe: <b>' + this.name + '</b> <br> Persentase: <b>' + Math.round(this.x) + ' %</b> <br> Jumlah: <b>' + this.y + '</b>');
-											$('#membersPerTypePointModal').modal('show');
-										}
-									}
-								}
-							},
-						},
-						series: [
-							{
-								name: 'Anggota',
-								colorByPoint: true,
-								data: data,
-							}
-						]
-					});
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error('AJAX Error ', error);
-				// Hide loader in case of error.
-				$('membersPerTypeLoader').hide();
-			}
-		});
-
-		// Fetch data for latest borrowings table.
-		$.ajax({
-			url: "{{ route('dashboard.data.latest_borrowings') }}",
-			method: "GET",
-			success: function(response) {
-				const latestBorrowings = response.latestBorrowings;
-
-				// Check if there's latest borrowings data.
-				if(latestBorrowings.length < 1) {
-					// Hide loader.
-					$("#latestBorrowingLoader").hide();
-
-					// Show empty data message.
-					$("#latestBorrowingEmptyMessage").removeClass('d-none');
-				} else {
-					// Populate table.
-					let tableBody = '';
-
-					latestBorrowings.forEach(borrowing => {
-						tableBody += `
-							<tr>
-								<td>${borrowing.book.title}</td>
-								<td>${borrowing.member.full_name}</td>
-								<td>${borrowing.borrow_date}</td>
-								<td><a class="btn btn-info" href="{{ route('penyewaan') }}/${borrowing.id}" title="Detail"><i class="fas fa-eye"</i></a></td>
-							</tr>
-						`;
-					});
-					$("#latestBorrowingTableBody").html(tableBody);
-
-					// Show table.
-					$("#latestBorrowingTableContent").removeClass('d-none');
-
-					// Hide loader.
-					$("#latestBorrowingLoader").hide();
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error('AJAX Error ', error);
-				// Hide loader in case of error.
-				$("#latestBorrowingLoader").hide();
-			}
-		});
-
-		// Fetch data for returned late books table.
-		function fetchBooksReturnedLate(order) {
+		function getDashboardData() {
+			// Fetch data for books count.
 			$.ajax({
-				url: "{{ route('dashboard.data.books_returned_late') }}",
+				url: "{{ route('dashboard.data.books_count') }}",
 				method: "GET",
-				data: { order:order },
 				success: function(response) {
-					const booksReturnedLate = response.booksReturnedLate;
+					// Set books count.
+					$("#booksCount").text(response.booksCount);
+					$("#borrowedBooksCount").text(response.borrowedBooksCount);
+					$("#booksReturnedLateCount").text(response.booksReturnedLateCount);
 
-					// Check if there's returned late books data.
-					if(booksReturnedLate.length < 1) {
+					// Hide loader.
+					$("#booksCountLoader").hide();
+					$("#borrowedBooksCountLoader").hide();
+					$("#booksReturnedLateCountLoader").hide();
+
+					// Show containers.
+					$("#booksCountContainer").removeClass('d-none');
+					$("#borrowedBooksCountContainer").removeClass('d-none');
+					$("#booksReturnedLateCountContainer").removeClass('d-none');
+				},
+				error: function(xhr, status, error) {
+					console.error('AJAX Error: ', error);
+					// Hide loader in case of error.
+					$("#booksCountLoader").hide();
+					$("#borrowedBooksCountLoader").hide();
+					$("#booksReturnedLateCountLoader").hide();
+				}
+			});
+
+			// Fetch data for members count.
+			$.ajax({
+				url: "{{ route('dashboard.data.members_count') }}",
+				method: "GET",
+				success: function(response) {
+					// Set members count.
+					$("#membersCount").text(response.membersCount);
+
+					// Hide loader.
+					$("#membersCountLoader").hide();
+
+					// Show container.
+					$("#membersCountContainer").removeClass('d-none');
+				},
+				error: function(xhr, status, error) {
+					console.error('AJAX Error: ', error);
+					// Hide loader in case of error.
+					$("#membersCountLoader").hide();
+				}
+			});
+
+			// Fetch data for book categories chart.
+			$.ajax({
+				url: "{{ route('dashboard.data.books_by_category') }}",
+				method: "GET",
+				success: function(response) {
+					const booksByCategory = response.booksByCategory.map(item => ({
+						name: item.ctg_name,
+						y: item.count
+					}));
+
+					// Check if there's categories data.
+					if(booksByCategory < 1) {
 						// Hide loader.
-						$("#booksReturnedLateLoader").hide();
+						$("#bookCategoriesLoader").hide();
 
 						// Show empty data message.
-						$("#booksReturnedLateEmptyMessage").removeClass('d-none');
+						$("#bookCategoriesEmptyMessage").removeClass('d-none');
+					} else {
+						// Create donut chart.
+						Highcharts.chart('bookCategoriesContainer', {
+							chart: {
+								type: 'pie',
+								height: 561
+							},
+							title: {
+								text: 'Kategori Buku',
+								style: {
+									fontFamily: 'Poppins, sans-serif',
+								}
+							},
+							plotOptions: {
+								pie: {
+									innerSize: '50%',
+									cursor: 'pointer',
+									allowPointSelect: true,
+									dataLabels: { enabled: false },
+									showInLegend: true,
+									point: {
+										events: {
+											click: function() {
+												// Set modal content.
+												$('#bookCategoriesModalContent').html('Kategori: <b>' + this.name + '</b> <br> Jumlah: <b>' + this.y + '</b>');
+												$('#bookCategoriesModal').modal('show');
+											}
+										}
+									}
+								},
+							},
+							series: [{
+								name: 'Jumlah Buku',
+								data: booksByCategory,
+							}],
+							credits: {
+								enabled: false
+							},
+							tooltip: {
+								formatter: function() {
+									return 'Kategori: <b>' + this.point.name + '</b><br>Jumlah: <b>' + this.point.y + '</b>';
+								},
+								style: {
+									fontFamily: 'Poppins, sans-serif'
+								}
+							},
+							legend: {
+								itemStyle: {
+									fontFamily: 'Poppins, sans-serif',
+									fontSize: '15px',
+									color: '#000000'
+								}
+							}
+						});
+					}
+				},
+				error: function(xhr, status, error) {
+					console.error('AJAX Error: ', error);
+					// Hide loader in case of error.
+					$('#bookCategoriesLoader').hide();
+				}
+			});
+
+			// Fetch data for popular categories chart.
+			$.ajax({
+				url: "{{ route('dashboard.data.popular_categories') }}",
+				method: "GET",
+				success: function(response) {
+					const popularCategoriesKeys = response.popularCategoriesKeys;
+					const popularCategoriesValues = response.popularCategoriesValues;
+
+					// Check if there's popular categories data.
+					if(popularCategoriesKeys < 1) {
+						// Hide loader.
+						$("#popularCatagoriesLoader").hide();
+
+						// Show empty data message.
+						$("#popularCatagoriesEmptyMessage").removeClass('d-none');
+					} else {
+						// Create bar chart.
+						Highcharts.chart('popularCategoriesContainer', {
+							chart: {
+								type: 'bar',
+								height: 250
+							},
+							title: {
+								text: 'Kategori Terpopuler',
+								style: {
+									fontFamily: 'Poppins, sans-serif'
+								}
+							},
+							xAxis: {
+								// X Axis categories.
+								categories: popularCategoriesKeys,
+								labels: {
+									style: {
+										fontFamily: 'Poppins, sans-serif'
+									}
+								}
+							},
+							yAxis: {
+								// Y Axis title.
+								title: {
+									text: 'Jumlah Peminjaman',
+									style: {
+										fontFamily: 'Poppins, sans-serif'
+									}
+								}
+							},
+							plotOptions: {
+								series: {
+									cursor: 'pointer'
+								}
+							},
+							credits: {
+								enabled: false
+							},
+							tooltip: {
+								formatter: function() {
+									return 'Kategori: <b>' + this.x + '</b> <br> Dipinjam: <b>' + this.y + ' kali</b>';
+								},
+								style: {
+									fontFamily: 'Poppins, sans-serif'
+								}
+							},
+							legend: {
+								itemStyle: {
+									fontFamily: 'Poppins, sans-serif',
+									fontSize: '12px',
+									color: '#000000'
+								}
+							},
+							series: [{
+								// Data series.
+								name: 'Kategori',
+								data: popularCategoriesValues,
+								color: '#90EE90',
+								point: {
+									events: {
+										click: function() {
+											// Set modal content.
+											$('#borrowingsPerCategoryModalContent').html('Kategori: <b>' + this.category + '</b> <br> Dipinjam: <b>' + this.y + ' kali</b>');
+											$('#borrowingsPerCategoryPointModal').modal('show');
+										}
+									}
+								},
+								dataLabels: {
+									style: {
+										fontFamily: 'Poppins, sans-serif'
+									}
+								}
+							}],
+						});
+					}
+				},
+				error: function(xhr, status, error) {
+					console.error('AJAX Error: ', error);
+					// Hide loader in case of error.
+					$('#popularCatagoriesLoader').hide();
+				}
+			});
+
+			// Fetch data for books status chart.
+			$.ajax({
+				url: "{{ route('dashboard.data.books_status') }}",
+				method: "GET",
+				success: function(response) {
+					const booksStatus = [
+						{ name: 'Tersedia', y: response.availableBooksCount },
+						{ name: 'Dipinjam', y: response.borrowedBooksCount }
+					];
+
+					// Check if there's books data.
+					const totalBooks = booksStatus.reduce((acc, point) => acc + point.y, 0);
+					if(totalBooks < 1) {
+						// Hide loader.
+						$("#bookStatusLoader").hide();
+
+						// Show empty data message.
+						$("#bookStatusEmptyMessage").removeClass('d-none');
+					} else {
+						// Calculate the percentage of available books.
+						const totalBooks = booksStatus.reduce((acc, point) => acc + point.y, 0);
+						const availableBooks = booksStatus.find(point => point.name === 'Tersedia').y;
+						const percentageAvailable = ((availableBooks / totalBooks) * 100).toFixed(2);
+
+						// Create donut chart.
+						Highcharts.chart('booksStatusContainer', {
+							chart: {
+								type: 'pie',
+								height: 250
+							},
+							title: {
+								text: 'Status Buku',
+								style: {
+									fontFamily: 'Poppins, sans-serif'
+								}
+							},
+							subtitle: {
+								text: '<b>' + percentageAvailable + '%</b><br> Tersedia',
+								verticalAlign: 'middle',
+								style: {
+									fontFamily: 'Poppins, sans-serif',
+									color: '#000000'
+								}
+							},
+							plotOptions: {
+								pie: {
+									innerSize: '70%',
+									cursor: 'pointer',
+									dataLabels: { enabled: false },
+									showInLegend: true,
+									size: 150,
+									point: {
+										events: {
+											click: function() {
+												// Set modal content.
+												$('#bookStatusModalContent').html('Status: <b>' + this.name + '</b> <br> Jumlah: <b>' + this.y + '</b>');
+												$('#bookStatusModal').modal('show');
+											}
+										}
+									}
+								},
+							},
+							series: [{
+								name: 'Jumlah Buku',
+								data: booksStatus
+							}],
+							credits: {
+								enabled: false
+							},
+							tooltip: {
+								formatter: function() {
+									return 'Status: <b>' + this.point.name + '</b><br>Jumlah: <b>' + this.point.y + '</b>';
+								},
+								style: {
+									fontFamily: 'Poppins, sans-serif'
+								}
+							},
+							legend: {
+								itemStyle: {
+									fontFamily: 'Poppins, sans-serif',
+									fontSize: '15px',
+									color: '#000000'
+								}
+							}
+						});
+					}
+				},
+				error: function(xhr, status, error) {
+					console.error('AJAX Error: ', error);
+					// Hide loader in case of error.
+					$('#booksStatusLoader').hide();
+				}
+			});
+
+			// Fetch data for popular books chart.
+			$.ajax({
+				url: "{{ route('dashboard.data.get_popular_books') }}",
+				method: "GET",
+				success: function(response) {
+					const popularBooksKeys = response.popularBooksKeys;
+					const popularBooksValues = response.popularBooksValues;
+
+					// Check if there's popular books data.
+					if(popularBooksKeys < 1) {
+						// Hide loader.
+						$("#popularBooksLoader").hide();
+
+						// Show empty data message.
+						$("#popularBooksEmptyMessage").removeClass('d-none');
+					} else {
+						// Create bar chart.
+						Highcharts.chart('popularBooksContainer', {
+							chart: {
+								type: 'column',
+								height: 561
+							},
+							title: {
+								text: 'Buku Terpopuler',
+								style: {
+									fontFamily: 'Poppins, sans-serif'
+								}
+							},
+							xAxis: {
+								// X Axis categories.
+								categories: popularBooksKeys,
+								labels: {
+									style: {
+										fontFamily: 'Poppins, sans-serif'
+									}
+								}
+							},
+							yAxis: {
+								// Y Axis title.
+								title: {
+									text: 'Jumlah Peminjaman',
+									style: {
+										fontFamily: 'Poppins, sans-serif'
+									}
+								}
+							},
+							plotOptions: {
+								series: {
+									cursor: 'pointer',
+									color: '#4B0082'
+								}
+							},
+							credits: {
+								enabled: false
+							},
+							tooltip: {
+								formatter: function() {
+									return 'Buku: <b>' + this.x + '</b> <br> Dipinjam: <b>' + this.y + ' kali</b>';
+								},
+								style: {
+									fontFamily: 'Poppins, sans-serif'
+								}
+							},
+							legend: {
+								itemStyle: {
+									fontFamily: 'Poppins, sans-serif',
+									fontSize: '12px',
+									color: '#000000'
+								}
+							},
+							series: [{
+								// Data series.
+								name: 'Buku',
+								data: popularBooksValues,
+								point: {
+									events: {
+										click: function() {
+											// Set modal content.
+											$('#popularBooksModalContent').html('Buku: <b>' + this.category + '</b> <br> Dipinjam: <b>' + this.y + ' kali</b>');
+											$('#popularBooksModal').modal('show');
+										}
+									}
+								},
+								dataLabels: {
+									style: {
+										fontFamily: 'Poppins, sans-serif'
+									}
+								}
+							}],
+						});
+					}
+				},
+				error: function(xhr, status, error) {
+					console.error('AJAX Error: ', error);
+					// Hide loader in case of error.
+					$('#popularBooksLoader').hide();
+				}
+			})
+
+			// Fetch data for borrowings per month chart.
+			$.ajax({
+				url: "{{ route('dashboard.data.books_by_month') }}",
+				method: "GET",
+				success: function(response) {
+					const borrowings = response.borrowings;
+					const borrowMonths = response.months;
+
+					// Check if there's borrowings data.
+					if(borrowings < 1) {
+						// Hide loader.
+						$("#borrowingsPerMonthLoader").hide();
+
+						// Show empty data message.
+						$("#borrowingsPerMonthEmptyMessage").removeClass('d-none');
+					} else {
+						// Create line chart.
+						Highcharts.chart('borrowingsPerMonthContainer', {
+							chart: {
+								type: 'line' 
+							},
+							title: {
+								text: 'Jumlah Peminjaman Buku Per Bulan',
+								style: {
+									fontFamily: 'Poppins, sans-serif'
+								}
+							},
+							xAxis: {
+								// X-axis categories.
+								categories: borrowMonths
+							},
+							yAxis: {
+								title: {
+									// Y-axis title.
+									text: 'Jumlah Peminjaman',
+									style: {
+										fontFamily: 'Poppins, sans-serif'
+									}
+								}
+							},
+							credits: {
+								enabled: false
+							},
+							legend: {
+								itemStyle: {
+									fontFamily: 'Poppins, sans-serif',
+									fontSize: '12px',
+									color: '#000000'
+								}
+							},
+							series: [
+								{
+									// Data series.
+									name: 'Peminjaman',
+									color: '#ff4400',
+									data: borrowings,
+									point: {
+										events: {
+											click: function() {
+												// Set modal content.
+												$('#borrowingsPerMonthModalContent').html('Bulan: <b>' + this.category + '</b> <br> Jumlah: <b>' + this.y + '</b>');
+												$('#borrowingsPerMonthPointModal').modal('show');
+											}
+										}
+									},
+									dataLabels: {
+										enabled: true,
+										style: {
+											fontFamily: 'Poppins, sans-serif',
+											fontSize: '12px',
+											color: '#000000'
+										}
+									}
+								},
+							],
+							exporting: {
+								enabled: true
+							},
+							tooltip: {
+								formatter: function() {
+									return 'Bulan: <b>' + this.x + '</b><br>Jumlah: <b>' + this.y + '</b>';
+								},
+								style: {
+									fontFamily: 'Poppins, sans-serif'
+								}
+							},
+						});	
+					}
+				},
+				error: function(xhr, status, error) {
+					console.error('AJAX Error: ', error);
+					// Hide loader in case of error.
+					$('#borrowingsPerMonthLoader').hide();
+				}
+			});
+
+			// Fetch data for borrowings per category chart.
+			$.ajax({
+				url: "{{ route('dashboard.data.borrowings_by_category') }}",
+				method: "GET",
+				success: function(response) {
+					const borrowingsKeys = response.borrowingsKeys;
+					const borrowingsValues = response.borrowingsValues;
+
+					// Check if there's borrowings data.
+					if(borrowingsKeys < 1) {
+						// Hide loader.
+						$("#borrowingsPerCategoryLoader").hide();
+
+						// Show empty data message.
+						$("#borrowingsPerCategoryEmptyMessage").removeClass('d-none');
+					} else {
+						// Create bar chart.
+						Highcharts.chart('borrowingsPerCategoryContainer', {
+							chart: {
+								type: 'bar'
+							},
+							title: {
+								text: 'Jumlah Buku yang Dipinjam per Kategori',
+								style: {
+									fontFamily: 'Poppins, sans-serif'
+								}
+							},
+							xAxis: {
+								// X Axis categories.
+								categories: borrowingsKeys,
+								labels: {
+									style: {
+										fontFamily: 'Poppins, sans-serif'
+									}
+								}
+							},
+							yAxis: {
+								// Y Axis title.
+								title: {
+									text: 'Jumlah Buku',
+									style: {
+										fontFamily: 'Poppins, sans-serif'
+									}
+								}
+							},
+							credits: {
+								enabled: false
+							},
+							tooltip: {
+								formatter: function() {
+									return 'Kategori: <b>' + this.x + '</b> <br> Jumlah: <b>' + this.y + '</b>';
+								},
+								style: {
+									fontFamily: 'Poppins, sans-serif'
+								}
+							},
+							legend: {
+								itemStyle: {
+									fontFamily: 'Poppins, sans-serif',
+									fontSize: '12px',
+									color: '#000000'
+								}
+							},
+							series: [{
+								// Data series.
+								name: 'Kategori',
+								data: borrowingsValues,
+								color: '#ff4400',
+								point: {
+									events: {
+										click: function() {
+											// Set modal content.
+											$('#borrowingsPerCategoryModalContent').html('Kategori: <b>' + this.category + '</b> <br> Jumlah: <b>' + this.y + '</b>');
+											$('#borrowingsPerCategoryPointModal').modal('show');
+										}
+									}
+								},
+								dataLabels: {
+									style: {
+										fontFamily: 'Poppins, sans-serif'
+									}
+								}
+							}],
+						});
+					}
+				},
+				error: function(xhr, status, error) {
+					console.error('AJAX Error: ', error);
+					// Hide loader in case of error.
+					$('borrowingsPerCategoryLoader').hide();
+				}
+			});
+
+			// Fetch data for members per type chart.
+			$.ajax({
+				url: "{{ route('dashboard.data.members_by_type') }}",
+				method: "GET",
+				success: function(response) {
+					const members = response.members;
+
+					// Check if there's members data.
+					if(members < 1) {
+						// Hide loader.
+						$("#membersPerTypeLoader").hide();
+
+						// Show empty data message.
+						$("#membersPerTypeEmptyMessage").removeClass('d-none');
+					} else {
+						// Calculate total members.
+						const totalMembers = members.reduce((sum, item) => sum + item.count, 0);
+						
+						const data = members.map(function(item) {
+							return {
+								name: item.type_name,
+								x: (item.count / totalMembers) * 100,
+								y: item.count,
+								dataLabels: {
+									style: {
+										fontFamily: 'Poppins, sans-serif',
+										fontSize: '14p',
+									}
+								}	
+							};
+						});
+
+						// Create pie chart.
+						Highcharts.chart('membersPerTypeContainer', {
+							chart: {
+								type: 'pie',
+							},
+							title: {
+								text: 'Distribusi Anggota Berdasarkan Tipe Keanggotaan',
+								style: {
+									fontFamily: 'Poppins, sans-serif'
+								} 
+							},
+							tooltip: {
+								formatter: function () {
+									return 'Tipe: <b>' + this.key + '</b> <br> Persentase: <b>' + Math.round(this.percentage) + ' %</b> <br> Jumlah: <b>' + this.y + '</b>';
+								},
+								style: {
+									fontFamily: 'Poppins, sans-serif'
+								}
+							},
+							credits: {
+								enabled: false
+							},
+							plotOptions: {
+								pie: {
+									cursor: 'pointer',
+									dataLabels: {
+										enabled: true,
+										distance: -40,
+										// Data labels format.
+										format: '{point.percentage:.0f} %',
+										style: {
+											fontSize: '1em',
+											fontFamily: 'Poppins, sans-serif',
+											textOutline: 'none',
+											opacity: 0.7
+										},
+										filter: {
+											operator: '>',
+											property: 'percentage',
+											value: 10
+										}
+									},
+									point: {
+										events: {
+											click: function() {
+												// Set modal content.
+												$('#membersPerTypeModalContent').html('Tipe: <b>' + this.name + '</b> <br> Persentase: <b>' + Math.round(this.x) + ' %</b> <br> Jumlah: <b>' + this.y + '</b>');
+												$('#membersPerTypePointModal').modal('show');
+											}
+										}
+									}
+								},
+							},
+							series: [
+								{
+									name: 'Anggota',
+									colorByPoint: true,
+									data: data,
+								}
+							]
+						});
+					}
+				},
+				error: function(xhr, status, error) {
+					console.error('AJAX Error: ', error);
+					// Hide loader in case of error.
+					$('membersPerTypeLoader').hide();
+				}
+			});
+
+			// Fetch data for latest borrowings table.
+			$.ajax({
+				url: "{{ route('dashboard.data.latest_borrowings') }}",
+				method: "GET",
+				success: function(response) {
+					const latestBorrowings = response.latestBorrowings;
+
+					// Check if there's latest borrowings data.
+					if(latestBorrowings.length < 1) {
+						// Hide loader.
+						$("#latestBorrowingLoader").hide();
+
+						// Show empty data message.
+						$("#latestBorrowingEmptyMessage").removeClass('d-none');
 					} else {
 						// Populate table.
 						let tableBody = '';
 
-						booksReturnedLate.forEach(borrowing => {
+						latestBorrowings.forEach(borrowing => {
 							tableBody += `
 								<tr>
 									<td>${borrowing.book.title}</td>
 									<td>${borrowing.member.full_name}</td>
-									<td><span class="badge badge-danger" style="font-size:15px">${borrowing.late_days} hari</span></td>
-									<td>${formatRp(borrowing.late_fee)}</td>
+									<td>${borrowing.borrow_date}</td>
 									<td><a class="btn btn-info" href="{{ route('penyewaan') }}/${borrowing.id}" title="Detail"><i class="fas fa-eye"</i></a></td>
 								</tr>
 							`;
 						});
-						$("#booksReturnedLateTableBody").html(tableBody);
+						$("#latestBorrowingTableBody").html(tableBody);
+
 						// Show table.
-						$("#booksReturnedLateTableContent").removeClass('d-none');
+						$("#latestBorrowingTableContent").removeClass('d-none');
+
 						// Hide loader.
-						$("#booksReturnedLateLoader").hide();
+						$("#latestBorrowingLoader").hide();
 					}
 				},
 				error: function(xhr, status, error) {
-					console.error('AJAX Error ', error);
+					console.error('AJAX Error: ', error);
 					// Hide loader in case of error.
-					$("#booksReturnedLateLoader").hide();
+					$("#latestBorrowingLoader").hide();
 				}
+			});
+
+			// Fetch data for returned late books table.
+			function fetchBooksReturnedLate(order) {
+				$.ajax({
+					url: "{{ route('dashboard.data.books_returned_late') }}",
+					method: "GET",
+					data: { order:order },
+					success: function(response) {
+						const booksReturnedLate = response.booksReturnedLate;
+
+						// Check if there's returned late books data.
+						if(booksReturnedLate.length < 1) {
+							// Hide loader.
+							$("#booksReturnedLateLoader").hide();
+
+							// Show empty data message.
+							$("#booksReturnedLateEmptyMessage").removeClass('d-none');
+						} else {
+							// Populate table.
+							let tableBody = '';
+
+							booksReturnedLate.forEach(borrowing => {
+								tableBody += `
+									<tr>
+										<td>${borrowing.book.title}</td>
+										<td>${borrowing.member.full_name}</td>
+										<td><span class="badge badge-danger" style="font-size:15px">${borrowing.late_days} hari</span></td>
+										<td>${formatRp(borrowing.late_fee)}</td>
+										<td><a class="btn btn-info" href="{{ route('penyewaan') }}/${borrowing.id}" title="Detail"><i class="fas fa-eye"</i></a></td>
+									</tr>
+								`;
+							});
+							$("#booksReturnedLateTableBody").html(tableBody);
+							// Show table.
+							$("#booksReturnedLateTableContent").removeClass('d-none');
+							// Hide loader.
+							$("#booksReturnedLateLoader").hide();
+						}
+					},
+					error: function(xhr, status, error) {
+						console.error('AJAX Error: ', error);
+						// Hide loader in case of error.
+						$("#booksReturnedLateLoader").hide();
+					}
+				});
+			}
+
+			// Fetch data with default order.
+			fetchBooksReturnedLate('latest');
+
+			// Fetch data based on selected order.
+			$("#returnedLateOrderSelect").change(function() {
+				const order = $(this).val();
+				fetchBooksReturnedLate(order);
 			});
 		}
 
-		// Fetch data with default order.
-		fetchBooksReturnedLate('latest');
+		// Call the function to fetch data.
+		setInterval(getDashboardData, 30000);
 
-		// Fetch data based on selected order.
-		$("#returnedLateOrderSelect").change(function() {
-			const order = $(this).val();
-			fetchBooksReturnedLate(order);
-		});
+		// Initial call to fetch data.
+		getDashboardData();
 	});
 </script>
 @endsection
