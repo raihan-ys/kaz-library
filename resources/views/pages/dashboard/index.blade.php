@@ -37,6 +37,7 @@
 					</div>
 					{{-- loader --}}
 					<div class="text-center pl-2" id="booksCountLoader" style="color: orangered;">
+						<p>Memuat Data...</p>
 						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
 					</div>
 					{{-- count --}}
@@ -58,6 +59,7 @@
 					</div>
 					{{-- loader --}}
 					<div class="text-center pl-2" id="borrowedBooksCountLoader" style="color: orangered;">
+						<p>Memuat Data...</p>
 						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
 					</div>
 					{{-- count --}}
@@ -79,6 +81,7 @@
 					</div>
 					{{-- loader --}}
 					<div class="text-center pl-2" id="booksReturnedLateCountLoader" style="color: orangered;">
+						<p>Memuat Data...</p>
 						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
 					</div>
 					{{-- count --}}
@@ -100,6 +103,7 @@
 					</div>
 					{{-- loader --}}
 				<div class="text-center pl-2" id="membersCountLoader" style="color: orangered;">
+					<p>Memuat Data...</p>
 					<i class="fas fa-2x fa-sync-alt fa-spin"></i>
 				</div>
 					{{-- count --}}
@@ -147,6 +151,7 @@
 				<div id="bookCategoriesContainer" class="card-body">
 					{{-- loader --}}
 					<div class="text-center my-5" id="bookCategoriesLoader" style="color: orangered;">
+						<p>Memuat Data...</p>
 						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
 					</div>
 					{{-- empty data message --}}
@@ -191,6 +196,7 @@
 					<div id="popularCategoriesContainer" class="card-body">
 						{{-- loader --}}
 						<div class="text-center my-5" id="popularCatagoriesLoader" style="color: orangered;">
+							<p>Memuat Data...</p>
 							<i class="fas fa-2x fa-sync-alt fa-spin"></i>
 						</div>
 						{{-- empty data message --}}
@@ -235,6 +241,7 @@
 					<div id="booksStatusContainer" class="card-body">
 						{{-- loader --}}
 						<div class="text-center my-5" id="bookStatusLoader" style="color: orangered;">
+							<p>Memuat Data...</p>
 							<i class="fas fa-2x fa-sync-alt fa-spin"></i>
 						</div>
 						{{-- empty data message --}}
@@ -280,6 +287,7 @@
 				<div class="card-body" id="popularBooksContainer">
 					{{-- loader --}}
 					<div class="text-center my-5" id="popularBooksLoader" style="color: orangered;">
+						<p>Memuat Data...</p>
 						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
 					</div>
 					{{-- empty message --}}
@@ -327,6 +335,7 @@
 				<div class="card-body" id="borrowingsPerMonthContainer">
 					{{-- loader --}}
 					<div class="text-center my-5" id="borrowingsPerMonthLoader" style="color: orangered;">
+						<p>Memuat Data...</p>
 						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
 					</div>
 					{{-- empty data message --}}
@@ -371,6 +380,7 @@
 				<div id="borrowingsPerCategoryContainer" class="card-body">
 					{{-- loader --}}
 					<div class="text-center my-5" id="borrowingsPerCategoryLoader" style="color: orangered;">
+						<p>Memuat Data...</p>
 						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
 					</div>
 					{{-- empty data message --}}
@@ -414,6 +424,7 @@
 				<div id="membersPerTypeContainer" class="card-body">
 					{{-- loader --}}
 					<div class="text-center my-5" id="membersPerTypeLoader" style="color: orangered;">
+						<p>Memuat Data...</p>
 						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
 					</div>
 					{{-- empty data message --}}
@@ -440,6 +451,7 @@
 				<div id="latestBorrowingContainer" class="card-body">
 					{{-- loader --}}
 					<div class="text-center my-5" id="latestBorrowingLoader" style="color: orangered;">
+						<p>Memuat Data...</p>
 						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
 					</div>
 					{{-- empty data message --}}
@@ -476,9 +488,10 @@
 				<div id="booksReturnedLateContainer" class="card-body">
 					{{-- loader --}}
 					<div class="text-center my-5" id="booksReturnedLateLoader" style="color: orangered;">
+						<p>Memuat Data...</p>
 						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
 					</div>
-					{{-- empty data message --}}
+					{{-- empty data message --\}}
 					<p class="text-center font-weight-bold text-success d-none" id="booksReturnedLateEmptyMessage">Tidak ada pengembalian terlambat!</p>
 					{{-- table --}}
 					<table class="table table-bordered table-hover table-striped table-responsive d-none" id="booksReturnedLateTableContent" style="width">
@@ -539,6 +552,7 @@
 					{{-- loader --}}
 					<h5 class="text-center">Coming Soon!</h5>
 					<div class="text-center my-5" id="totalBorrowersLoader" style="color: orangered;">
+						<p>Memuat Data...</p>
 						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
 					</div>
 					{{-- empty data message --}}
@@ -584,6 +598,7 @@
 					<h5 class="text-center">Coming Soon!</h5>
 					{{-- loader --}}
 					<div class="text-center my-5" id="totalIncomeLoader" style="color: orangered;">
+						<p>Memuat Data...</p>
 						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
 					</div>
 					{{-- empty data message --}}
