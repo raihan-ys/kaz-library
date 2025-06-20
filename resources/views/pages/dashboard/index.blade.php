@@ -491,8 +491,8 @@
 						<p>Memuat Data...</p>
 						<i class="fas fa-2x fa-sync-alt fa-spin"></i>
 					</div>
-					{{-- empty data message --\}}
-					<p class="text-center font-weight-bold text-success d-none" id="booksReturnedLateEmptyMessage">Tidak ada pengembalian terlambat!</p>
+					{{-- empty data message --}}
+					<p class="text-center font-weight-bold d-none" id="booksReturnedLateEmptyMessage" style="color: orangered;">Tidak ada pengembalian terlambat!</p>
 					{{-- table --}}
 					<table class="table table-bordered table-hover table-striped table-responsive d-none" id="booksReturnedLateTableContent" style="width">
 						<thead style="background-color: #181C32; color: white">

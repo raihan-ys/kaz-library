@@ -93,7 +93,7 @@
 										{{-- phone --}}
 										<div class="form-group">
 											<label for="phone">Nomor Telepon</label>
-											<input type="tel" name="phone" id="phone" class="form-control {{ $errors->has('phone') ? 'bg-danger text-white' : '' }}" placeholder="Masukkan Nomor Telepon Anggota" maxlength="15" value="{{ old('phone') }}" required>
+											<input type="tel" name="phone" id="phone" class="form-control {{ $errors->has('phone') ? 'bg-danger text-white' : '' }}" placeholder="Masukkan Nomor Telepon Anggota" maxlength="20" value="{{ old('phone') }}" required>
 											@if($errors->has('phone'))
 											{{-- error message --}}
 											<span class="text-danger">

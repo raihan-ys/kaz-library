@@ -49,7 +49,7 @@
 					<div class="row">
 						{{-- book cover image --}}
 						<div class="m-auto">
-							<img src="{{ $book->cover_image ? asset('storage/'.$book->cover_image) : asset('images/sample-book-cover.png') }}" alt="Book's Cover Image Preview" class="img-fluid img-thumbnail" style="max-width: 300px">
+							<img src="{{ $book->cover_image ? asset('storage/'.$book->cover_image) : asset('images/sample-book-cover.jpeg') }}" alt="Book's Cover Image Preview" class="img-fluid img-thumbnail" style="max-width: 300px">
 						</div>
 				
 						<div class="col-md-8">

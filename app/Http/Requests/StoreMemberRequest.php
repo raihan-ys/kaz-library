@@ -17,7 +17,7 @@ class StoreMemberRequest extends FormRequest
 			'full_name' => 'required|string|max:100',
 			'type_id' => 'required|integer|exists:member_types,id',
 			'address' => 'required|string|max:255',
-			'phone' => 'required|string|max:15|unique:members,phone',
+			'phone' => 'required|string|max:20|unique:members,phone',
 			'email' => 'required|string|email|max:255|unique:members,email',
 			'profile_photo' => 'file|image|mimes:png|max:2048',
 		];
@@ -42,7 +42,7 @@ class StoreMemberRequest extends FormRequest
 			'address.max' => 'Panjang alamat maksimal 255 karakter!',
 			'phone.required' => 'Nomor telepon wajib diisi!',
 			'phone.string' => 'Nomor telepon harus berupa string!',
-			'phone.max' => 'panjang nomor telepon maksimal 15 karakter!',
+			'phone.max' => 'panjang nomor telepon maksimal 20 karakter!',
 			'phone.unique' => 'Nomor telepon ini sudah terdaftar!',
 			'email.required' => 'Email wajib diisi!',
 			'email.string' => 'Email harus berupa string!',

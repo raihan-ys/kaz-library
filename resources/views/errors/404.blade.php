@@ -133,7 +133,7 @@
 
 			{{-- brand logo --}}
 			<a class="navbar-brand" href="{{ route('home') }}">
-				<img class="rounded img-fluid" style="max-width: 100%; height: 100px;" src="{{ asset('images/logo.jpg') }}" alt="Logo {{ config('app.name', 'Kaz-Library') }}">
+				<img class="rounded img-fluid" style="max-width: 100%; height: 100px;" src="{{ asset('images/logo.png') }}" alt="Logo {{ config('app.name', 'Kaz-Library') }}">
             </a>
 
 			{{-- navbar toggler --}}

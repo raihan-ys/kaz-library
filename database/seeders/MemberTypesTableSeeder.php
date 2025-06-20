@@ -12,10 +12,10 @@ class MemberTypesTableSeeder extends Seeder
      */
     public function run(): void
     {
-        MemberType::create(['name' => 'Umum']);
-        MemberType::create(['name' => 'Mahasiswa']);
         MemberType::create(['name' => 'Dosen']);
-        MemberType::create(['name' => 'Pelajar']);
         MemberType::create(['name' => 'Guru']);
+        MemberType::create(['name' => 'Mahasiswa']);
+        MemberType::create(['name' => 'Pelajar']);
+        MemberType::create(['name' => 'Umum']);
     }
 }

@@ -107,7 +107,7 @@
 				{{-- phone --}}
 				<div class="form-group">
 					<label for="phone">Nomor Telepon</label>
-					<input type="tel" class="form-control {{ $errors->has('phone') ? 'bg-danger text-white' : '' }}" id="phone" name="phone" value="{{ null !== old('phone') ? old('phone') : $member->phone }}" placeholder="Masukkan Nomor Telepon Anggota" maxlength="15" required>
+					<input type="tel" class="form-control {{ $errors->has('phone') ? 'bg-danger text-white' : '' }}" id="phone" name="phone" value="{{ null !== old('phone') ? old('phone') : $member->phone }}" placeholder="Masukkan Nomor Telepon Anggota" maxlength="20" required>
 					@if($errors->has('phone'))
 					{{-- error message --}}
 					<span class="text-danger">
