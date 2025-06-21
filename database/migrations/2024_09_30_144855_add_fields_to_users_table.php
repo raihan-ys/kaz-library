@@ -12,8 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->timestamp('email_verified_at')->nullable();
-            $table->rememberToken();
             $table->string('profile_photo')->nullable();
 
             // Ensure InnoDB engine.
