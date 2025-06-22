@@ -22,7 +22,7 @@ class CreateMembersTable extends Migration
             $table->string('profile_photo')->nullable();
 
             // FK to member type.
-            $table->unsignedBigInteger('type_id')->after('full_name');
+            $table->unsignedBigInteger('type_id');
 
             // Define foreign key.
             $table->foreign('type_id')->references('id')->on('member_types')->onDelete('cascade');
