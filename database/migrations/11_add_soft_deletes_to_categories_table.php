@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('books', function (Blueprint $table) {
+        Schema::table('categories', function (Blueprint $table) {
             // Adding 'deleted_at' column for soft deletes.
             $table->softDeletes();
+
+            // Ensure InnoDB engine.
+            $table->engine = 'InnoDB';
         });
     }
 
@@ -22,7 +25,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('books', function (Blueprint $table) {
+        Schema::table('categories', function (Blueprint $table) {
             // Dropping 'deleted_at' column for soft deletes.
             $table->dropSoftDeletes();
         });
