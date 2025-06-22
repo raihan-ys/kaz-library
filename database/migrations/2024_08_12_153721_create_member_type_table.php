@@ -11,9 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('categories', function (Blueprint $table) {
+        Schema::create('member_types', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+
             // Adding 'deleted_at' column for soft deletes.
             $table->softDeletes();
+
+            // Created at and updated at timestamps.
+            $table->timestamps();
         });
     }
 
@@ -22,8 +28,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('categories', function (Blueprint $table) {
-            // Dropping 'deleted_at' column for soft deletes.
+        Schema::dropIfExists('member_types');
+        // Dropping 'deleted_at' column for soft deletes.
+        Schema::table('member_types', function (Blueprint $table) {
             $table->dropSoftDeletes();
         });
     }

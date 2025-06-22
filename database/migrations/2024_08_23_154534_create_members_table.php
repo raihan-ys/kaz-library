@@ -19,9 +19,19 @@ class CreateMembersTable extends Migration
             $table->string('address');
             $table->string('phone')->unique();
             $table->string('email');
+            $table->string('profile_photo')->nullable();
+
+            // FK to member type.
+            $table->unsignedBigInteger('type_id')->after('full_name');
+
+            // Define foreign key.
+            $table->foreign('type_id')->references('id')->on('member_types')->onDelete('cascade');
 
             // Created at and updated at timestamps.
             $table->timestamps();
+
+            // Adding 'deleted_at' column for soft deletes.
+            $table->softDeletes();
 
             // Ensure InnoDB engine.
             $table->engine = 'InnoDB';
@@ -36,5 +46,9 @@ class CreateMembersTable extends Migration
     public function down()
     {
         Schema::dropIfExists('members');
+        // Dropping 'deleted_at' column for soft deletes.
+        Schema::table('members', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
     }
 }

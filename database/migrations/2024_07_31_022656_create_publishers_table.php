@@ -18,6 +18,9 @@ class CreatePublishersTable extends Migration
             // Created at and updated at timestamps.
             $table->timestamps();
 
+            // Adding 'deleted_at' column for soft deletes.
+            $table->softDeletes();
+
             // Ensure InnoDB engine.
             $table->engine = 'InnoDB';
         });
@@ -28,6 +31,10 @@ class CreatePublishersTable extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('publisher');
+        Schema::dropIfExists('publishers');
+        // Dropping 'deleted_at' column for soft deletes.
+        Schema::table('publishers', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
     }
 };
