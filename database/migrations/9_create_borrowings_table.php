@@ -24,16 +24,10 @@ class CreateBorrowingsTable extends Migration
             $table->integer('rental_price');
             $table->integer('late_fee')->nullable();
 
-            // Created at and updated at timestamps.
-            $table->timestamps();
-
             // Define foreign keys
             $table->foreign('member_id')->references('id')->on('members')->onDelete('cascade');
             $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
             $table->foreign('librarian_id')->references('id')->on('users')->onDelete('cascade');
-            
-            // Adding 'deleted_at' column for soft deletes.
-            $table->softDeletes();
 
             // Ensure InnoDB engine.
             $table->engine = 'InnoDB';
@@ -48,9 +42,5 @@ class CreateBorrowingsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('borrowings');
-        // Dropping 'deleted_at' column for soft deletes.
-        Schema::table('borrowings', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
     }
 }

@@ -30,9 +30,6 @@ class CreateMembersTable extends Migration
             // Created at and updated at timestamps.
             $table->timestamps();
 
-            // Adding 'deleted_at' column for soft deletes.
-            $table->softDeletes();
-
             // Ensure InnoDB engine.
             $table->engine = 'InnoDB';
         });
@@ -46,9 +43,5 @@ class CreateMembersTable extends Migration
     public function down()
     {
         Schema::dropIfExists('members');
-        // Dropping 'deleted_at' column for soft deletes.
-        Schema::table('members', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
     }
 }

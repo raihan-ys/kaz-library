@@ -19,9 +19,6 @@ class CreateCategoriesTable extends Migration
             // Created at and updated at timestamps.
             $table->timestamps();
 
-            // Adding 'deleted_at' column for soft deletes.
-            $table->softDeletes();
-            
             // Ensure InnoDB engine.
             $table->engine = 'InnoDB';
         });
@@ -33,9 +30,5 @@ class CreateCategoriesTable extends Migration
     public function down(): void
     {
         Schema::dropIfExists('categories');
-        // Dropping 'deleted_at' column for soft deletes.
-        Schema::table('categories', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
     }
 };
