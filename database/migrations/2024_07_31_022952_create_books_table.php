@@ -48,5 +48,9 @@ class CreateBooksTable extends Migration
     public function down(): void
     {
         Schema::dropIfExists('books');
+        // Dropping 'deleted_at' column for soft deletes.
+        Schema::table('books', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
     }
 };
