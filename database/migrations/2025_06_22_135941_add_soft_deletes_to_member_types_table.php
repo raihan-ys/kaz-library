@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('member_types', function (Blueprint $table) {
             // Adding 'deleted_at' column for soft deletes.
-            // $table->softDeletes();
+            $table->softDeletes();
 
             // Ensure InnoDB engine.
             $table->engine = 'InnoDB';
