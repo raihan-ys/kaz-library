@@ -18,6 +18,9 @@ class CreateBooksTable extends Migration
             $table->bigInteger('isbn');
             $table->integer('published_year');
 
+            // Adding 'deleted_at' column for soft deletes.
+            $table->softDeletes();
+
             // FK to category.
             $table->unsignedBigInteger('category_id');
 
@@ -34,9 +37,6 @@ class CreateBooksTable extends Migration
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('publisher_id')->references('id')->on('publishers')->onDelete('cascade');
 
-            // Adding 'deleted_at' column for soft deletes.
-            $table->softDeletes();
-
             // Ensure InnoDB engine.
             $table->engine = 'InnoDB';
         });
@@ -48,9 +48,5 @@ class CreateBooksTable extends Migration
     public function down(): void
     {
         Schema::dropIfExists('books');
-        // Dropping 'deleted_at' column for soft deletes.
-        Schema::table('books', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
     }
 };
