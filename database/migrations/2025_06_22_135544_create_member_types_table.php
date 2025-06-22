@@ -17,6 +17,9 @@ return new class extends Migration
 
             // Created at and updated at timestamps.
             $table->timestamps();
+
+            // Ensure InnoDB engine.
+            $table->engine = 'InnoDB';
         });
     }
 
