@@ -14,6 +14,8 @@ use App\Http\Controllers\{
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,6 +26,10 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+if (env('APP_ENV') === 'production') {
+	URL::forceSchema('https');
+}
 
 // Unused routes.
 Auth::routes(['register' => false, 'reset' => false]);
