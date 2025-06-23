@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,5 +22,9 @@ class AppServiceProvider extends ServiceProvider
     {
         // Role Middleware.
         $this->app['router']->aliasMiddleware('role', \App\Http\Middleware\RoleMiddleware::class);
+    
+        if (app()->environment('production')) {
+            URL::forceScheme('https');
+        }
     }
 }
