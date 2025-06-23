@@ -628,7 +628,7 @@
 		function getDashboardData() {
 			// Fetch data for books count.
 			$.ajax({
-				url: "{{ route('dashboard.data.books_count') }}",
+				url: "{{ route('dashboard.data.books_count', [], true) }}",
 				method: "GET",
 				success: function(response) {
 					// Set books count.
@@ -657,7 +657,7 @@
 
 			// Fetch data for members count.
 			$.ajax({
-				url: "{{ route('dashboard.data.members_count') }}",
+				url: "{{ route('dashboard.data.members_count', [], true) }}",
 				method: "GET",
 				success: function(response) {
 					// Set members count.
@@ -678,7 +678,7 @@
 
 			// Fetch data for book categories chart.
 			$.ajax({
-				url: "{{ route('dashboard.data.books_by_category') }}",
+				url: "{{ route('dashboard.data.books_by_category', [], true) }}",
 				method: "GET",
 				success: function(response) {
 					const booksByCategory = response.booksByCategory.map(item => ({
@@ -758,7 +758,7 @@
 
 			// Fetch data for popular categories chart.
 			$.ajax({
-				url: "{{ route('dashboard.data.popular_categories') }}",
+				url: "{{ route('dashboard.data.popular_categories', [], true) }}",
 				method: "GET",
 				success: function(response) {
 					const popularCategoriesKeys = response.popularCategoriesKeys;
@@ -857,7 +857,7 @@
 
 			// Fetch data for books status chart.
 			$.ajax({
-				url: "{{ route('dashboard.data.books_status') }}",
+				url: "{{ route('dashboard.data.books_status', [], true) }}",
 				method: "GET",
 				success: function(response) {
 					const booksStatus = [
@@ -951,7 +951,7 @@
 
 			// Fetch data for popular books chart.
 			$.ajax({
-				url: "{{ route('dashboard.data.get_popular_books') }}",
+				url: "{{ route('dashboard.data.get_popular_books', [], true) }}",
 				method: "GET",
 				success: function(response) {
 					const popularBooksKeys = response.popularBooksKeys;
@@ -1050,7 +1050,7 @@
 
 			// Fetch data for borrowings per month chart.
 			$.ajax({
-				url: "{{ route('dashboard.data.books_by_month') }}",
+				url: "{{ route('dashboard.data.books_by_month', [], true) }}",
 				method: "GET",
 				success: function(response) {
 					const borrowings = response.borrowings;
@@ -1146,7 +1146,7 @@
 
 			// Fetch data for borrowings per category chart.
 			$.ajax({
-				url: "{{ route('dashboard.data.borrowings_by_category') }}",
+				url: "{{ route('dashboard.data.borrowings_by_category', [], true) }}",
 				method: "GET",
 				success: function(response) {
 					const borrowingsKeys = response.borrowingsKeys;
@@ -1239,7 +1239,7 @@
 
 			// Fetch data for members per type chart.
 			$.ajax({
-				url: "{{ route('dashboard.data.members_by_type') }}",
+				url: "{{ route('dashboard.data.members_by_type', [], true) }}",
 				method: "GET",
 				success: function(response) {
 					const members = response.members;
@@ -1341,7 +1341,7 @@
 
 			// Fetch data for latest borrowings table.
 			$.ajax({
-				url: "{{ route('dashboard.data.latest_borrowings') }}",
+				url: "{{ route('dashboard.data.latest_borrowings', [], true) }}",
 				method: "GET",
 				success: function(response) {
 					const latestBorrowings = response.latestBorrowings;
@@ -1386,7 +1386,7 @@
 			// Fetch data for returned late books table.
 			function fetchBooksReturnedLate(order) {
 				$.ajax({
-					url: "{{ route('dashboard.data.books_returned_late') }}",
+					url: "{{ route('dashboard.data.books_returned_late', [], true) }}",
 					method: "GET",
 					data: { order:order },
 					success: function(response) {
