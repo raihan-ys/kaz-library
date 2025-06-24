@@ -66,6 +66,8 @@
 			font-size: 1rem;
 			color: orangered;
 		}
+
+		
 	</style>
 	
 	{{-- jQuery JS --}}
@@ -120,6 +122,21 @@
 	<script type="text/javascript" src="{{ asset('adminlte/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('adminlte/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+	{{-- Custom JS --}}
+	<script>
+		$(document).ready(function() {
+			// Hide the sidebar
+			sidebarToggler = $('#sidebarToggler');
+			sidebarToggler.on('click', function() {
+				$('#sidebar').toggleClass('d-none');
+				$('.content-wrapper').toggleClass('ml-0 w-100 transition-none');
+				$('.main-footer').toggleClass('ml-0 w-100 transition-none');
+				$('.main-header').toggleClass('ml-0 w-100 transition-none');
+			});
+
+			// Sidebar toggle on window resize
+		});
+	</script>
 	@yield('js')
 </body>
 </html>

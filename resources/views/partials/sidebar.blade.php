@@ -1,4 +1,4 @@
-<aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #181C32">
+<aside id="sidebar" class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #181C32">
 
 	<!-- Brand Logo -->
 	<a href="/" class="brand-link" style="background-color: #181C32;">
@@ -24,7 +24,7 @@
 
 		<!-- Sidebar Menu -->
 		<nav class="mt-2">
-			<ul class="nav nav-pills nav-sidebar flex-column" datawidget="treeview" role="menu" data-accordion="false">
+			<ul class="sidebar-menu nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
 				{{-- dashboard --}}
 				<li class="nav-item">
