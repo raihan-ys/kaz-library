@@ -3,7 +3,7 @@
 	<ul class="navbar-nav">
 		<!-- sidebar toggler -->
     <li class="nav-item">
-			<a class="nav-link" target="#sidebar" data-toggle="pushmenu" id="sidebarToggler" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+			<a class="nav-link" data-toggle="pushmenu" id="sidebarToggler" href="#" role="button"><i class="fas fa-bars"></i></a>
 		</li>
 	</ul>
 	{{-- Right navbar links --}}
@@ -31,7 +31,7 @@
 
 		{{-- fullscreen --}}
 		<li class="nav-item">
-			<a class="nav-link" style="color: orangered" data-bs-widget="fullscreen" title="Expand page" href="#" role="button">
+			<a class="nav-link" style="color: orangered" data-widget="fullscreen" title="Expand page" href="#" role="button">
 				<i class="fas fa-expand-arrows-alt"></i>
 			</a>
 		</li>
