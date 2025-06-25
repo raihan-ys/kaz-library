@@ -27,10 +27,6 @@ use Illuminate\Support\Facades\URL;
 |
 */
 
-if (env('APP_ENV') === 'production') {
-	URL::forceSchema('https');
-}
-
 // Unused routes.
 Auth::routes(['register' => false, 'reset' => false]);
 
