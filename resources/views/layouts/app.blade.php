@@ -66,8 +66,6 @@
 			font-size: 1rem;
 			color: orangered;
 		}
-
-		
 	</style>
 	
 	{{-- jQuery JS --}}
@@ -126,15 +124,40 @@
 	<script>
 		$(document).ready(function() {
 			// Hide the sidebar
-			sidebarToggler = $('#sidebarToggler');
-			sidebarToggler.on('click', function() {
-				$('#sidebar').toggleClass('d-none');
-				$('.content-wrapper').toggleClass('ml-0 w-100 transition-none');
-				$('.main-footer').toggleClass('ml-0 w-100 transition-none');
-				$('.main-header').toggleClass('ml-0 w-100 transition-none');
-			});
+			if ($(window).width() > 768) {
+				// At bigger screens, show the sidebar by default
+				$('#sidebar').removeClass('d-none');
+				$('.content-wrapper').removeClass('ml-0 w-100 transition-none');
+				$('.main-footer').removeClass('ml-0 w-100 transition-none');
+				$('.main-header').removeClass('ml-0 w-100 transition-none');
+				sidebarToggler = $('#sidebarToggler');
+				sidebarToggler.on('click', function() {
+					$('#sidebar').toggleClass('d-none');
+					$('.content-wrapper').toggleClass('ml-0 w-100 transition-none');
+					$('.main-footer').toggleClass('ml-0 w-100 transition-none');
+					$('.main-header').toggleClass('ml-0 w-100 transition-none');
+				});
+			} else {
+				// At smaller screens, hide the sidebar by default
+				$('#sidebar').addClass('d-none');
+				$('.content-wrapper').addClass('ml-0 w-100 transition-none');
+				$('.main-footer').addClass('ml-0 w-100 transition-none');
+				$('.main-header').addClass('ml-0 w-100 transition-none');
+				sidebarToggler = $('#sidebarToggler');
+				sidebarToggler.on('click', function() {
+					$('#sidebar').toggleClass('d-none');
+				});
+			}
 
-			// Sidebar toggle on window resize
+			// Toggle fullscreen mode
+			$('#fullscreenBtn').on('click', function(e) {
+				e.preventDefault();
+				if (document.fullscreenElement) {
+					document.exitFullscreen();
+				} else {
+					document.documentElement.requestFullscreen();
+				}
+			});
 		});
 	</script>
 	@yield('js')
