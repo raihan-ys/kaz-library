@@ -3,7 +3,7 @@
 	<ul class="navbar-nav">
 		<!-- sidebar toggler -->
     <li class="nav-item">
-			<a class="nav-link" data-toggle="pushmenu" id="sidebarToggler" href="#" role="button"><i class="fas fa-bars"></i></a>
+			<a class="nav-link" id="sidebarToggler" href="#" role="button"><i class="fas fa-bars"></i></a>
 		</li>
 	</ul>
 	{{-- Right navbar links --}}
