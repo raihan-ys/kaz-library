@@ -126,7 +126,7 @@
 		$(document).ready(function() {
 			// Toggle sidebar visibility
 			const SIDEBAR_TOGGLER = $('#sidebarToggler');
-			let sidebar = $('#sidebar');
+			let sidebar = $('.main-sidebar');
 			let contentWrapper = $('.content-wrapper');
 			let mainHeader = $('.main-header');
 			let mainFooter = $('.main-footer');
@@ -155,6 +155,7 @@
 			} else {
 
 				// At smaller screens, hide the sidebar by default
+				sidebar.removeClass('main-sidebar');
 				sidebar.toggleClass('d-block');
 				sidebar.toggleClass('d-none');
 				contentWrapper.addClass('ml-0 w-100 transition-none');
@@ -165,17 +166,8 @@
 				SIDEBAR_TOGGLER.on('click', function() {
 					sidebar.toggleClass('d-none');
 					sidebar.toggleClass('d-block');
-					sidebar.css({
-						display: 'block',
-						width: '37%',
-					});
-					/*
 					contentWrapper.toggleClass('d-block');
 					contentWrapper.toggleClass('d-none');
-					mainHeader.toggleClass('d-none');
-					mainFooter.toggleClass('d-block');
-					mainFooter.toggleClass('d-none');
-					*/
 				});
 			}
 
