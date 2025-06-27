@@ -146,6 +146,12 @@
 				sidebarToggler = $('#sidebarToggler');
 				sidebarToggler.on('click', function() {
 					$('#sidebar').toggleClass('d-none');
+					$('.content-wrapper').removeClass('ml-0 w-100 transition-none');
+					$('.main-footer').removeClass('ml-0 w-100 transition-none');
+					$('.main-header').removeClass('ml-0 w-100 transition-none');
+					$('.content-wrapper').addClass('w-0 d-none');
+					$('.main-footer').addClass('w-0 d-none');
+					$('.main-header').addClass('w-0 d-none');
 				});
 			}
 
