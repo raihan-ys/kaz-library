@@ -130,46 +130,58 @@
 			let contentWrapper = $('.content-wrapper');
 			let mainHeader = $('.main-header');
 			let mainFooter = $('.main-footer');
+			let isSidebarVisible = true;
 
 			sidebar.addClass('d-block');
 			contentWrapper.addClass('d-block ml-0 w-100 transition-none');
 			mainHeader.addClass('ml-0 w-100 transition-none');
 			mainFooter.addClass('d-block ml-0 w-100 transition-none');
-			
-			if ($(window).width() > 768) {
 
-				// At bigger screens, show the sidebar by default
-				sidebar.removeClass('d-none');
-				contentWrapper.removeClass('ml-0 w-100 transition-none');
-				mainHeader.removeClass('ml-0 w-100 transition-none');
-				mainFooter.removeClass('ml-0 w-100 transition-none');
+			// Helper to show/hide sidebar for small screens
+			function setSidebar() {
+				if ($(window).width() > 768) {
 
-				// Add sidebar toggler functionality
-				SIDEBAR_TOGGLER.on('click', function() {
+					// At bigger screens, show the sidebar by default
+					sidebar.removeClass('d-none');
+					contentWrapper.removeClass('ml-0 w-100 transition-none');
+					mainHeader.removeClass('ml-0 w-100 transition-none');
+					mainFooter.removeClass('ml-0 w-100 transition-none');
+				} else {
+
+					// At smaller screens, hide the sidebar by default
+					sidebar.removeClass('main-sidebar');
+					sidebar.toggleClass('d-block');
+					sidebar.toggleClass('d-none');
+					contentWrapper.addClass('ml-0 w-100 transition-none');
+					mainHeader.addClass('ml-0 w-100 transition-none');
+					mainFooter.addClass('ml-0 w-100 transition-none');
+				}
+			}
+
+			// Toggler click event
+			SIDEBAR_TOGGLER.on('click', function(e) {
+				e.preventDefault();
+				if (window.innerWidth > 768) {
 					sidebar.toggleClass('d-block');
 					sidebar.toggleClass('d-none');
 					contentWrapper.toggleClass('ml-0 w-100 transition-none');
 					mainHeader.toggleClass('ml-0 w-100 transition-none');
 					mainFooter.toggleClass('ml-0 w-100 transition-none');
-				});
-			} else {
-
-				// At smaller screens, hide the sidebar by default
-				sidebar.removeClass('main-sidebar');
-				sidebar.toggleClass('d-block');
-				sidebar.toggleClass('d-none');
-				contentWrapper.addClass('ml-0 w-100 transition-none');
-				mainHeader.addClass('ml-0 w-100 transition-none');
-				mainFooter.addClass('ml-0 w-100 transition-none');
-
-				// Add sidebar toggler functionality
-				SIDEBAR_TOGGLER.on('click', function() {
+				} else {
 					sidebar.toggleClass('d-none');
 					sidebar.toggleClass('d-block');
 					contentWrapper.toggleClass('d-block');
 					contentWrapper.toggleClass('d-none');
-				});
-			}
+				}
+			});
+
+			// Listen for window resize events
+			$(window).on('resize', function() {
+				setSidebar();
+			});
+
+			// Initial sidebar setup
+			setSidebar();
 
 			// Toggle fullscreen mode
 			$('#fullscreenBtn').on('click', function(e) {
