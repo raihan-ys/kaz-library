@@ -124,64 +124,78 @@
 	{{-- Custom JS --}}
 	<script>
 		$(document).ready(function() {
-			// Toggle sidebar visibility
+
+			/* Toggle sidebar visibility
+			 * This script toggles the sidebar visibility based on screen size
+			 * and allows users to toggle it manually using a button.
+			 */
+
+			// Set elements
 			const SIDEBAR_TOGGLER = $('#sidebarToggler');
-			let sidebar = $('.main-sidebar');
-			let contentWrapper = $('.content-wrapper');
-			let mainHeader = $('.main-header');
-			let mainFooter = $('.main-footer');
-			let isSidebarVisible = true;
+			const SIDEBAR = $('#sidebar');
+			const CONTENT_WRAPPER = $('.content-wrapper');
+			const MAIN_HEADER = $('.main-header');
+			const MAIN_FOOTER = $('.main-footer');
 
-			sidebar.addClass('d-block');
-			contentWrapper.addClass('d-block ml-0 w-100 transition-none');
-			mainHeader.addClass('ml-0 w-100 transition-none');
-			mainFooter.addClass('d-block ml-0 w-100 transition-none');
-
-			// Helper to show/hide sidebar for small screens
+			// Helper to show/hide the sidebar
 			function setSidebar() {
-				if ($(window).width() > 768) {
 
+				// Remove initial classes to reset the state
+				SIDEBAR.removeClass('main-sidebar');
+				SIDEBAR.removeClass('d-block d-none');
+				CONTENT_WRAPPER.removeClass('d-block d-none ml-0 w-100');
+				MAIN_HEADER.removeClass('d-none ml-0 w-100');
+				MAIN_FOOTER.removeClass('d-block d-none ml-0 w-100');
+
+				// Add classes to set the initial state
+				SIDEBAR.addClass('main-sidebar');
+				SIDEBAR.addClass('d-block d-none');
+				CONTENT_WRAPPER.addClass('d-block d-none ml-0 w-100');
+				MAIN_HEADER.addClass('d-none ml-0 w-100');
+				MAIN_FOOTER.addClass('d-block d-none ml-0 w-100');
+				
+				if ($(window).width() >= 768) {
 					// At bigger screens, show the sidebar by default
-					sidebar.removeClass('d-none');
-					contentWrapper.removeClass('ml-0 w-100 transition-none');
-					mainHeader.removeClass('ml-0 w-100 transition-none');
-					mainFooter.removeClass('ml-0 w-100 transition-none');
-				} else {
+					SIDEBAR.toggleClass('d-none');
+					CONTENT_WRAPPER.toggleClass('d-none ml-0 w-100');
+					MAIN_HEADER.toggleClass('d-none ml-0 w-100');
+					MAIN_FOOTER.toggleClass('d-none ml-0 w-100');
 
+					// Sidebar toggler functionality
+					SIDEBAR_TOGGLER.on('click', function(e) {
+						e.preventDefault();
+						SIDEBAR.toggleClass('d-block d-none');
+						
+						// Make other elements wider
+						CONTENT_WRAPPER.toggleClass('ml-0 w-100');
+						MAIN_HEADER.toggleClass('ml-0 w-100');
+						MAIN_FOOTER.toggleClass('ml-0 w-100');
+					});
+				} else {
 					// At smaller screens, hide the sidebar by default
-					sidebar.removeClass('main-sidebar');
-					sidebar.toggleClass('d-block');
-					sidebar.toggleClass('d-none');
-					contentWrapper.addClass('ml-0 w-100 transition-none');
-					mainHeader.addClass('ml-0 w-100 transition-none');
-					mainFooter.addClass('ml-0 w-100 transition-none');
+					SIDEBAR.toggleClass('main-sidebar');
+					SIDEBAR.toggleClass('d-block');
+					CONTENT_WRAPPER.toggleClass('d-none');
+					MAIN_HEADER.toggleClass('d-none');
+					MAIN_FOOTER.toggleClass('d-none');
+
+					// Sidebar toggler functionality
+					SIDEBAR_TOGGLER.on('click', function(e) {
+						e.preventDefault();
+						SIDEBAR.toggleClass('d-none');
+						SIDEBAR.toggleClass('d-block');
+						CONTENT_WRAPPER.toggleClass('d-block d-none');
+					});
 				}
 			}
 
-			// Toggler click event
-			SIDEBAR_TOGGLER.on('click', function(e) {
-				e.preventDefault();
-				if (window.innerWidth > 768) {
-					sidebar.toggleClass('d-block');
-					sidebar.toggleClass('d-none');
-					contentWrapper.toggleClass('ml-0 w-100 transition-none');
-					mainHeader.toggleClass('ml-0 w-100 transition-none');
-					mainFooter.toggleClass('ml-0 w-100 transition-none');
-				} else {
-					sidebar.toggleClass('d-none');
-					sidebar.toggleClass('d-block');
-					contentWrapper.toggleClass('d-block');
-					contentWrapper.toggleClass('d-none');
-				}
-			});
+			// Initial call to set the sidebar
+			setSidebar();
 
 			// Listen for window resize events
 			$(window).on('resize', function() {
 				setSidebar();
 			});
-
-			// Initial sidebar setup
-			setSidebar();
 
 			// Toggle fullscreen mode
 			$('#fullscreenBtn').on('click', function(e) {
