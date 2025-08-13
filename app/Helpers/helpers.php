@@ -23,5 +23,4 @@ if(!function_exists('formatDate')) {
 		}
 	}
 }
-
 ?>

@@ -1,4 +1,4 @@
-<ifModule mod_rewrite.c>
+<IfModule mod_rewrite.c>
 	RewriteEngine On
-	RewriteRule ^(.*)$ /kaz-library/public/$1 [L]
-</ifModule>
+	RewriteRule ^(.*)$ /public/$1 [L]
+</IfModule>
