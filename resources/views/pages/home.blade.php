@@ -287,21 +287,21 @@
                     <h2 class="font-weight-bold">Visi & Misi</h2>
                 </div>
                 <div class="col-md-6">
-                    <div class="card h-100 border-0 bg-transparent">
+                    <div class="card h-100 border-0" style="background-color: #c77fbf">
                         <div class="card-body">
-                            <h4 class="card-title font-weight-bold" style="color: orangered"><i class="fas fa-eye mr-2"></i>Visi</h4>
+                            <h4 class="card-title font-weight-bold text-white"><i class="fas fa-eye mr-2"></i>Visi</h4>
                             <br>
-                            <em class="card-text">
+                            <em class="card-text text-white">
                                 "Menjadi pusat pengetahuan terdepan yang mendukung pembelajaran, penelitian, dan inovasi, serta berkontribusi pada pengembangan ilmu pengetahuan di Indonesia."
                             </em>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="card h-100 border-0 bg-transparent">
+                    <div class="card h-100 border-0" style="background-color: #c77fbf">
                         <div class="card-body">
-                            <h4 class="card-title font-weight-bold" style="color: orangered"><i class="fas fa-bullseye mr-2"></i>Misi</h4>
-                            <ul class="card-text pl-4">
+                            <h4 class="card-title font-weight-bold text-white"><i class="fas fa-bullseye mr-2"></i>Misi</h4>
+                            <ul type="square" class="card-text text-white p-3">
                                 <li>Menyediakan akses mudah dan cepat ke sumber daya informasi berkualitas tinggi.</li>
                                 <li>Mendukung kebutuhan akademik dan penelitian.</li>
                                 <li>Mengembangkan koleksi yang komprehensif dan relevan dengan kurikulum dan riset terkini.</li>
@@ -320,10 +320,10 @@
             {{-- register link --}}
             <div class="col-md-3 p-2 pr-3">
                 <h2>Ayo Daftar!</h2>
-                <p style="text-align: justify;">
+                <p>
                     Dengan mendaftar menjadi anggota perpustakaan ini, Anda akan menikmati berbagai keuntungan yang dirancang untuk mendukung kebutuhan informasi dan pengembangan pengetahuan Anda. Sebagai anggota, Anda mendapatkan akses eksklusif ke koleksi buku, jurnal, dan <i>e-resources</i> yang lengkap dan selalu diperbarui!
                 </p>
-                <a class="btn btn-outline-primary" href="#">Pendaftaran</a> 
+                <a class="btn btn-outline-primary" href="https://wa.me/6281990576161" target="_blank">Pendaftaran</a> 
             </div>
             {{-- card 1 --}}
             <div class="col-md-3 p-2">
@@ -334,7 +334,7 @@
                     <div class="card-body">
                         <h5 class="font-weight-bold">Koleksi Buku</h5>
                         <small>Hingga Buku dengan Bahasa Asing</small>
-                        <p class="mt-2" style="text-align: justify;">Menawarkan koleksi buku teks yang lengkap dan bervariasi, mencakup berbagai bidang ilmu pengetahuan, sastra, dan teknologi.</p>
+                        <p class="mt-2">Menawarkan koleksi buku teks yang lengkap dan bervariasi, mencakup berbagai bidang ilmu pengetahuan, sastra, dan teknologi.</p>
                     </div>
                 </div>
             </div>
@@ -347,7 +347,7 @@
                     <div class="card-body">
                         <h5 class="font-weight-bold">Koleksi Jurnal</h5>
                         <small>Mencakup Publikasi Terbaru dan Edisi-edisi Penting</small>
-                        <p class="mt-2" style="text-align: justify;">
+                        <p class="mt-2">
                             Memiliki koleksi jurnal yang lengkap dan beragam, mencakup berbagai disiplin ilmu baik dari dalam negeri maupun internasional.</p>
                     </div>
                 </div>
@@ -361,7 +361,7 @@
                     <div class="card-body" text-light>
                         <h5 class="font-weight-bold">Ruang Baca</h5>
                         <small>Ruang Baca yang Nyaman</small>
-                        <p class="mt-2" style="text-align: justify;">Perpustakaan ini menyediakan ruang baca yang nyaman dan tenang, dirancang khusus untuk mendukung suasana belajar dan penelitian yang kondusif.</p>
+                        <p class="mt-2">Perpustakaan ini menyediakan ruang baca yang nyaman dan tenang, dirancang khusus untuk mendukung suasana belajar dan penelitian yang kondusif.</p>
                     </div>
                 </div>
             </div>
@@ -385,7 +385,7 @@
                             <h5 class="card-title mb-1">Judul Buku: <b>{{ $book->title }}</b></h5>
                             <p class="card-text">Penulis: <b>{{ $book->author }}</b></p>
                         </div>
-                        <div class="card-footer"><a href="#" class="btn btn-danger btn-block">Lihat Detail</a></div>
+                        <div class="card-footer"><a href="{{ route('buku.show', $book->id) }}" class="btn btn-danger btn-block">Lihat Detail</a></div>
                     </div>
                 </div>
                 @endforeach
@@ -407,7 +407,7 @@
                             <p class="card-text"><small class="text-muted">Dipinjam: <b>{{ $borrowing->total_borrowed }} kali</b></small></p>
                         </div>
                         <div class="card-footer">
-                            <a href="#" class="btn btn-danger btn-block">Lihat Detail</a>
+                            <a href="{{ route('buku.show', $book->id) }}" class="btn btn-danger btn-block">Lihat Detail</a>
                         </div>
                     </div>
                 </div>
