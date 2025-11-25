@@ -391,7 +391,7 @@
                 @endforeach
             </div>
 
-            {{-- most borrowedbooks --}}
+            {{-- most borrowed books --}}
             @if(count($mostBorrowedBooks) > 0)
             <div class="row" id="mostBorrowedBooks">
                 <div class="col-12">
@@ -437,7 +437,7 @@
                 </li>
                 <!-- x -->
                 <li>
-                    <a href="https://x.com" target="_blank">
+                    <a href="https://x.com/raihanyudisy" target="_blank">
                         <img src="{{ asset('images/x-logo.png') }}" alt="x link">
                     </a>
                 </li>

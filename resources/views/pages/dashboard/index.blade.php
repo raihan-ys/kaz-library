@@ -756,6 +756,7 @@
 				}
 			});
 
+			// An error occured here (Live Project).
 			// Fetch data for popular categories chart.
 			$.ajax({
 				url: "{{ route('dashboard.data.popular_categories', [], true) }}",
