@@ -398,12 +398,13 @@
                     <h2 class="text-center mb-4">Buku Terlaris</h2>
                 </div>
                 @foreach ($mostBorrowedBooks as $borrowing)
+                @php $book = $borrowing->book @endphp
                 <div class="col-md-3 mb-4">
                     <div class="card h-100">
-                        <img src="{{ $borrowing->book_cover ? asset('storage/'.$borrowing->book_cover) : asset('images/sample-book-cover.jpeg') }}" alt="Book's Cover Image Preview" class="card-img-top">
+                        <img src="{{ $book->book_cover ? asset($book->book_cover) : asset('images/sample-book-cover.jpeg') }}" alt="Book's Cover Image Preview" class="card-img-top">
                         <div class="card-body">
-                            <h5 class="card-title mb-1">Judul Buku: <b>{{ $borrowing->book_title }}</b></h5>
-                            <p class="card-text">Penulis: <b>{{ $borrowing->book_author }}</b></p>
+                            <h5 class="card-title mb-1">Judul Buku: <b>{{ $book->book_title }}</b></h5>
+                            <p class="card-text">Penulis: <b>{{ $book->book_author }}</b></p>
                             <p class="card-text"><small class="text-muted">Dipinjam: <b>{{ $borrowing->total_borrowed }} kali</b></small></p>
                         </div>
                         <div class="card-footer">
